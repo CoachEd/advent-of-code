@@ -1,3 +1,5 @@
+import cProfile
+
 l = []
 l.append(-5)
 l.append(-2)
@@ -957,17 +959,20 @@ l.append(+12)
 l.append(-6)
 l.append(+125503)
 
-l2 = []
+pr = cProfile.Profile()
+pr.enable()
+l2 = [0] * 1000000
 x = 0
 found = False
 while not found:
   for i in range(len(l)):
     x = x + l[i]
-    if int(x) in l2:
+    if l2[x] != 0:
       print(str(x) + " found.")
       found = True
       break
-    l2.append(x)
-
+    l2[x] = 1 # seen
+pr.disable()
+pr.print_stats()
  
 
