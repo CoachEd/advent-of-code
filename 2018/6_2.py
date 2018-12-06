@@ -5,6 +5,9 @@ import math
 #pr = cProfile.Profile()
 #pr.enable()
 
+def valid(x,y,rows,cols):
+  return (x >= 0 and y >= 0 and x < rows and y < cols)
+
 def printGrid(g):
   s = ''
   for r in range(len(g)):
@@ -22,7 +25,7 @@ print("start...")
 # max coords 346 , 351
 cols = 347
 rows = 352
-grid = [grid[:] for grid in [[' '] * cols] * rows] 
+grid = [grid[:] for grid in [['.'] * cols] * rows] 
 c = [
 [181, 184],
 [230, 153],
@@ -88,9 +91,9 @@ namestr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwx"
 #[8, 9]
 #]
 #namestr = "ABCDEF"
-#cols = 30 
-#rows = 30 
-#grid = [grid[:] for grid in [[' '] * cols] * rows] 
+#cols = 10 
+#rows = 10 
+#grid = [grid[:] for grid in [['.'] * cols] * rows] 
 
 
 for i in range(len(c)):
@@ -98,6 +101,7 @@ for i in range(len(c)):
 
 #printGrid(grid)
 
+countpounds = 0
 for row in range(len(grid)):
   for col in range(len(grid[row])):
     if grid[row][col] in namestr:
@@ -105,66 +109,56 @@ for row in range(len(grid)):
     l = [0] * len(c)
     for i in range(len(c)):
       if (c[i][1] == row and c[i][0] == col):
-        d = 10000000000  # doesn't matter
+        d = 0  # doesn't matter
       else:
         d = dist(c[i][1],c[i][0],row,col)
       l[i] = d
 
-    # find the smallest distance 
-    s1 = 10000000000
-    i1 = -1
-    for j in range(len(l)):
-      if l[j] <= s1:
-        s1 = l[j]
-        i1 = j
-    
-    # sort and see if the next smallest distance is equal to it
-    l.sort()
-    if l[0] != l[1]:
-      grid[row][col] = namestr[i1]
-    else:
-      grid[row][col] = '.'
-      
+    if (sum(l) < 10000):
+      grid[row][col] = '#'
+      countpounds = countpounds + 1
+
+print(countpounds)
+
+for row in range(len(grid)):
+  for col in range(len(grid[row])):
+    if grid[row][col] in namestr:
+      lrow = row
+      lcol = col-1    
+      rrow = row
+      rcol = col+1
+      urow = row-1
+      ucol = col
+      drow = row+1
+      dcol = col
+
+      if valid(lrow,lcol,rows,cols):
+        if grid[lrow][lcol] == "#":
+          countpounds = countpounds + 1
+          continue
+
+      if valid(rrow,rcol,rows,cols):
+        if grid[rrow][rcol] == "#":
+          countpounds = countpounds + 1
+          continue
+
+      if valid(urow,ucol,rows,cols):
+        if grid[urow][ucol] == "#":
+          countpounds = countpounds + 1
+          continue
+
+      if valid(drow,dcol,rows,cols):
+        if grid[drow][dcol] == "#":
+          countpounds = countpounds + 1
+          continue
+
+
+
+
+print(countpounds)
+
 #printGrid(grid)
 
-# HERE
-counts = [0] * len(namestr)
-for row in range(len(grid)):
-  for col in range(len(grid[row])):
-    if (grid[row][col] == '.'):
-      continue
-    thec = grid[row][col]
-    thei = namestr.find(thec)
-    counts[thei] = counts[thei] + 1
-
-# find infinite areas
-iarr = []
-for row in range(len(grid)):
-  for col in range(len(grid[row])):
-    if grid[row][col] != '.':
-      if (row == 0) or (col == 0) or (row == (rows-1)) or (col == (cols-1)) :
-        if grid[row][col] not in iarr:
-          iarr.append(grid[row][col])      
-
-print(iarr)
-
-largest = 0
-largesti = -1
-for i in range(len(counts)):
-  if counts[i] > largest and namestr[i] not in iarr:
-    largest = counts[i]
-    largesti = i
-
-print(namestr[largesti] + ": " + str(largest))
-
-
-#print()
-#for i in range(len(counts)):
-#  if namestr[i] not in iarr:
-#    print(str(namestr[i]) + ": " + str(counts[i]))
-#
-
-      
 print("done.")
 
 #pr.disable()
