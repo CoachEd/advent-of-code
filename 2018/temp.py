@@ -21,8 +21,8 @@ print("start...")
 
 # max coords 346 , 351
 
-cols = 100
-rows = 100
+cols = 10
+rows = 10
 
 grid = [grid[:] for grid in [['.'] * cols] * rows] 
 
@@ -66,7 +66,7 @@ for row in range(len(grid)):
         i2 = j
 
     if (s1 < s2):
-      grid[row][col] = namestr[i1]
+      grid[row][col] = namestr[i1].lower()
       
 printGrid(grid)
 
