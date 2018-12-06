@@ -127,7 +127,7 @@ iarr = []
 for row in range(len(grid)):
   for col in range(len(grid[row])):
     if grid[row][col] != '.':
-      if row == 0 or col == 0 or row ==(rows-1) or cols == (cols-1):
+      if row == 0 or col == 0 or row ==(rows-1) or col == (cols-1):
         if grid[row][col] not in iarr:
           iarr.append(grid[row][col])      
 print(iarr)
