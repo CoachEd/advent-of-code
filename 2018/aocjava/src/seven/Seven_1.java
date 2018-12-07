@@ -1,11 +1,10 @@
 
 package seven;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Seven {
+public class Seven_1 {
 
 
 	//sample: CABDFE
@@ -13,7 +12,7 @@ public class Seven {
 	//try2: AVHJQWRUNYIPSDLBXCGOTMZEFK (wrong)
 	//try3: AJHDLBEGMFCIKNOPQRSTUVWXYZ (wrong)
 	//try4: ADEFBJHCGKILMNOQPRTSUVWXYZ (wrong)
-	//try5: 
+	//try5: ADEFKLBVJQWUXCNGORTMYSIHPZ (GOOD!)
 	//sort steps in descending order by start letter
 	public static void main(String[] args) {
 		Map<Character,NodeAoc> seenNodes = new TreeMap<Character,NodeAoc>();
@@ -121,7 +120,6 @@ public class Seven {
 				{'A','G'}
 		};
 
-		ArrayList<Character> children = new ArrayList<Character>();
 		for (int i=0; i < steps.length; i++) {
 			char[] step = steps[i];
 			char cStart = step[0];
@@ -147,16 +145,12 @@ public class Seven {
 			nStart.addChild(nEnd);
 		}
 
-		//Find root
-		String ans = "";
-
 		//find the highest priority node that is available (no parents)
 		while (seenNodes.size() >0) {
 
 			NodeAoc n = null;
 
 			for(Map.Entry<Character,NodeAoc> entry : seenNodes.entrySet()) {
-				char key = entry.getKey();
 				NodeAoc currentn = entry.getValue();
 				if (currentn.parents.size() == 0) {
 					//this one is available
@@ -175,7 +169,7 @@ public class Seven {
 			for(Map.Entry<Character,NodeAoc> entry : n.children.entrySet()) {
 				NodeAoc nc = entry.getValue();
 				nc.parents.remove(n.c);
-				
+
 			}
 
 			//remove node from seenNodes
