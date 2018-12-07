@@ -4,119 +4,21 @@ package seven;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Seven_2 {
+public class Seven_2_small {
 
-	//try1: 224 (wrong)
-	//try2: 223 (wrong)
-	//try3: 225 (wrong)
-	
 	public static void main(String[] args) {
 		Map<Character,NodeAoc> seenNodes = new TreeMap<Character,NodeAoc>();
 		Map<Character,NodeAoc> workers = new TreeMap<Character,NodeAoc>();
 		char[][] steps = { //CHANGE!
-				{'Y','S'},
-				{'Y','P'},
-				{'Y','I'},
-				{'X','Z'},
-				{'X','S'},
-				{'X','O'},
-				{'X','G'},
-				{'X','C'},
-				{'W','Y'},
-				{'W','U'},
-				{'W','R'},
-				{'W','I'},
-				{'W','C'},
-				{'V','W'},
-				{'V','Q'},
-				{'V','O'},
-				{'V','J'},
-				{'V','H'},
-				{'U','R'},
-				{'U','O'},
-				{'U','N'},
-				{'U','G'},
-				{'T','Y'},
-				{'T','P'},
-				{'T','M'},
-				{'T','H'},
-				{'S','Z'},
-				{'S','P'},
-				{'S','I'},
-				{'R','S'},
-				{'R','I'},
-				{'R','H'},
-				{'Q','U'},
-				{'Q','S'},
-				{'Q','P'},
-				{'Q','O'},
-				{'Q','M'},
-				{'P','Z'},
-				{'O','Z'},
-				{'O','T'},
-				{'O','S'},
-				{'O','R'},
-				{'O','I'},
-				{'N','Z'},
-				{'N','T'},
-				{'N','S'},
-				{'N','I'},
-				{'N','G'},
-				{'M','Y'},
-				{'M','S'},
-				{'M','P'},
-				{'L','T'},
-				{'L','N'},
-				{'L','B'},
-				{'K','T'},
-				{'K','R'},
-				{'K','N'},
-				{'K','B'},
-				{'J','Z'},
-				{'J','R'},
-				{'J','N'},
-				{'J','H'},
-				{'I','Z'},
-				{'I','P'},
-				{'I','H'},
-				{'H','Z'},
-				{'H','P'},
-				{'G','Y'},
-				{'G','T'},
-				{'G','I'},
-				{'G','H'},
-				{'F','Q'},
-				{'F','O'},
-				{'F','K'},
-				{'F','I'},
-				{'F','C'},
-				{'E','U'},
-				{'E','R'},
-				{'E','P'},
-				{'E','O'},
-				{'E','N'},
-				{'E','M'},
-				{'E','G'},
-				{'D','Z'},
-				{'D','Y'},
-				{'D','X'},
-				{'D','L'},
-				{'C','Y'},
-				{'C','P'},
-				{'C','N'},
-				{'C','H'},
-				{'B','W'},
-				{'B','R'},
-				{'A','Y'},
-				{'A','W'},
-				{'A','V'},
-				{'A','P'},
-				{'A','O'},
-				{'A','K'},
-				{'A','H'},
-				{'A','G'}
+				{'F','E'},
+				{'D','E'},
+				{'C','A'},
+				{'C','F'},
+				{'B','E'},
+				{'A','B'},
+				{'A','D'}
 		};
-		int MAX_WORKERS = 5; //CHANGE!!
+		int MAX_WORKERS = 2; //CHANGE!!
 		int[] worker_timers = new int[100];
 
 		for (int i=0; i < steps.length; i++) {
@@ -215,6 +117,7 @@ public class Seven_2 {
 					k++;
 				}
 			}
+
 		
 			printWorkers(workers,worker_timers, second);
 
@@ -224,7 +127,7 @@ public class Seven_2 {
 			second++;
 		}
 
-		System.out.println("WRONG: " + "223 224 225 ");
+
 	} //end MAIN
 
 	public static void printWorkers(Map<Character,NodeAoc> w, int[]timers, int second) {
