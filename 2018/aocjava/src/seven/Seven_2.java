@@ -9,6 +9,7 @@ public class Seven_2 {
 	//try1: 224 (wrong)
 	//try2: 223 (wrong)
 	//try3: 225 (wrong)
+	//try4: 1120 (correct!)
 	
 	public static void main(String[] args) {
 		Map<Character,NodeAoc> seenNodes = new TreeMap<Character,NodeAoc>();
@@ -146,7 +147,7 @@ public class Seven_2 {
 		//done adding
 
 		int second = 0;
-		while (seenNodes.size() > 0 || workers.size() != 0) {
+		while (seenNodes.size() > 0 || workers.size() > 0) {
 	
 			//find candidates
 			String sAvailable = "";
@@ -171,16 +172,14 @@ public class Seven_2 {
 			
 			//see if any workers done
 			boolean changed = false;
-			boolean workersFinished = false;
 			do {
 				changed = false;
 				for(Map.Entry<Character,NodeAoc> entry : workers.entrySet()) {
 					NodeAoc currentn = entry.getValue();
 					char c = currentn.c;
-					if ((c-64) <= worker_timers[c]) {
+					if ((c-64+60) <= worker_timers[c]) { //OMG!  just had to add 60 here!!!
 						//done
 						//System.out.print(c); //GOOD!
-						workersFinished = true;
 						worker_timers[c] = 0;
 						//loop through its children and remove itself as a parent
 						for(Map.Entry<Character,NodeAoc> entry2 : currentn.children.entrySet()) {
@@ -195,7 +194,8 @@ public class Seven_2 {
 				}
 			} while (changed);
 
-			if (workersFinished) {
+			//workers available. try to assign some
+			if (workers.size() < MAX_WORKERS) {
 				sAvailable = "";
 				for(Map.Entry<Character,NodeAoc> entry : seenNodes.entrySet()) {
 					NodeAoc currentn = entry.getValue();
@@ -214,7 +214,7 @@ public class Seven_2 {
 					seenNodes.remove(c);
 					k++;
 				}
-			}
+			} //HERE
 		
 			printWorkers(workers,worker_timers, second);
 
@@ -224,7 +224,8 @@ public class Seven_2 {
 			second++;
 		}
 
-		System.out.println("WRONG: " + "223 224 225 ");
+		System.out.println();
+		System.out.println((second-1) + " seconds");
 	} //end MAIN
 
 	public static void printWorkers(Map<Character,NodeAoc> w, int[]timers, int second) {

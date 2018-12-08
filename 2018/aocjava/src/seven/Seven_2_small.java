@@ -3,7 +3,26 @@ package seven;
 
 import java.util.Map;
 import java.util.TreeMap;
+/*
+Correct Output:
+0: C(0)  
+1: C(1)  
+2: C(2)  
+3: A(0)  F(0)  
+4: B(0)  F(1)  
+5: B(1)  F(2)  
+6: D(0)  F(3)  
+7: D(1)  F(4)  
+8: D(2)  F(5)  
+9: D(3)  
+10: E(0)  
+11: E(1)  
+12: E(2)  
+13: E(3)  
+14: E(4)  
+15: 
 
+ */
 public class Seven_2_small {
 
 	public static void main(String[] args) {
@@ -73,16 +92,14 @@ public class Seven_2_small {
 			
 			//see if any workers done
 			boolean changed = false;
-			boolean workersFinished = false;
 			do {
 				changed = false;
 				for(Map.Entry<Character,NodeAoc> entry : workers.entrySet()) {
 					NodeAoc currentn = entry.getValue();
 					char c = currentn.c;
-					if ((c-64) <= worker_timers[c]) {
+					if ((c-64+60) <= worker_timers[c]) { //MUST ADD 60 seconds!
 						//done
 						//System.out.print(c); //GOOD!
-						workersFinished = true;
 						worker_timers[c] = 0;
 						//loop through its children and remove itself as a parent
 						for(Map.Entry<Character,NodeAoc> entry2 : currentn.children.entrySet()) {
@@ -97,7 +114,7 @@ public class Seven_2_small {
 				}
 			} while (changed);
 
-			if (workersFinished) {
+			if (workers.size() < MAX_WORKERS) {
 				sAvailable = "";
 				for(Map.Entry<Character,NodeAoc> entry : seenNodes.entrySet()) {
 					NodeAoc currentn = entry.getValue();
@@ -127,7 +144,8 @@ public class Seven_2_small {
 			second++;
 		}
 
-
+		System.out.println();
+		System.out.println((second-1) + " seconds");
 	} //end MAIN
 
 	public static void printWorkers(Map<Character,NodeAoc> w, int[]timers, int second) {
