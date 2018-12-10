@@ -10,9 +10,9 @@
   <div data-ng-app="MyApp" data-ng-controller="MyController">
     <table>
       <tr>
-        <td><button data-ng-click="redraw(-1)">prev</button><br></td>
-        <td><button data-ng-click="redraw(1)">Next</button><br></td>
-        <td>&nbsp;Click Next 10 times...</td>
+        <td><button data-ng-click="redraw(-10)">prev</button><br></td>
+        <td><button data-ng-click="redraw(10)">Next</button><br></td>
+        <td>&nbsp;Click Next 4 times...</td>
       </tr>
     </table>
         
@@ -486,7 +486,7 @@
         }
       };
       
-      $scope.redraw(-10); //rewind 10 seconds
+      $scope.redraw(-40); //rewind 40 seconds
       
     }]);
 
