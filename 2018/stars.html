@@ -8,8 +8,16 @@
 <body>
 
   <div data-ng-app="MyApp" data-ng-controller="MyController">
-        <button data-ng-click="redraw(1)">Next</button><br>
-    <canvas id="myCanvas" width="1000" height="1000" style="border:1px;"></canvas>
+    <table>
+      <tr>
+        <td><button data-ng-click="redraw(-1)">prev</button><br></td>
+        <td><button data-ng-click="redraw(1)">Next</button><br></td>
+        <td>&nbsp;Click Next 10 times...</td>
+      </tr>
+    </table>
+        
+        
+    <canvas id="myCanvas" width="400" height="300" style="border:1px;"></canvas>
 
   </div>
   
@@ -415,9 +423,9 @@
 [238,138,-1,1],
 [182,135,2,2]
     ];
-    var offset = 10;
-    var width = 1000;
-    var height = 1000;
+    var offset = 0;
+    var width = 400;
+    var height = 300;
     var radius = 1;
     var clicks = 0;
 
@@ -444,12 +452,25 @@
         ctx.fillStyle="black";
         ctx.fillRect(0,0,width,height);
 
-        for (var x=0; x < n; x++) {
-          for (var i=0; i < stars.length; i++) {
-            addx = stars[i][2];
-            addy = stars[i][3];
-            stars[i][0] = stars[i][0] + addx
-            stars[i][1] = stars[i][1] + addy
+        //update the positions
+        if (n < 0) {
+          n = n * -1;
+          for (var x=0; x < n; x++) {
+            for (var i=0; i < stars.length; i++) {
+              addx = stars[i][2];
+              addy = stars[i][3];
+              stars[i][0] = stars[i][0] - addx
+              stars[i][1] = stars[i][1] - addy
+            }
+          }
+        } else {
+          for (var x=0; x < n; x++) {
+            for (var i=0; i < stars.length; i++) {
+              addx = stars[i][2];
+              addy = stars[i][3];
+              stars[i][0] = stars[i][0] + addx
+              stars[i][1] = stars[i][1] + addy
+            }
           }
         }
         
@@ -463,10 +484,9 @@
           ctx.fillStyle = "white";
           ctx.fill();
         }
-
-        console.log(clicks);
       };
-
+      
+      $scope.redraw(-10); //rewind 10 seconds
       
     }]);
 
