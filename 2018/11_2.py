@@ -4,6 +4,7 @@
 # 19,67
 # Correct: 20,68
 
+# TO SLOW. DOES NOT SCALE!!!
 length = 300
 serialno = 5791
 grid = [[0 for x in range(length)] for y in range(length)]
@@ -38,12 +39,13 @@ for y in range(length):
 savex = -1
 savey = -1
 totalpower = 0
+savesz = -1
 for y in range(length):
   for x in range(length):
     thex = x + 1
     they = y + 1
 
-    for sz in range(1,300):
+    for sz in range(1,301):
       temppower = 0
       foundinvald = False
       for y2 in range(y,y+sz):
@@ -56,13 +58,7 @@ for y in range(length):
         totalpower = temppower
         savex = thex
         savey = they
-
-
-
-
-
-
-
+        savesz = sz
 
 print(str(savex) + "," + str(savey) + "  " + str(totalpower))
 
