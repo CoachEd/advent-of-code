@@ -1,3 +1,4 @@
+import numpy as np
 
 # incorrect guesses:
 # 87,18
@@ -7,7 +8,7 @@
 # TO SLOW. DOES NOT SCALE!!!
 length = 300
 serialno = 5791
-grid = [[0 for x in range(length)] for y in range(length)]
+grid = np.zeros(shape=(length,length))
 
 # validate coords
 def validc(x,y,l):
@@ -33,7 +34,7 @@ for y in range(length):
   for x in range(length):
     thex = x + 1
     they = y + 1
-    grid[y][x] = calcpower(thex,they,serialno)
+    grid[y,x] = calcpower(thex,they,serialno)
 
 # find thex, they of 3x3 grid with largest total power
 savex = -1
@@ -45,30 +46,35 @@ for y in range(length):
     thex = x + 1
     they = y + 1
 
-    for sz in range(1,301):
+    sz1 = length - x
+    sz2 = length - y
+    maxsz = 1
+    if sz1 < sz2:
+      maxsz = sz1 + 1
+    else:
+      maxsz = sz2
+
+    for sz in range(1,maxsz):
       temppower = 0
       foundinvald = False
-      for y2 in range(y,y+sz):
-        for x2 in range(x,x+sz):
-          if validc(x2,y2,length):
-            temppower = temppower + grid[y2][x2]
-          else:
-            foundinvald = True    
-      if not foundinvald and temppower > totalpower:
-        totalpower = temppower
-        savex = thex
-        savey = they
-        savesz = sz
 
-print(str(savex) + "," + str(savey) + "  " + str(totalpower))
+      if validc(x+sz-1,y+sz-1,length):
+        temppower = np.sum(grid[y:y+sz,x:x+sz])
+        if temppower > totalpower:
+          totalpower = temppower
+          savex = thex
+          savey = they
+          savesz = sz
+
+print(str(savex) + ',' + str(savey) + ',' + str(savesz) + '   ' + str(totalpower))
 
 
 #s = ''
 #startp = False
 #for y in range(length):
 #  for x in range(length):
-#    outs = str(grid[y][x])
-#    if grid[y][x] >= 0:
+#    outs = str(grid[y,x])
+#    if grid[y,x] >= 0:
 #      outs = ' '+outs
 #    s = s + outs + ' , '
 #  s = s + '\n'
