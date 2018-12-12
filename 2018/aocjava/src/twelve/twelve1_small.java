@@ -23,6 +23,7 @@ public class twelve1_small {
 		hm.put("####.",true);
 		
 		String s = "#..#.#..##......###...###";
+		
 		ArrayList<pot> pots = new ArrayList<pot>();
 		int MAXPOTS = 50;
 		for (int i=-MAXPOTS; i < MAXPOTS; i++) {
