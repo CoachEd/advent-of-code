@@ -1,5 +1,6 @@
 import numpy as np
 
+# answer: 129,50
 
 def printmap(m):
   s = ''
