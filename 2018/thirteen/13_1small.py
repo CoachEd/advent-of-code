@@ -20,7 +20,7 @@ moves = ['left','straight','right'] # repeating
 carts = []
 
 # read in file
-with open('mapbig.txt', "r") as f:
+with open('mapsmall.txt', "r") as f:
   content = f.readlines()
 
 
@@ -72,10 +72,10 @@ t = 0
 while not crash:
 
   # DEBUGGING STUCK IN TIME t=1 !!!
-  #if (t < 16):
-  print('t=' + str(t))
-    #printmap(themap)
-    #print()
+  if (t < 16):
+    print('t=' + str(t))
+    printmap(themap)
+    print()
       
   tempmap = [[' ' for x in range(maxcols)] for y in range(maxrows)]
   for y in range(len(themap)):
