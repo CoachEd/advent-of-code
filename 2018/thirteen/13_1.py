@@ -57,6 +57,7 @@ for r in range(len(themap)):
         'on': on,
         'x': c,
         'y': r,
+        'seen': False,
         'nexti': 0
       }
       carts.append(cart1)
@@ -75,16 +76,15 @@ while not crash:
       print('t=' + str(t))
       printmap(themap)
       print()
-  else:
-    exit() # DEBUGGING
-  
+      
+  tempmap = [[' ' for x in range(maxcols)] for y in range(maxrows)]
   for y in range(len(themap)):
-    for x in range(len(themap[r])):
+    for x in range(len(themap[y])):
       if themap[y][x] in cartchars:
         # find that cart
         for i in range(len(carts)):
           cart = carts[i]
-          if cart['x'] == x and cart['y'] == y:
+          if cart['x'] == x and cart['y'] == y and not cart['seen']:
             # found it
             facing = cart['c']
             track = '-'
@@ -103,6 +103,8 @@ while not crash:
               nexty = y+1
               nextx = x
 
+            # ERROR HERE
+            print(cart['c'] + ' ' + str(cart['y']) + ',' + str(cart['x']) + '    ' + str(nexty) + ',' + str(nextx) )
             if themap[nexty][nextx] in cartchars:
               print("BOOM! " + str(x) + ',' + str(y))
               crash = True
@@ -125,7 +127,7 @@ while not crash:
                 elif facing == UP:
                   cart['c'] == LEFT
                 elif facing == DOWN:
-                  cart['c'] == RIGHT
+                  cart['c'] == LEFT
                 themap[nexty][nextx] = cart['c']  
               elif themap[nexty][nextx] == '/':
                 if facing == RIGHT:
@@ -135,7 +137,7 @@ while not crash:
                 elif facing == UP:
                   cart['c'] == RIGHT
                 elif facing == DOWN:
-                  cart['c'] == LEFT
+                  cart['c'] == RIGHT
                 themap[nexty][nextx] = cart['c'] 
               elif themap[nexty][nextx] == '+':
                 move = moves[cart['nexti']] # left, straight, right, ...
@@ -167,6 +169,11 @@ while not crash:
               elif themap[nexty][nextx] == '|':
                 # means we are facing up or down
                 themap[nexty][nextx] = facing
+
+            # lastly, update its position
+            cart['x'] = nextx
+            cart['y'] = nexty
+            cart['seen'] = True
             break # done processing this cart
         if crash:
           break
@@ -174,6 +181,12 @@ while not crash:
         break
   if crash:
     break
+
+  # set all carts to NOT seen
+  for i in range(len(carts)):
+    cart = carts[i]
+    cart['seen'] = False
+          
   t = t + 1
 print('done.')
 
