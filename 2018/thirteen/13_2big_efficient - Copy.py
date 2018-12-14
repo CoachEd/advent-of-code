@@ -1,7 +1,5 @@
 import numpy as np
 
-# incorrect: 73,69
-# incorrect: 130,110
 
 def printmap(m):
   s = ''
@@ -79,8 +77,6 @@ done = False
 while not done:
 
   print('t=' + str(t))
-      
-  tempmap = [[' ' for x in range(maxcols)] for y in range(maxrows)]
   for y in range(len(themap)):
     for x in range(len(themap[y])):
       if themap[y][x] in cartchars:

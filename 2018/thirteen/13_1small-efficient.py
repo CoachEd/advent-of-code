@@ -1,9 +1,5 @@
 import numpy as np
 
-# incorrect: 110,130
-# incorrect: 73,69
-# incorrect: 130,110
-# correct: 69,73
 
 def printmap(m):
   s = ''
@@ -24,7 +20,7 @@ moves = ['left','straight','right'] # repeating
 carts = []
 
 # read in file
-with open('mapbig.txt', "r") as f:
+with open('mapsmall.txt', "r") as f:
   content = f.readlines()
 
 
@@ -62,21 +58,17 @@ for r in range(len(themap)):
         'x': c,
         'y': r,
         'seen': False,
-        'dead': False,
         'nexti': 0
       }
       carts.append(cart1)
 
-#print('initial carts: ' + str(len(carts)) + ' of them...')
-#for i in range(len(carts)):
-#  print(carts[i]['c'] + ',' + str(carts[i]['x']) + ',' + str(carts[i]['y']) + ',' + str(carts[i]['nexti']))
+print('initial carts:')
+for i in range(len(carts)):
+  print(carts[i]['c'] + ',' + str(carts[i]['x']) + ',' + str(carts[i]['y']) + ',' + str(carts[i]['nexti']))
 
 crash = False
 t = 0
-carsleft = len(carts)
-done = False
-while not done:
-  #printmap(themap)
+while not crash:
 
   # sort the carts
   for i in range(len(carts)):
@@ -97,7 +89,7 @@ while not done:
     cart = carts[i]
     x = cart['x']
     y = cart['y']
-    if not cart['seen'] and not cart['dead']:
+    if not cart['seen']:
       # found it
       facing = cart['c']
 
@@ -140,33 +132,12 @@ while not done:
         elif facing == DOWN:
           nexty = y+1
           nextx = x              
-
-
-       
-      # at this level
+        
+      #print(cart['c'] + ' ' + str(cart['y']) + ',' + str(cart['x']) + '    ' + str(nexty) + ',' + str(nextx) )
       if themap[nexty][nextx] in cartchars:
-        #print()
         print("BOOM! " + str(nextx) + ',' + str(nexty))
-        #print('x,y: ' + str(x) + ',' + str(y) + '   nextx,nexty: ' + str(nextx) + ',' + str(nexty))
-
-        cart['c'] = cart['on'] # remove this car
-        themap[y][x] = cart['on']
-        #print('setting x,y ' + str(x) + ',' + str(y) + '  dead.')
-        cart['dead'] = True
-        # remove the car it hit at nexty,nextx
-        for i in range(len(carts)):
-          othercart = carts[i]
-          if othercart['x'] == nextx and othercart['y'] == nexty:
-            othercart['c'] = othercart['on']
-            #print('setting other x,y ' + str(nextx) + ',' + str(nexty) + '  dead.')
-            othercart['dead'] = True
-            themap[nexty][nextx] = othercart['on'] 
-            # found it
-            break
-        carsleft = carsleft - 2
-        if (carsleft == 1):
-          done = True
-
+        crash = True
+        break
       else:
         # move this cart
         # make current space a line
@@ -248,13 +219,9 @@ while not done:
           
   t = t + 1
 
-
-
-for i in range(len(carts)):
-  cart = carts[i]
-  if (not cart['dead']):
-    print('cart at x,y:  ' + str(cart['x']) + ',' + str(cart['y']))
-      
 print('done.')
+
+
+
 
 
