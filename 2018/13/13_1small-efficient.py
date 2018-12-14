@@ -30,6 +30,7 @@ for l in content:
   maxrows = maxrows + 1
   # remove trailing newline
   l = l.rstrip('\n')
+  maxcols = 0
   for c in l:
     maxcols = maxcols + 1
 
