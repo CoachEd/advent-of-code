@@ -307,11 +307,15 @@ public class GoblinBattle {
 		System.out.println();
 		
 		//TODO: which in range spaces above are reachable by the current node?
-		//ts
+		//TODO: of the reachable nodes, which is closest to the current node
+		//TODO: if more than one reachable node is closest to the goblin (target) then pick the square that is
+		//      first in reading order (top-left to bottom-right)
+		
+		
 		
 		
 
-		System.out.println( isPath(1,1,3,1) ); //true elf to space
+		System.out.println( isPath(1,1,3,1) ); //true paths from elf to space
 		//System.out.println( isPath(1,1,1,5) ); //false elf to space (blocked by goblin)
 		//System.out.println( isPath(1,1,1,2) ); //true
 		//System.out.println( isPath(1,1,3,5) ); //false
