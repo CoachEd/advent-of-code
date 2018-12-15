@@ -307,7 +307,7 @@ public class GoblinBattle {
 		System.out.println();
 		
 		//TODO: which in range spaces above are reachable by the current node?
-		
+		//ts
 		
 		
 
