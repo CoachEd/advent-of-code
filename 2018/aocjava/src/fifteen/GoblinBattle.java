@@ -306,10 +306,22 @@ public class GoblinBattle {
 		}
 		System.out.println();
 		
-		//TODO: which in range spaces above are reachable by the current node?
-		//TODO: of the reachable nodes, which is closest to the current node
-		//TODO: if more than one reachable node is closest to the goblin (target) then pick the square that is
-		//      first in reading order (top-left to bottom-right)
+		//TODO: identify targets. if no targets remain, combat ends
+		//TODO: If the unit is already in range of a target, it does not move, 
+		//      but continues its turn with an attack. 
+		//TODO: if no reachable nodes, or if all adjacent steps (UP,DOWN,LEFT,RIGHT) are occupied, 
+		//      node cannot move.
+		//TODO: To move...
+		//TODO: which in nodes are in range (adjacent to) goblins?
+		//TODO: of those nodes, which are reachable by the elf?
+		//TODO: of those nodes, which are nearest to the elf?
+		//      if there is a tie (distance-wise), pick the one that is first in reading oder
+		//      this is the destination square
+		//TODO: of the steps that the node can go to (UP,DOWN,LEFT,RIGHT), which one is closest to the
+		//      destination square? if a tie, pick the one that is first in reading order
+		//TODO: If the unit is not already in range of a target, and there are no open squares 
+		//      which are in range of a target, the unit ends its move turn. attack is next
+		
 		
 		
 		
