@@ -178,8 +178,7 @@ public class GoblinBattle {
 		
 		if (themap[r1][c1] == WALL || themap[r2][c2] == WALL)
 			return false;
-		
-		boolean b = false;
+
 
 		HashMap<String,Coord> nodes = new HashMap<String,Coord>();
 
@@ -187,9 +186,9 @@ public class GoblinBattle {
 		Coord.idcounter = 0;
 		
 		nodes.put(r1+""+c1,new Coord(r1,c1));
-		System.out.println("Node added: " + r1 +"," + c1);
+		//System.out.println("Node added: " + r1 +"," + c1);
 		nodes.put(r2+""+c2,new Coord(r2,c2));
-		System.out.println("Node added: " + r2 +"," + c2);
+		//System.out.println("Node added: " + r2 +"," + c2);
 
 		//add the space nodes
 		for (int r=0; r < maxrows; r++) {
@@ -202,7 +201,7 @@ public class GoblinBattle {
 				
 				if (themap[r][c] == SPACE) {
 					Coord crd = new Coord(r,c);
-					System.out.println("Nodes added: " + r + "," + c);
+					//System.out.println("Nodes added: " + r + "," + c);
 					nodes.put(crd.row+""+crd.col,crd);
 				}
 				
@@ -213,7 +212,6 @@ public class GoblinBattle {
 		//for each node, add its surrounding edges
 		TreeSet<Edge> edges = new TreeSet<Edge>();
 		for(Map.Entry<String, Coord> entry : nodes.entrySet()) {
-			String rcStr = entry.getKey();
 			Coord curr = entry.getValue();
 			
 			int upr = curr.row-1;
@@ -282,8 +280,7 @@ public class GoblinBattle {
 
 		//create the graph to determine if there is a path
 		Graph g = new Graph(nodes.size()); //nodes are the spaces + the src and dst
-		System.out.println("nodes.size(): " + nodes.size());
-		//System.out.println("Edges: ");
+		System.out.println("Edges: ");
 		for (Edge e : edges) {
 			System.out.println(e.from + " -> " + e.to);
 			g.addEdge(e.from, e.to);
@@ -302,17 +299,20 @@ public class GoblinBattle {
 		GoblinBattle gb = new GoblinBattle();
 		printMap();
 
-		/*
 		TreeSet<Coord> ts = inRange(GOBLIN);
+		System.out.println("Adjacent spaces in range of goblins:");
 		for (Coord c : ts) {
-			themap[c.row][c.col]= '?'; 
+			System.out.println(c.row + "," + c.col); 
 		}
 		System.out.println();
-		printMap();
-		 */
+		
+		//TODO: which in range spaces above are reachable by the current node?
+		
+		
+		
 
 		System.out.println( isPath(1,1,3,1) ); //true elf to space
-		System.out.println( isPath(1,1,1,5) ); //false elf to space (blocked by goblin)
+		//System.out.println( isPath(1,1,1,5) ); //false elf to space (blocked by goblin)
 		//System.out.println( isPath(1,1,1,2) ); //true
 		//System.out.println( isPath(1,1,3,5) ); //false
 		//System.out.println( isPath(4,0,5,0) ); //false - wall to wall
@@ -324,7 +324,7 @@ public class GoblinBattle {
 		//System.out.println( isPath(1,1,3,4) ); //false elf to wall
 		//System.out.println( isPath(3,4,1,1) ); //false wall to elf
 		
-		//gb.tick();
+		gb.tick();
 	} 
 
 
