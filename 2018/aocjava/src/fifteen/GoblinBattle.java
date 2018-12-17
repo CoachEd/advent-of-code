@@ -28,6 +28,8 @@ public class GoblinBattle {
 	static final int DOWN = 1;
 	static final int LEFT = 2;
 	static final int RIGHT = 3;
+	static int alive_goblins = 0;
+	static int alive_elves = 0;
 
 	public String tick() {
 		String sout = "";
@@ -88,8 +90,14 @@ public class GoblinBattle {
 				String l = al.get(row);
 				for (int col = 0; col < l.length(); col++) {
 					themap[row][col] = l.charAt(col);
+					if (themap[row][col] == GOBLIN)
+						alive_goblins++;
+					else if (themap[row][col] == ELF)
+						alive_elves++;
 				}
 			}
+			
+			System.out.println("elves: " + alive_elves + "\ngoblins: " + alive_goblins);
 
 			//create players, walls, and spaces
 			for (int r = 0; r < themap.length; r++) {
@@ -151,9 +159,16 @@ public class GoblinBattle {
 			ts.add(new Coord(rightr,rightc));
 	}
 
-	public static boolean validSpace(int row, int col) {
+	public static boolean validCoord(int row, int col) {
 		//out of bounds?
-		if (row < 0 || row >= themap.length || col < 0 || col >= themap[0].length)
+		if (row < 0 || row >= maxrows || col < 0 || col >= maxcols)
+			return false;
+		return true;
+	}
+	
+	public static boolean validSpace(int row, int col) {
+
+		if (!validCoord(row,col))
 			return false;
 
 		//not a space
@@ -164,7 +179,7 @@ public class GoblinBattle {
 
 	public static boolean validNode(int row, int col, int targetrow, int targetcol) {
 		//out of bounds?
-		if (row < 0 || row >= themap.length || col < 0 || col >= themap[0].length)
+		if (!validCoord(row,col))
 			return false;
 
 		//not a space
@@ -180,14 +195,14 @@ public class GoblinBattle {
 			return false;
 
 
-		HashMap<String,Coord> nodes = new HashMap<String,Coord>();
+		HashMap<String,Node> nodes = new HashMap<String,Node>();
 
 		//add the src and dst nodes
-		Coord.idcounter = 0;
+		Node.idcounter = 0; //reset the counter when creating the graph
 		
-		nodes.put(r1+""+c1,new Coord(r1,c1));
+		nodes.put(r1+""+c1,new Node(r1,c1));
 		//System.out.println("Node added: " + r1 +"," + c1);
-		nodes.put(r2+""+c2,new Coord(r2,c2));
+		nodes.put(r2+""+c2,new Node(r2,c2));
 		//System.out.println("Node added: " + r2 +"," + c2);
 
 		//add the space nodes
@@ -200,9 +215,9 @@ public class GoblinBattle {
 					continue;
 				
 				if (themap[r][c] == SPACE) {
-					Coord crd = new Coord(r,c);
+					Node n = new Node(r,c);
 					//System.out.println("Nodes added: " + r + "," + c);
-					nodes.put(crd.row+""+crd.col,crd);
+					nodes.put(n.row+""+n.col,n);
 				}
 				
 				
@@ -211,14 +226,14 @@ public class GoblinBattle {
 
 		//for each node, add its surrounding edges
 		TreeSet<Edge> edges = new TreeSet<Edge>();
-		for(Map.Entry<String, Coord> entry : nodes.entrySet()) {
-			Coord curr = entry.getValue();
+		for(Map.Entry<String, Node> entry : nodes.entrySet()) {
+			Node curr = entry.getValue();
 			
 			int upr = curr.row-1;
 			int upc = curr.col;
 			if (validNode(upr, upc, r2, c2)) {
 				if (nodes.containsKey(upr+""+upc)) {
-					Coord tempnode = nodes.get(upr+""+upc);
+					Node tempnode = nodes.get(upr+""+upc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -232,7 +247,7 @@ public class GoblinBattle {
 			int downc = curr.col;
 			if (validNode(downr, downc, r2, c2)) {
 				if (nodes.containsKey(downr+""+downc)) {
-					Coord tempnode = nodes.get(downr+""+downc);
+					Node tempnode = nodes.get(downr+""+downc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -246,7 +261,7 @@ public class GoblinBattle {
 			int leftc = curr.col-1;
 			if (validNode(leftr, leftc, r2, c2)) {
 				if (nodes.containsKey(leftr+""+leftc)) {
-					Coord tempnode = nodes.get(leftr+""+leftc);
+					Node tempnode = nodes.get(leftr+""+leftc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -260,7 +275,7 @@ public class GoblinBattle {
 			int rightc = curr.col+1;
 			if (validNode(rightr, rightc, r2, c2)) {
 				if (nodes.containsKey(rightr+""+rightc)) {
-					Coord tempnode = nodes.get(rightr+""+rightc);
+					Node tempnode = nodes.get(rightr+""+rightc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -273,8 +288,8 @@ public class GoblinBattle {
 		}
 
 		System.out.println("Nodes:");
-		for(Map.Entry<String, Coord> entry : nodes.entrySet()) {
-			Coord n = entry.getValue();
+		for(Map.Entry<String, Node> entry : nodes.entrySet()) {
+			Node n = entry.getValue();
 			System.out.println(n.id + ": " + n.row + "," + n.col);
 		}
 
@@ -294,6 +309,90 @@ public class GoblinBattle {
 		return num_paths > 0;
 	} 
 
+	//returning a move of r,c [-1,-1] means don't/can't move (because we are blocked in or we should attack
+	//the adjacent goblin
+	public static int[] move(int r, int c) {
+		int[] themove = new int[] {-1,-1};
+		
+		if (alive_goblins == 0 || alive_elves == 0) {
+			//combat ends; no more targets
+			return themove;
+		}
+		
+		//make sure the r,c is in bounds
+		if (r < 0 || r >= maxrows || c < 0 || c >= maxcols)
+			return themove;
+		
+		//make sure the piece moving is an ELF or GOBLIN
+		char theplayer = themap[r][c];
+		if (theplayer != ELF && theplayer != GOBLIN)
+			return themove;
+
+		//get the valid steps on the board (may be occupied)
+		ArrayList<Coord> steps = new ArrayList<Coord>();
+		int upr = r-1;
+		int upc = c;
+		if (validCoord(upr,upc))
+			steps.add(new Coord(upr,upc));
+		int downr = r+1;
+		int downc = c;
+		if (validCoord(downr,downc))
+			steps.add(new Coord(downr,downc));
+		int rightr = r;
+		int rightc = c+1;
+		if (validCoord(rightr,rightc))
+			steps.add(new Coord(rightr,rightc));
+		int leftr = r;
+		int leftc = c-1;
+		if (validCoord(leftr,leftc))
+			steps.add(new Coord(leftr,leftc));		
+		
+		//if already next to an enemy, move turn is over. now attack
+		int open_spaces = 0;
+		int adjacent_goblins = 0;
+		for (int i=0; i < steps.size(); i++) {
+			Coord ctemp = steps.get(i);
+			if (themap[ctemp.row][ctemp.col] == GOBLIN)
+				adjacent_goblins++;
+			else if (themap[ctemp.row][ctemp.col] == SPACE)
+				open_spaces++;
+		}
+		
+		//immediately return if we are already next to a goblin (time to attack!)
+		//or if there are no open adjacent steps (u,d,l,r); we cannot move if we wanted to
+		if (adjacent_goblins > 0 || open_spaces == 0)
+			return themove;
+		
+		//BEGIN move algorithm here; there are targets left
+		//theplayer will be 'E' or 'G' at this point
+		//steps has at least one open coord (u,d,l,r)
+		//players has both types of players GOBLIN and ELF
+		char thetarget = ELF;
+		if (theplayer == ELF)
+			thetarget = GOBLIN;
+		
+		//TODO: identify targets. if no targets remain, combat ends
+		//loop through the players list and find the targets, then get their open steps
+		
+		//TODO: if no reachable nodes, or  
+		//TODO: To move...
+		//TODO: which in nodes are in range (adjacent to) goblins?
+		//TODO: of those nodes, which are reachable by the elf?
+		//TODO: of those nodes, which are nearest to the elf?
+		//      if there is a tie (distance-wise), pick the one that is first in reading oder
+		//      this is the destination square
+		//TODO: of the steps that the node can go to (UP,DOWN,LEFT,RIGHT), which one is closest to the
+		//      destination square? if a tie, pick the one that is first in reading order
+		//TODO: If the unit is not already in range of a target, and there are no open squares 
+		//      which are in range of a target, the unit ends its move turn. attack is next		
+		
+		
+		
+		
+		
+		return themove;
+	}
+	
 	public static void main(String[] args) {
 		//TESTER
 		GoblinBattle gb = new GoblinBattle();
@@ -305,27 +404,7 @@ public class GoblinBattle {
 			System.out.println(c.row + "," + c.col); 
 		}
 		System.out.println();
-		
-		//TODO: identify targets. if no targets remain, combat ends
-		//TODO: If the unit is already in range of a target, it does not move, 
-		//      but continues its turn with an attack. 
-		//TODO: if no reachable nodes, or if all adjacent steps (UP,DOWN,LEFT,RIGHT) are occupied, 
-		//      node cannot move.
-		//TODO: To move...
-		//TODO: which in nodes are in range (adjacent to) goblins?
-		//TODO: of those nodes, which are reachable by the elf?
-		//TODO: of those nodes, which are nearest to the elf?
-		//      if there is a tie (distance-wise), pick the one that is first in reading oder
-		//      this is the destination square
-		//TODO: of the steps that the node can go to (UP,DOWN,LEFT,RIGHT), which one is closest to the
-		//      destination square? if a tie, pick the one that is first in reading order
-		//TODO: If the unit is not already in range of a target, and there are no open squares 
-		//      which are in range of a target, the unit ends its move turn. attack is next
-		
-		
-		
-		
-		
+
 
 		System.out.println( isPath(1,1,3,1) ); //true paths from elf to space
 		//System.out.println( isPath(1,1,1,5) ); //false elf to space (blocked by goblin)
