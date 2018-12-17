@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-//WRONG: 365, 390, 353 (too low), 362, 354, 372, 364
+//WRONG: 365, 390, 353 (too low), 362, 354, 372, 364, 355, 373
 //CORRECT: 
 public class DeviceProgram3 {
 
@@ -34,7 +34,7 @@ public class DeviceProgram3 {
 	static int count_samples = 0;
 
 	public static void main(String[] args) {
-		String fname = "C:\\Users\\edwin\\github\\advent-of-code\\2018\\aocjava\\src\\sixteen\\input3.txt";
+		String fname = "/Users/ertorres/github/advent-of-code/2018/aocjava/src/sixteen/input3.txt";
 
 		d = new Device();
 
@@ -79,34 +79,37 @@ public class DeviceProgram3 {
 		case 4:
 			d.addi(A, B, C);
 			break;
+			
+			
 		case 5:
-			d.gtir(A, B, C);//gtrr eqri
+			d.gtrr(A, B, C);
 			break;		
 		case 9:
+			d.eqir(A, B, C);
+			break;
+		case 12:
 			d.eqri(A, B, C);
+			break;				
+		case 7:
+			d.gtir(A, B, C);
 			break;
 		case 15:
-			d.gtrr(A, B, C);//eqrr eqri eqrr
+			d.eqrr(A, B, C);
 			break;				
+			
+			
 		case 6:
 			d.gtri(A, B, C);
-			break;
-		case 7:
-			d.eqrr(A, B, C);
 			break;
 		case 8:
 			d.borr(A, B, C);
 			break;
-
 		case 10:
 			d.bani(A, B, C);
 			break;
 		case 11:
 			d.addr(A, B, C);
-			break;
-		case 12:
-			d.eqir(A, B, C);//eqri eqrr gtrr
-			break;		
+			break;	
 		case 13:
 			d.mulr(A, B, C);
 			break;

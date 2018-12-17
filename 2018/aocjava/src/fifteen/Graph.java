@@ -4,14 +4,14 @@ package fifteen;
 //paths from a source to 
 //destination. 
 //https://www.geeksforgeeks.org/find-paths-given-source-destination/
-import java.util.ArrayList;
-import java.util.List; 
+import java.util.ArrayList; 
 
 //A directed graph using 
 //adjacency list representation 
 public class Graph { 
-	
+
 	public static int numPaths = 0;
+	public static ArrayList< ArrayList<Integer> > globalPathList = null;
 
 	// No. of vertices in graph 
 	private int v;  
@@ -21,7 +21,7 @@ public class Graph {
 
 	//Constructor 
 	public Graph(int vertices){ 
-
+		//System.out.println("vertices: " + vertices);
 		//initialise vertex count 
 		this.v = vertices; 
 
@@ -46,15 +46,20 @@ public class Graph {
 	public void addEdge(int u, int v) 
 	{ 
 		// Add v to u's list. 
+		//System.out.println(adjList.length);
+		//System.out.println(adjList.length);
 		adjList[u].add(v);  
 	} 
 
 	// Prints all paths from 
 	// 's' to 'd' 
-	public int printAllPaths(int s, int d)  
+	@SuppressWarnings("unchecked")
+	public ArrayList< ArrayList<Integer>> printAllPaths(int s, int d)  
 	{ 
 		//reset counter
 		numPaths = 0;
+		globalPathList = new ArrayList< ArrayList<Integer> >();
+
 		boolean[] isVisited = new boolean[v]; 
 		ArrayList<Integer> pathList = new ArrayList<>(); 
 
@@ -64,8 +69,47 @@ public class Graph {
 		//Call recursive utility 
 		printAllPathsUtil(s, d, isVisited, pathList); 
 		//System.out.println("numPaths: " + numPaths);
-		return(numPaths);
+		//System.out.println("globalPathList size: " + globalPathList.size());
+
+		/*
+		for (ArrayList<Integer> l : globalPathList) {
+			for (Integer i : l) {
+				System.out.print(i + " ");
+			}
+			System.out.println();
+		}
+		 */
+
+		return (ArrayList<ArrayList<Integer>>) (globalPathList.clone());
 	} 
+
+	public int smallestPath(int s, int d)  
+	{ 
+		//reset counter
+		numPaths = 0;
+		globalPathList = new ArrayList< ArrayList<Integer> >();
+
+		boolean[] isVisited = new boolean[v]; 
+		ArrayList<Integer> pathList = new ArrayList<>(); 
+
+		//add source to path[] 
+		pathList.add(s); 
+
+		//Call recursive utility 
+		printAllPathsUtil(s, d, isVisited, pathList); 
+		//System.out.println("numPaths: " + numPaths);
+		//System.out.println("globalPathList size: " + globalPathList.size());
+
+		int smallest_path = 0x7fffffff;
+		for (ArrayList<Integer> l : globalPathList) {
+			if (l.size() < smallest_path)
+				smallest_path = l.size();
+		}
+
+
+		return smallest_path;
+	} 	
+
 
 	// A recursive function to print 
 	// all paths from 'u' to 'd'. 
@@ -73,9 +117,10 @@ public class Graph {
 	// vertices in current path. 
 	// localPathList<> stores actual 
 	// vertices in the current path 
+	@SuppressWarnings("unchecked")
 	private void printAllPathsUtil(Integer u, Integer d, 
 			boolean[] isVisited, 
-			List<Integer> localPathList) { 
+			ArrayList<Integer> localPathList) { 
 
 		// Mark the current node 
 		isVisited[u] = true; 
@@ -83,10 +128,11 @@ public class Graph {
 		if (u.equals(d))  
 		{ 
 			numPaths++;
-			
+
 			//uncomment to see paths
-			System.out.println(localPathList);
-			
+			//System.out.println(localPathList);
+			globalPathList.add((ArrayList<Integer>)localPathList.clone());
+
 			// if match found then no need to traverse more till depth 
 			isVisited[u]= false; 
 			return ; 
@@ -116,7 +162,7 @@ public class Graph {
 	// Driver program 
 	public static void main(String[] args)  
 	{ 
-		
+
 		// Create a sample graph 
 		Graph g = new Graph(11); 
 		g.addEdge(0,2); 
@@ -141,22 +187,23 @@ public class Graph {
 		g.addEdge(8,4);
 		g.addEdge(9,5);
 		g.addEdge(10,7);
-		
+
 
 		// arbitrary source 
 		int s = 0; 
 
 		// arbitrary destination 
 		int d = 10; 
+		d = 4;
 
 		System.out.println("Following are all different paths from "+s+" to "+d); 
 		g.printAllPaths(s, d); 
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 
 	} 
 } 
