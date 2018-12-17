@@ -3,12 +3,21 @@ package sixteen;
 public class FindMatching {
 
 	public static void main(String[] args) {
+		/*original
 		String[] arr5 = {"gtir" , "gtri" , "gtrr" , "eqir" , "eqri" , "eqrr"};
 		String[] arr6 = {"gtir", "gtri" ,"gtrr"}; 
 		String[] arr7 = {"gtir" , "eqrr"};
 		String[] arr9 = {"gtir" ,"eqir", "gtrr", "eqri"};
 		String[] arr12 = {"gtrr", "eqir" ,"eqri" ,"eqrr"};
 		String[] arr15 = {"gtir" ,"gtrr", "eqri", "eqrr"};
+		*/
+		String[] arr5 = {"gtir" , "gtri" , "gtrr" , "eqir" , "eqri" , "eqrr"};
+		String[] arr6 = {"gtir", "gtri" ,"gtrr"}; 
+		String[] arr7 = {"gtir" , "eqrr"};
+		String[] arr9 = {"gtir" ,"eqir", "gtrr", "eqri"};
+		String[] arr12 = {"gtrr", "eqir" ,"eqri" ,"eqrr"};
+		String[] arr15 = {"gtir" ,"gtrr", "eqri", "eqrr"};
+		
 
 		for (int i=0; i < arr5.length; i++) {
 			String s1 = arr5[i];

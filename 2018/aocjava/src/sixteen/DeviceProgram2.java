@@ -6,17 +6,21 @@ package sixteen;
 2:  bori*
 3:  setr*
 4:  addi*
-5:  (gtir gtri gtrr eqir eqri eqrr) 
-6:  (gtir gtri gtrr)
-7:  (gtir eqrr)
+5:  (eqir eqri eqrr gtir gtri gtrr)
+6:  (               gtir gtri gtrr)
+7:  (          eqrr gtir          )
 8:  borr*
-9:  (gtir eqir gtrr eqri ) 
+9:  (eqir eqri      gtir      gtrr) 
 10: bani*
 11: addr*
-12: (gtrr eqir eqri eqrr)
+12: (eqir eqri eqrr           gtrr)
 13: mulr*
 14: seti*
-15: (gtir gtrr eqri eqrr)
+15: (     eqri eqrr gtir      gtrr)
+
+//looked at 5/12/15 WRONG
+//          5/9/15 WRONG
+//          5/9/12 ?
  */
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -241,7 +245,7 @@ public class DeviceProgram2 {
 			hmCounts.put(op, hmCounts.get(op)+1); temp_count++;
 		}
 
-		if (op.startsWith("|6|")) {
+		if (op.startsWith("|15|")) {
 		
 			System.out.println(op + ":  " + sOp);
 		}

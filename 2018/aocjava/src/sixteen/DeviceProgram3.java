@@ -6,17 +6,17 @@ package sixteen;
 2:  bori*
 3:  setr*
 4:  addi*
-5:  (gtir gtri gtrr eqir eqri eqrr) 
-6:  (gtir gtri gtrr)
-7:  (gtir eqrr)
+5:  (eqri eqrr gtrr) 
+6:  gtri*
+7:  gtir*
 8:  borr*
-9:  (gtir eqir gtrr eqri ) 
+9:  eqir*
 10: bani*
 11: addr*
-12: (gtrr eqir eqri eqrr)
+12: (eqri eqrr gtrr)
 13: mulr*
 14: seti*
-15: (gtir gtrr eqri eqrr)
+15: (eqri eqrr gtrr)
  */
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-//WRONG: 365, 390
+//WRONG: 365, 390, 353 (too low), 362, 354, 372, 364
 //CORRECT: 
 public class DeviceProgram3 {
 
@@ -80,20 +80,24 @@ public class DeviceProgram3 {
 			d.addi(A, B, C);
 			break;
 		case 5:
-			d.gtrr(A, B, C);//?
+			d.gtir(A, B, C);//gtrr eqri
+			break;		
+		case 9:
+			d.eqri(A, B, C);
 			break;
+		case 15:
+			d.gtrr(A, B, C);//eqrr eqri eqrr
+			break;				
 		case 6:
-			d.gtri(A, B, C);//?
+			d.gtri(A, B, C);
 			break;
 		case 7:
-			d.gtir(A, B, C);//?
+			d.eqrr(A, B, C);
 			break;
 		case 8:
 			d.borr(A, B, C);
 			break;
-		case 9:
-			d.eqri(A, B, C);//?
-			break;
+
 		case 10:
 			d.bani(A, B, C);
 			break;
@@ -101,17 +105,15 @@ public class DeviceProgram3 {
 			d.addr(A, B, C);
 			break;
 		case 12:
-			d.eqir(A, B, C);//?
-			break;
+			d.eqir(A, B, C);//eqri eqrr gtrr
+			break;		
 		case 13:
 			d.mulr(A, B, C);
 			break;
 		case 14:
 			d.seti(A, B, C);
 			break;
-		case 15:
-			d.eqrr(A, B, C);//?
-			break;
+		
 		default:
 			System.err.println("ERROR INSTRUCTION: " + i0);
 		}
