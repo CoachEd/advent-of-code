@@ -14,8 +14,8 @@ public class GoblinBattle {
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	//static String fname = "/Users/ertorres/github/advent-of-code/2018/aocjava/src/fifteen/goblin3.txt"; //WORKS
-	static String fname = "/Users/ertorres/github/advent-of-code/2018/aocjava/src/fifteen/goblinfinal.txt"; //runtime exception error
+	//static String fname = ""files/goblin3.txt"; //WORKS
+	static String fname = "files/goblinfinal.txt"; //runtime exception error
 	static int maxrows = 0;
 	static int maxcols = 0;
 	static char[][] themap;
