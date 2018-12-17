@@ -1,22 +1,22 @@
 package sixteen;
 /*
 //ORIGINAL
-0:  banr
-1:  muli
-2:  bori
-3:  setr 
-4:  addi
-5:  eqir eqri eqrr gtir gtri gtrr  
-6:  gtir gtri gtrr
-7:  eqrr gtir 
-8:  borr
-9:  eqir eqri gtir gtrr 
-10: bani
-11: addr 
-12: eqir eqri eqrr gtrr 
-13: mulr
-14: seti
-15: eqri eqrr gtir gtrr
+0:  banr*
+1:  muli*
+2:  bori*
+3:  setr*
+4:  addi*
+5:  (gtir gtri gtrr eqir eqri eqrr) 
+6:  (gtir gtri gtrr)
+7:  (gtir eqrr)
+8:  borr*
+9:  (gtir eqir gtrr eqri ) 
+10: bani*
+11: addr*
+12: (gtrr eqir eqri eqrr)
+13: mulr*
+14: seti*
+15: (gtir gtrr eqri eqrr)
  */
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
