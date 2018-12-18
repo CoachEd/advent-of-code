@@ -14,8 +14,8 @@ public class GoblinBattle {
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	//static String fname = ""files/goblin3.txt"; //WORKS
-	static String fname = "files/goblinfinal.txt"; //runtime exception error
+	static String fname = "files/goblin3.txt"; //need to debug this now that logic is fixed
+	//static String fname = "files/goblinfinal.txt";
 	static int maxrows = 0;
 	static int maxcols = 0;
 	static char[][] themap;
@@ -203,30 +203,34 @@ public class GoblinBattle {
 		HashMap<String,Node> nodes = new HashMap<String,Node>();
 
 		//add the src and dst nodes
-
-		nodes.put(r1+""+c1,new Node(0,r1,c1));
-		//System.out.println("Node added: " + r1 +"," + c1);
-		nodes.put(r2+""+c2,new Node(1,r2,c2));
-		//System.out.println("Node added: " + r2 +"," + c2);
-
+		Node n0 =  new Node(0,r1,c1);
+		nodes.put(r1+"|"+c1,n0);
+		//System.out.println("Node added " + n0.id +": " + n0.row +"," + n0.col);
+		Node n1 =  new Node(1,r2,c2);
+		nodes.put(r2+"|"+c2,n1);
+		//System.out.println("Node added " + n1.id +": " + n1.row +"," + n1.col);
 		//add the space nodes
 		int idcounter = 2;
+
 		for (int r=0; r < maxrows; r++) {
 			for (int c=0; c < maxcols; c++) {
 
-				if (r == r1 && c == c1)
+				if (r == r1 && c == c1) {
+					//System.out.println("Not adding: " + r + "," + c);
 					continue;
-				if (r == r2 && c == c2)
-					continue;				
+				}
+				if (r == r2 && c == c2) {
+					//System.out.println("Not adding: " + r + "," + c);
+					continue;			
+				}
 
 				if (themap[r][c] == SPACE) {
 					Node n = new Node(idcounter,r,c);
 					idcounter++;
 					//System.out.println("Nodes added: " + r + "," + c);
-					nodes.put(n.row+""+n.col,n);
+					nodes.put(n.row+"|"+n.col,n);
+					//System.out.println("Node added " + n.id +": " + n.row +"," + n.col + "   " + nodes.size());
 				}
-
-
 			}	
 		}
 		//System.out.println("*** nodes.size(): " + nodes.size());
@@ -239,7 +243,7 @@ public class GoblinBattle {
 			int upc = curr.col;
 			if (validNode(upr, upc, r2, c2)) {
 				if (nodes.containsKey(upr+""+upc)) {
-					Node tempnode = nodes.get(upr+""+upc);
+					Node tempnode = nodes.get(upr+"|"+upc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -253,7 +257,7 @@ public class GoblinBattle {
 			int downc = curr.col;
 			if (validNode(downr, downc, r2, c2)) {
 				if (nodes.containsKey(downr+""+downc)) {
-					Node tempnode = nodes.get(downr+""+downc);
+					Node tempnode = nodes.get(downr+"|"+downc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -267,7 +271,7 @@ public class GoblinBattle {
 			int leftc = curr.col-1;
 			if (validNode(leftr, leftc, r2, c2)) {
 				if (nodes.containsKey(leftr+""+leftc)) {
-					Node tempnode = nodes.get(leftr+""+leftc);
+					Node tempnode = nodes.get(leftr+"|"+leftc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -281,7 +285,7 @@ public class GoblinBattle {
 			int rightc = curr.col+1;
 			if (validNode(rightr, rightc, r2, c2)) {
 				if (nodes.containsKey(rightr+""+rightc)) {
-					Node tempnode = nodes.get(rightr+""+rightc);
+					Node tempnode = nodes.get(rightr+"|"+rightc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -314,8 +318,8 @@ public class GoblinBattle {
 			g.addEdge(e.from, e.to);
 		}
 
-		int srcId = nodes.get(r1+""+c1).id;
-		int dstId = nodes.get(r2+""+c2).id;
+		int srcId = nodes.get(r1+"|"+c1).id;
+		int dstId = nodes.get(r2+"|"+c2).id;
 		//System.out.println("Finding path from " + srcId + " -> " + dstId);
 		paths = g.printAllPaths(srcId,dstId);
 
@@ -335,9 +339,9 @@ public class GoblinBattle {
 
 		//add the src and dst nodes
 
-		nodes.put(r1+""+c1,new Node(0,r1,c1));
+		nodes.put(r1+"|"+c1,new Node(0,r1,c1));
 		//System.out.println("Node added: " + r1 +"," + c1);
-		nodes.put(r2+""+c2,new Node(1,r2,c2));
+		nodes.put(r2+"|"+c2,new Node(1,r2,c2));
 		//System.out.println("Node added: " + r2 +"," + c2);
 
 		//add the space nodes
@@ -354,7 +358,7 @@ public class GoblinBattle {
 					Node n = new Node(idcounter, r,c);
 					idcounter++;
 					//System.out.println("Nodes added: " + r + "," + c);
-					nodes.put(n.row+""+n.col,n);
+					nodes.put(n.row+"|"+n.col,n);
 				}
 
 
@@ -370,7 +374,7 @@ public class GoblinBattle {
 			int upc = curr.col;
 			if (validNode(upr, upc, r2, c2)) {
 				if (nodes.containsKey(upr+""+upc)) {
-					Node tempnode = nodes.get(upr+""+upc);
+					Node tempnode = nodes.get(upr+"|"+upc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -384,7 +388,7 @@ public class GoblinBattle {
 			int downc = curr.col;
 			if (validNode(downr, downc, r2, c2)) {
 				if (nodes.containsKey(downr+""+downc)) {
-					Node tempnode = nodes.get(downr+""+downc);
+					Node tempnode = nodes.get(downr+"|"+downc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -398,7 +402,7 @@ public class GoblinBattle {
 			int leftc = curr.col-1;
 			if (validNode(leftr, leftc, r2, c2)) {
 				if (nodes.containsKey(leftr+""+leftc)) {
-					Node tempnode = nodes.get(leftr+""+leftc);
+					Node tempnode = nodes.get(leftr+"|"+leftc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -412,7 +416,7 @@ public class GoblinBattle {
 			int rightc = curr.col+1;
 			if (validNode(rightr, rightc, r2, c2)) {
 				if (nodes.containsKey(rightr+""+rightc)) {
-					Node tempnode = nodes.get(rightr+""+rightc);
+					Node tempnode = nodes.get(rightr+"|"+rightc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
 						edges.add(e);
@@ -442,8 +446,8 @@ public class GoblinBattle {
 			g.addEdge(e.from, e.to);
 		}
 
-		int srcId = nodes.get(r1+""+c1).id;
-		int dstId = nodes.get(r2+""+c2).id;
+		int srcId = nodes.get(r1+"|"+c1).id;
+		int dstId = nodes.get(r2+"|"+c2).id;
 		int smallest_path = g.smallestPath(srcId,dstId);
 
 		return smallest_path;
