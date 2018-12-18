@@ -17,16 +17,17 @@ import utils.Vertex;
 /*INCORRECT:
 247500 (too high)
 245000 (too low)
+243664 (wrong)
 
-*/
+ */
 public class GoblinBattle {
 
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	static String fname = "files/goblin8.txt"; //NOT WORKING (goblin4 - goblin9 are the combat test data)
+	static String fname = "files/goblin5.txt"; //ERROR, 1 less round in count! goblin8.txt NOT WORKING (goblin4 - goblin9 are the combat test data)
 	//static String fname = "files/goblinfinal.txt"; //ERROR; expect 28944
-	
+
 	/*goblin8.txt
 #######       #######   
 #.E...#       #.....#   
@@ -40,7 +41,7 @@ Combat ends after 54 full rounds
 Goblins win with 536 total hit points left
 Outcome: 54 * 536 = 28944
 	 */
-	
+
 	//static String fname = "files/goblinfinal.txt";
 	static int maxrows = 0;
 	static int maxcols = 0;
@@ -81,18 +82,29 @@ Outcome: 54 * 536 = 28944
 		}
 
 		//now process all players
+		//count how many alive
+		int alive = 0;
+		for (Player p : players) {
+			if (p.alive) alive++;
+		}
+		int processed = 0;
 		for (int i=0; i < players.size(); i++) {
 			//System.out.println("moving " + players.get(i).c + ": " + players.get(i).row + "," + players.get(i).col);
-			movePlayer(players.get(i));
-			playerAttack(players.get(i));
+			Player p = players.get(i);
+			if (p.alive) { 
+				processed++;
+				movePlayer(p);
+				playerAttack(p);
+			}
 			if (done)
 				break;
 		} //end players for loop
 
-		if (!done) {
+		if (processed == alive) {
 			t++; //only increment if round completed
 			round++; //only increment if round completed
 		}
+
 		return(sout);
 	} //end tick
 
@@ -166,6 +178,7 @@ Outcome: 54 * 536 = 28944
 		//loop through players
 		for (int i=0; i < players.size(); i++) {
 			Player p = players.get(i);
+			if (!p.alive) continue; 
 			if (p.c == targetchar) {
 				getAdjacent(p,ts); //adds open spaces adjacent to p
 			}
@@ -685,6 +698,7 @@ Outcome: 54 * 536 = 28944
 		//loop through the players list and find the targets, then get their open steps
 		ArrayList<Player> targets = new ArrayList<Player>();
 		for (Player p : players) {
+			if (!p.alive) continue; 
 			if (p.c == thetarget) {
 				targets.add(p);
 			}
@@ -741,7 +755,7 @@ Outcome: 54 * 536 = 28944
 			//none reachable
 			return themove;
 		}
-		
+
 		//if more than one nearest, pick one that is first in reading order
 		int row=maxrows-1; int col=maxcols-1;
 		for (Coord c2 : nearest) {
@@ -800,6 +814,7 @@ Outcome: 54 * 536 = 28944
 		for (int i=0; i < players.size(); i++) {
 			//enemy?
 			Player e = players.get(i);
+			if (!e.alive) continue; 
 			if (e.c != enemy)
 				continue;
 			int tr = e.row;
@@ -847,18 +862,19 @@ Outcome: 54 * 536 = 28944
 
 		//attack enemyToAttack
 		enemyToAttack.hp = enemyToAttack.hp - p.ap;
-		
 		if (enemyToAttack.hp <= 0) {
 			themap[enemyToAttack.row][enemyToAttack.col] = SPACE;
 			//System.out.println("Removing... Player " + enemyToAttack.c + " " + enemyToAttack.row + "," + enemyToAttack.col);
 			//System.out.print("players.size() before: " + players.size());
-			players.remove(enemyToAttack);
+			enemyToAttack.alive = false;
+			//players.remove(enemyToAttack);
 			//System.out.println("   after: " + players.size());
 		}
-		
+
 		//any targets left at all?
 		int count_enemies = 0;
 		for (Player p1 : players) {
+			if (!p1.alive) continue; 
 			if (p1.c == enemy)
 				count_enemies++;
 		}
@@ -867,7 +883,7 @@ Outcome: 54 * 536 = 28944
 			done = true;
 			return; //game over
 		}
-		
+
 	}
 
 	public void movePlayer(Player p) {
@@ -1009,7 +1025,7 @@ Outcome: 54 * 536 = 28944
 		//TESTER
 		GoblinBattle gb = new GoblinBattle();
 		printMap(); //t0
-		
+
 		while (!done) {
 			gb.tick();
 			printMap(); //t1
@@ -1017,8 +1033,10 @@ Outcome: 54 * 536 = 28944
 		System.out.println("rounds completed: " + round);
 		int total_hp = 0;
 		for (Player p : players) {
-			System.out.println(p.c + ": " + p.hp);
-			total_hp += p.hp;
+			if (p.alive) {
+				System.out.println(p.c + ": " + p.hp);
+				total_hp += p.hp;
+			}
 		}
 		System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
 
