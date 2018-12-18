@@ -6,16 +6,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import utils.Dijkstra;
+import utils.Edge1;
+import utils.Vertex;
+
+/*INCORRECT:
+247500 (too high)
+
+*/
 public class GoblinBattle {
 
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	static String fname = "files/goblin3.txt"; //working, need to make it more efficient; see where the slowdowns are
-	//static String fname = "files/goblinfinal.txt"; //TOO SLOW
+	//static String fname = "files/goblin8.txt"; //NOT WORKING (goblin4 - goblin9 are the combat test data)
+	static String fname = "files/goblin8.txt"; //ERROR; expect 28944
+	
+	//static String fname = "files/goblinfinal.txt";
 	static int maxrows = 0;
 	static int maxcols = 0;
 	static char[][] themap;
@@ -31,6 +42,8 @@ public class GoblinBattle {
 	static final int RIGHT = 3;
 	static int alive_goblins = 0;
 	static int alive_elves = 0;
+	static int round = 0;
+	static boolean done = false;
 
 	public String tick() {
 		String sout = "";
@@ -56,9 +69,15 @@ public class GoblinBattle {
 		for (int i=0; i < players.size(); i++) {
 			//System.out.println("moving " + players.get(i).c + ": " + players.get(i).row + "," + players.get(i).col);
 			movePlayer(players.get(i));
+			playerAttack(players.get(i));
+			if (done)
+				break;
 		} //end players for loop
 
-		t++;
+		if (!done) {
+			t++; //only increment if round completed
+			round++; //only increment if round completed
+		}
 		return(sout);
 	} //end tick
 
@@ -189,7 +208,127 @@ public class GoblinBattle {
 		if (themap[row][col] != SPACE && (row !=targetrow && col != targetcol))
 			return false;
 		return true;
-	}	
+	}
+
+	//will replace static ArrayList< ArrayList<Integer>> getPaths(int r1, int c1, int r2, int c2) 
+	static int getSmallestPath(int r1, int c1, int r2, int c2) {
+		//System.out.println("entered getSmallestPath() " + r1+","+c1 + "    " + r2+","+c2);
+		if (themap[r1][c1] == WALL || themap[r2][c2] == WALL)
+			return 0; //size 0
+
+		HashMap<String,Vertex> nodes = new HashMap<String,Vertex>();
+
+		//add the src node
+		Vertex srcNode = new Vertex(r1+","+c1,r1,c1);
+		nodes.put(srcNode.name,srcNode);
+
+		//add the src node
+		Vertex dstNode = new Vertex(r2+","+c2,r2,c2);
+		nodes.put(dstNode.name,dstNode);
+
+		for (int r=0; r < maxrows; r++) {
+			for (int c=0; c < maxcols; c++) {
+				if (r == r1 && c == c1)
+					continue;
+				if (r == r2 && c == c2) 
+					continue;			
+				if (themap[r][c] == SPACE) {
+					Vertex v = new Vertex(r+","+c,r,c);
+					nodes.put(v.name,v);
+				}
+			}	
+		}
+
+		TreeSet<String> edgesSeen = new TreeSet<String>(); //e.g. 1,9->3,4
+		for(Map.Entry<String, Vertex> entry : nodes.entrySet()) {
+			Vertex curr = entry.getValue();
+
+			int upr = curr.row-1;
+			int upc = curr.col;
+			if (validNode(upr, upc, r2, c2)) {
+				if (nodes.containsKey(upr+","+upc)) {
+					Vertex tempnode = nodes.get(upr+","+upc);
+					String sEdge = curr.name + "->" + tempnode.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						curr.adjacencies.add(new Edge1(tempnode,1));
+					}
+					sEdge = tempnode.name + "->" + curr.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						tempnode.adjacencies.add(new Edge1(curr,1));
+					}					
+				}
+			}
+
+			int downr = curr.row+1;
+			int downc = curr.col;
+			if (validNode(downr, downc, r2, c2)) {
+				if (nodes.containsKey(downr+","+downc)) {
+					Vertex tempnode = nodes.get(downr+","+downc);
+					String sEdge = curr.name + "->" + tempnode.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						curr.adjacencies.add(new Edge1(tempnode,1));
+					}
+					sEdge = tempnode.name + "->" + curr.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						tempnode.adjacencies.add(new Edge1(curr,1));
+					}					
+				}
+			}
+
+			int leftr = curr.row;
+			int leftc = curr.col-1;
+			if (validNode(leftr, leftc, r2, c2)) {
+				if (nodes.containsKey(leftr+","+leftc)) {
+					Vertex tempnode = nodes.get(leftr+","+leftc);
+					String sEdge = curr.name + "->" + tempnode.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						curr.adjacencies.add(new Edge1(tempnode,1));
+					}
+					sEdge = tempnode.name + "->" + curr.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						tempnode.adjacencies.add(new Edge1(curr,1));
+					}					
+				}
+			}
+
+			int rightr = curr.row;
+			int rightc = curr.col+1;
+			if (validNode(rightr, rightc, r2, c2)) {
+				if (nodes.containsKey(rightr+","+rightc)) {
+					Vertex tempnode = nodes.get(rightr+","+rightc);
+					String sEdge = curr.name + "->" + tempnode.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						curr.adjacencies.add(new Edge1(tempnode,1));
+					}
+					sEdge = tempnode.name + "->" + curr.name;
+					if (!edgesSeen.contains(sEdge)) {
+						edgesSeen.add(sEdge);
+						tempnode.adjacencies.add(new Edge1(curr,1));
+					}					
+				}
+			}
+
+		}
+
+		//vertices and edges added
+		Dijkstra.computePaths(srcNode); // run Dijkstra
+		List<Vertex> path = Dijkstra.getShortestPathTo(dstNode); //no path is list of size 1 (itself)
+		//System.out.println("Path: " + path + "   size: " + path.size());
+
+		//System.out.println("ended getSmallestPath() " + r1+","+c1 + "    " + r2+","+c2);
+
+		if (path.size() == 1)
+			return 0;
+		else
+			return path.size();
+	} 
 
 	static ArrayList< ArrayList<Integer>> getPaths(int r1, int c1, int r2, int c2) 
 	{
@@ -297,7 +436,7 @@ public class GoblinBattle {
 
 		}
 
-		
+
 		/*
 		System.out.println("Nodes:");
 		for(Map.Entry<String, Node> entry : nodes.entrySet()) {
@@ -567,37 +706,27 @@ public class GoblinBattle {
 			//no spaces in range of target, don't move
 			return themove;
 		}
-		
-		
+
 		//of the inRange spaces, which are reachable?
 		int smallest_path = 0x7fffffff;
 		for (Coord c2 : inRange) {
-			ArrayList< ArrayList<Integer>> paths = getPaths(r,c,c2.row,c2.col);
-			if (paths.size() > 0) {
-				//find the smallest path from the src node to the current inRange node
-				for (ArrayList<Integer> l : paths) {
-					if (l.size() <= smallest_path) {
-						smallest_path = l.size();
-					}
-				}
-			}
+			int pathsize = getSmallestPath(r,c,c2.row,c2.col);
+			if (pathsize > 0 && pathsize < smallest_path) 
+				smallest_path = pathsize;
 		}
-
 		ArrayList<Coord> nearest = new ArrayList<Coord>();
 		for (Coord c2 : inRange) {
-			ArrayList< ArrayList<Integer>> paths = getPaths(r,c,c2.row,c2.col);
-			if (paths.size() > 0) {
-				int temp_path_size =  0x7fffffff;
-				for (ArrayList<Integer> l : paths) {
-					if (l.size() <= temp_path_size) {
-						temp_path_size = l.size();
-					}
-				}
-				if (temp_path_size <= smallest_path)
-					nearest.add(c2);
+			int pathsize = getSmallestPath(r,c,c2.row,c2.col);
+			if (pathsize > 0 && pathsize <= smallest_path) {
+				nearest.add(c2);
 			}
 		}		
 
+		if (nearest.size() == 0) {
+			//none reachable
+			return themove;
+		}
+		
 		//if more than one nearest, pick one that is first in reading order
 		int row=maxrows-1; int col=maxcols-1;
 		for (Coord c2 : nearest) {
@@ -611,8 +740,6 @@ public class GoblinBattle {
 				}
 			}
 		}
-
-
 
 		//return row, col
 		themove[0] = row;
@@ -630,16 +757,114 @@ public class GoblinBattle {
 		//TODO: If the unit is not already in range of a target, and there are no open squares 
 		//      which are in range of a target, the unit ends its move turn. attack is next		
 
-
-
-
-
 		return themove;
 	}
 
+	public void playerAttack(Player p) {
+
+		//attack with Player p
+		char enemy = 'G';
+		if (p.c == 'G')
+			enemy = 'E';
+
+		//any targets left at all?
+		int count_enemies = 0;
+		for (Player p1 : players) {
+			if (p1.c == enemy)
+				count_enemies++;
+		}
+		if (count_enemies == 0) {
+			System.out.println("****** no more enemies **********");
+			done = true;
+			return; //game over
+		}
+		
+		//any targets adjacent to me?
+		int r = p.row;
+		int c = p.col;
+		int upr = r-1;
+		int upc = c;
+		int downr = r+1;
+		int downc = c;
+		int rightr = r;
+		int rightc = c+1;
+		int leftr = r;
+		int leftc = c-1;
+
+		//loop through all enemies
+		ArrayList<Player> enemies = new ArrayList<Player>();
+		int fewesthp = 0x7fffffff;
+		for (int i=0; i < players.size(); i++) {
+			//enemy?
+			Player e = players.get(i);
+			if (e.c != enemy)
+				continue;
+			int tr = e.row;
+			int tc = e.col;
+
+			if ( (upr == tr && upc == tc) || (downr == tr && downc == tc) || (rightr == tr && rightc == tc) || (leftr == tr && leftc == tc) ) {
+				enemies.add(e);
+				if (e.hp < fewesthp)
+					fewesthp = e.hp;
+			}
+		}
+
+		if (enemies.size() == 0) {
+			return; //attack over
+		}
+
+		//how many enemies have fewest HPs?
+		ArrayList<Player> enemiesFewest = new ArrayList<Player>();
+		for (Player e : enemies) {
+			if (e.hp == fewesthp)
+				enemiesFewest.add(e);
+		}
+
+		Player enemyToAttack = null;
+		if (enemiesFewest.size() > 1) {
+			//sort enemiesFewest list in reading order
+			for (int i=0; i < enemiesFewest.size(); i++) {
+				for (int j=i+1; j < enemiesFewest.size(); j++) {
+					Player playerj = enemiesFewest.get(j);
+					Player playeri = enemiesFewest.get(i);
+					if (playerj.row < playeri.row) {
+						//swap
+						playeri.swap(playerj);
+					} else if (playerj.row == playeri.row) {
+						if (playerj.col < playeri.col) {
+							//swap
+							playeri.swap(playerj);
+						}
+					}
+				}
+			}
+		}
+
+		enemyToAttack = enemiesFewest.get(0);
+
+		//attack enemyToAttack
+		
+
+		if (enemyToAttack.c == GOBLIN) {
+			System.out.println(">>>>>>>>");
+			printMap();
+			System.out.print("t" + t+ "  "+p.c + " at "  + p.row+","+p.col + "  attacking " + " " + enemyToAttack.c + "  at " + enemyToAttack.row+","+enemyToAttack.col + " HP before: " + enemyToAttack.hp);
+			System.out.println("<<<<<<<<<");
+		}
+		
+		enemyToAttack.hp = enemyToAttack.hp - p.ap;
+		
+		if (enemyToAttack.hp <= 0) {
+			themap[enemyToAttack.row][enemyToAttack.col] = SPACE;
+			//System.out.println("Removing... Player " + enemyToAttack.c + " " + enemyToAttack.row + "," + enemyToAttack.col);
+			//System.out.print("players.size() before: " + players.size());
+			players.remove(enemyToAttack);
+			//System.out.println("   after: " + players.size());
+		}
+	}
 
 	public void movePlayer(Player p) {
-		
+
 		int startr = p.row;
 		int startc = p.col;
 
@@ -658,8 +883,6 @@ public class GoblinBattle {
 			return;
 		}
 
-
-
 		int upr = r-1;
 		int upc = c;
 		int smallest_distance =  0x7fffffff;
@@ -672,7 +895,7 @@ public class GoblinBattle {
 			if (upr==targetr && upc==targetc) {
 				steps[0] = -99;
 			} else {
-				steps[0] = getSmallestPathSize(upr,upc,targetr,targetc); 
+				steps[0] = getSmallestPath(upr,upc,targetr,targetc); 
 			}
 			if (steps[0] != 0 && steps[0] < smallest_distance) {
 				smallest_distance = steps[0];
@@ -688,7 +911,7 @@ public class GoblinBattle {
 			if (downr==targetr && downc==targetc) {
 				steps[1] = -99;
 			} else {
-				steps[1] = getSmallestPathSize(downr,downc,targetr,targetc); 
+				steps[1] = getSmallestPath(downr,downc,targetr,targetc); 
 			}
 			if (steps[1] != 0 && steps[1] < smallest_distance) {
 				smallest_distance = steps[1];
@@ -704,7 +927,7 @@ public class GoblinBattle {
 			if (rightr==targetr && rightc==targetc) {
 				steps[2] = -99;
 			} else {
-				steps[2] = getSmallestPathSize(rightr,rightc,targetr,targetc); 
+				steps[2] = getSmallestPath(rightr,rightc,targetr,targetc); 
 			}
 			if (steps[2] != 0 && steps[2] < smallest_distance) {
 				smallest_distance = steps[2];
@@ -720,7 +943,7 @@ public class GoblinBattle {
 			if (leftr==targetr && leftc==targetc) {
 				steps[3] = -99;
 			} else {
-				steps[3] = getSmallestPathSize(leftr,leftc,targetr,targetc); 
+				steps[3] = getSmallestPath(leftr,leftc,targetr,targetc); 
 			}
 			if (steps[3] != 0 && steps[3] < smallest_distance) {
 				smallest_distance = steps[3];
@@ -765,9 +988,10 @@ public class GoblinBattle {
 		//System.out.println("move to: " + finalrow +"," + finalcol);
 		themap[startr][startc] = SPACE;  //make current spot space
 		themap[finalrow][finalcol] = p.c; //move player
-		//update player's location
+		//System.out.println("moving >" + p.c + "<  from " + startr+","+startc + "   to  " + finalrow+","+finalrow);
 		p.row = finalrow;
 		p.col = finalcol;
+
 
 	}
 
@@ -775,10 +999,18 @@ public class GoblinBattle {
 		//TESTER
 		GoblinBattle gb = new GoblinBattle();
 		printMap(); //t0
-		gb.tick(); printMap(); //t1
-		gb.tick(); printMap(); //t2 - 2,4 Goblin should NOT move
-		gb.tick(); printMap(); //t3
-
+		
+		while (!done) {
+			gb.tick();
+			printMap(); //t1
+		}
+		System.out.println("rounds completed: " + round);
+		int total_hp = 0;
+		for (Player p : players) {
+			System.out.println(p.c + ": " + p.hp);
+			total_hp += p.hp;
+		}
+		System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
 
 
 	} 

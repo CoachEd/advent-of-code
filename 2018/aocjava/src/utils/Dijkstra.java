@@ -46,17 +46,17 @@ public class Dijkstra
 	public static void main(String[] args)
 	{
 		// mark all the vertices 
-		Vertex A0 = new Vertex(0);
-		Vertex A1 = new Vertex(1);
-		Vertex A2 = new Vertex(2);
-		Vertex A3 = new Vertex(3);
-		Vertex A4 = new Vertex(4);
-		Vertex A5 = new Vertex(5);
-		Vertex A6 = new Vertex(6);
-		Vertex A7 = new Vertex(7);
-		Vertex A8 = new Vertex(8);
-		Vertex A9 = new Vertex(9);
-		Vertex A10 = new Vertex(10);
+		Vertex A0 = new Vertex(0+"");
+		Vertex A1 = new Vertex(1+"");
+		Vertex A2 = new Vertex(2+"");
+		Vertex A3 = new Vertex(3+"");
+		Vertex A4 = new Vertex(4+"");
+		Vertex A5 = new Vertex(5+"");
+		Vertex A6 = new Vertex(6+"");
+		Vertex A7 = new Vertex(7+"");
+		Vertex A8 = new Vertex(8+"");
+		Vertex A9 = new Vertex(9+"");
+		Vertex A10 = new Vertex(10+"");
 
 
 		// set the edges and weight
@@ -85,7 +85,7 @@ public class Dijkstra
 
 
 		computePaths(A0); // run Dijkstra
-		List<Vertex> path = getShortestPathTo(A4); //no path is list of size 1 (itself)
-		System.out.println("Path: " + path);
+		List<Vertex> path = getShortestPathTo(A10); //no path is list of size 1 (itself)
+		System.out.println("Path: " + path + "   path.size(): " + path.size());
 	}
 }
