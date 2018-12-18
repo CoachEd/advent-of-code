@@ -14,8 +14,8 @@ public class GoblinBattle {
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	static String fname = "files/goblin3.txt"; //need to debug this now that logic is fixed
-	//static String fname = "files/goblinfinal.txt";
+	static String fname = "files/goblin3.txt"; //working, need to make it more efficient; see where the slowdowns are
+	//static String fname = "files/goblinfinal.txt"; //TOO SLOW
 	static int maxrows = 0;
 	static int maxcols = 0;
 	static char[][] themap;
@@ -242,7 +242,7 @@ public class GoblinBattle {
 			int upr = curr.row-1;
 			int upc = curr.col;
 			if (validNode(upr, upc, r2, c2)) {
-				if (nodes.containsKey(upr+""+upc)) {
+				if (nodes.containsKey(upr+"|"+upc)) {
 					Node tempnode = nodes.get(upr+"|"+upc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -256,7 +256,7 @@ public class GoblinBattle {
 			int downr = curr.row+1;
 			int downc = curr.col;
 			if (validNode(downr, downc, r2, c2)) {
-				if (nodes.containsKey(downr+""+downc)) {
+				if (nodes.containsKey(downr+"|"+downc)) {
 					Node tempnode = nodes.get(downr+"|"+downc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -270,7 +270,7 @@ public class GoblinBattle {
 			int leftr = curr.row;
 			int leftc = curr.col-1;
 			if (validNode(leftr, leftc, r2, c2)) {
-				if (nodes.containsKey(leftr+""+leftc)) {
+				if (nodes.containsKey(leftr+"|"+leftc)) {
 					Node tempnode = nodes.get(leftr+"|"+leftc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -284,7 +284,7 @@ public class GoblinBattle {
 			int rightr = curr.row;
 			int rightc = curr.col+1;
 			if (validNode(rightr, rightc, r2, c2)) {
-				if (nodes.containsKey(rightr+""+rightc)) {
+				if (nodes.containsKey(rightr+"|"+rightc)) {
 					Node tempnode = nodes.get(rightr+"|"+rightc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -373,7 +373,7 @@ public class GoblinBattle {
 			int upr = curr.row-1;
 			int upc = curr.col;
 			if (validNode(upr, upc, r2, c2)) {
-				if (nodes.containsKey(upr+""+upc)) {
+				if (nodes.containsKey(upr+"|"+upc)) {
 					Node tempnode = nodes.get(upr+"|"+upc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -387,7 +387,7 @@ public class GoblinBattle {
 			int downr = curr.row+1;
 			int downc = curr.col;
 			if (validNode(downr, downc, r2, c2)) {
-				if (nodes.containsKey(downr+""+downc)) {
+				if (nodes.containsKey(downr+"|"+downc)) {
 					Node tempnode = nodes.get(downr+"|"+downc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -401,7 +401,7 @@ public class GoblinBattle {
 			int leftr = curr.row;
 			int leftc = curr.col-1;
 			if (validNode(leftr, leftc, r2, c2)) {
-				if (nodes.containsKey(leftr+""+leftc)) {
+				if (nodes.containsKey(leftr+"|"+leftc)) {
 					Node tempnode = nodes.get(leftr+"|"+leftc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -415,7 +415,7 @@ public class GoblinBattle {
 			int rightr = curr.row;
 			int rightc = curr.col+1;
 			if (validNode(rightr, rightc, r2, c2)) {
-				if (nodes.containsKey(rightr+""+rightc)) {
+				if (nodes.containsKey(rightr+"|"+rightc)) {
 					Node tempnode = nodes.get(rightr+"|"+rightc);
 					Edge e = new Edge(curr.id,tempnode.id);
 					if (!edges.contains(e))
@@ -639,7 +639,7 @@ public class GoblinBattle {
 
 
 	public void movePlayer(Player p) {
-
+		
 		int startr = p.row;
 		int startc = p.col;
 
