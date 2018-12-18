@@ -780,11 +780,6 @@ Outcome: 54 * 536 = 28944
 		if (p.c == 'G')
 			enemy = 'E';
 
-
-		
-		
-		
-		
 		//any targets adjacent to me?
 		int r = p.row;
 		int c = p.col;
