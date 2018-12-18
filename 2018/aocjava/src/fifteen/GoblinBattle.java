@@ -25,6 +25,19 @@ public class GoblinBattle {
 	static ArrayList<Space> spaces = new ArrayList<Space>();
 	//static String fname = "files/goblin8.txt"; //NOT WORKING (goblin4 - goblin9 are the combat test data)
 	static String fname = "files/goblin8.txt"; //ERROR; expect 28944
+	/*goblin8.txt
+#######       #######   
+#.E...#       #.....#   
+#.#..G#       #.#G..#   G(200)
+#.###.#  -->  #.###.#   
+#E#G#G#       #.#.#.#   
+#...#G#       #G.G#G#   G(98), G(38), G(200)
+#######       #######   
+
+Combat ends after 54 full rounds
+Goblins win with 536 total hit points left
+Outcome: 54 * 536 = 28944
+	 */
 	
 	//static String fname = "files/goblinfinal.txt";
 	static int maxrows = 0;
@@ -767,17 +780,10 @@ public class GoblinBattle {
 		if (p.c == 'G')
 			enemy = 'E';
 
-		//any targets left at all?
-		int count_enemies = 0;
-		for (Player p1 : players) {
-			if (p1.c == enemy)
-				count_enemies++;
-		}
-		if (count_enemies == 0) {
-			System.out.println("****** no more enemies **********");
-			done = true;
-			return; //game over
-		}
+
+		
+		
+		
 		
 		//any targets adjacent to me?
 		int r = p.row;
@@ -848,7 +854,7 @@ public class GoblinBattle {
 		if (enemyToAttack.c == GOBLIN) {
 			System.out.println(">>>>>>>>");
 			printMap();
-			System.out.print("t" + t+ "  "+p.c + " at "  + p.row+","+p.col + "  attacking " + " " + enemyToAttack.c + "  at " + enemyToAttack.row+","+enemyToAttack.col + " HP before: " + enemyToAttack.hp);
+			System.out.print("t" + t+ "  "+p.c + " at "  + p.row+","+p.col + "HP(" + p.hp +")  attacking " + " " + enemyToAttack.c + "  at " + enemyToAttack.row+","+enemyToAttack.col + " HP before: " + enemyToAttack.hp);
 			System.out.println("<<<<<<<<<");
 		}
 		
@@ -861,6 +867,19 @@ public class GoblinBattle {
 			players.remove(enemyToAttack);
 			//System.out.println("   after: " + players.size());
 		}
+		
+		//any targets left at all?
+		int count_enemies = 0;
+		for (Player p1 : players) {
+			if (p1.c == enemy)
+				count_enemies++;
+		}
+		if (count_enemies == 0) {
+			System.out.println("****** no more enemies **********");
+			done = true;
+			return; //game over
+		}
+		
 	}
 
 	public void movePlayer(Player p) {
