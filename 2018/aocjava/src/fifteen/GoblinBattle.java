@@ -100,6 +100,7 @@ Outcome: 54 * 536 = 28944
 				break;
 		} //end players for loop
 
+		//TODO: Before the 48th round can finish, the top-left Goblin finds that there are no targets remaining
 		if (processed == alive) {
 			t++; //only increment if round completed
 			round++; //only increment if round completed
