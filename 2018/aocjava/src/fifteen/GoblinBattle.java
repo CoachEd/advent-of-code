@@ -16,6 +16,7 @@ import utils.Vertex;
 
 /*INCORRECT:
 247500 (too high)
+245000 (too low)
 
 */
 public class GoblinBattle {
@@ -23,8 +24,9 @@ public class GoblinBattle {
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
 	static ArrayList<Space> spaces = new ArrayList<Space>();
-	//static String fname = "files/goblin8.txt"; //NOT WORKING (goblin4 - goblin9 are the combat test data)
-	static String fname = "files/goblin8.txt"; //ERROR; expect 28944
+	static String fname = "files/goblin8.txt"; //NOT WORKING (goblin4 - goblin9 are the combat test data)
+	//static String fname = "files/goblinfinal.txt"; //ERROR; expect 28944
+	
 	/*goblin8.txt
 #######       #######   
 #.E...#       #.....#   
@@ -844,15 +846,6 @@ Outcome: 54 * 536 = 28944
 		enemyToAttack = enemiesFewest.get(0);
 
 		//attack enemyToAttack
-		
-
-		if (enemyToAttack.c == GOBLIN) {
-			System.out.println(">>>>>>>>");
-			printMap();
-			System.out.print("t" + t+ "  "+p.c + " at "  + p.row+","+p.col + "HP(" + p.hp +")  attacking " + " " + enemyToAttack.c + "  at " + enemyToAttack.row+","+enemyToAttack.col + " HP before: " + enemyToAttack.hp);
-			System.out.println("<<<<<<<<<");
-		}
-		
 		enemyToAttack.hp = enemyToAttack.hp - p.ap;
 		
 		if (enemyToAttack.hp <= 0) {
@@ -879,6 +872,9 @@ Outcome: 54 * 536 = 28944
 
 	public void movePlayer(Player p) {
 
+		if (t == 1 && p.c == ELF) {
+			printMap();
+		}
 		int startr = p.row;
 		int startc = p.col;
 
