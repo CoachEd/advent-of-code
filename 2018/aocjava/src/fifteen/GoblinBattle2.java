@@ -15,12 +15,10 @@ import utils.Edge1;
 import utils.Vertex;
 
 /*INCORRECT:
-247500 (too high)
-245000 (too low)
-243664 (wrong)
+131310 (too high)
 
  */
-public class GoblinBattle {
+public class GoblinBattle2 {
 
 	static ArrayList<Player> players = new ArrayList<Player>();
 	static ArrayList<Wall> walls = new ArrayList<Wall>();
@@ -60,6 +58,7 @@ Outcome: 54 * 536 = 28944
 	static int alive_elves = 0;
 	static int round = 0;
 	static boolean done = false;
+	static int elfdeaths = 0;
 
 	public String tick() {
 		String sout = "";
@@ -121,7 +120,7 @@ Outcome: 54 * 536 = 28944
 		System.out.println("t="+ t + "\n" + sout);
 	}
 
-	public GoblinBattle() {
+	public GoblinBattle2(int ap) {
 		ArrayList<String> al = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
 			String line;
@@ -151,6 +150,8 @@ Outcome: 54 * 536 = 28944
 				for (int c = 0; c < themap[r].length; c++) {
 					if (playerchars.indexOf(themap[r][c] + "") != -1) {
 						Player p = new Player(themap[r][c], r,c);
+						if (p.c == ELF)
+							p.setAp(ap);
 						players.add(p);
 					} else if (themap[r][c] == WALL) {
 						Wall w = new Wall(r,c);
@@ -869,6 +870,8 @@ Outcome: 54 * 536 = 28944
 			//System.out.println("Removing... Player " + enemyToAttack.c + " " + enemyToAttack.row + "," + enemyToAttack.col);
 			//System.out.print("players.size() before: " + players.size());
 			enemyToAttack.alive = false;
+			if (enemyToAttack.c == ELF)
+				elfdeaths++;
 			//players.remove(enemyToAttack);
 			//System.out.println("   after: " + players.size());
 		}
@@ -892,7 +895,7 @@ Outcome: 54 * 536 = 28944
 			done = true;
 			return; //game over
 		}
-		
+
 		int startr = p.row;
 		int startc = p.col;
 
@@ -1025,23 +1028,29 @@ Outcome: 54 * 536 = 28944
 
 	public static void main(String[] args) {
 		//TESTER
-		GoblinBattle gb = new GoblinBattle();
-		printMap(); //t0
 
+		boolean done = false;
+
+		int ap = 4;
 		while (!done) {
-			gb.tick();
-			printMap(); //t1
-		}
-		System.out.println("rounds completed: " + round);
-		int total_hp = 0;
-		for (Player p : players) {
-			if (p.alive) {
-				System.out.println(p.c + ": " + p.hp);
-				total_hp += p.hp;
+			elfdeaths = 0;
+			GoblinBattle2 gb = new GoblinBattle2(ap);
+			while (!done) {
+				gb.tick();
+				if (elfdeaths > 0)
+					break;
+				//printMap(); //t1
 			}
+			int total_hp = 0;
+			for (Player p : players) {
+				if (p.alive) {
+					//System.out.println(p.c + ": " + p.hp);
+					total_hp += p.hp;
+				}
+			}
+			System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
+			ap = ap + 1;
 		}
-		System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
-
 
 	} 
 

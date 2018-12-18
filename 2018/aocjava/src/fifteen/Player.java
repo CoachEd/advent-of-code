@@ -19,6 +19,10 @@ public class Player {
 		alive = true;
 	}
 	
+	public void setAp(int ap) {
+		this.ap = ap;
+	}
+
 	public void swap(Player p) {
 		char tc = p.c;
 		int trow = p.row;
