@@ -46,8 +46,7 @@ public class Graph {
 	public void addEdge(int u, int v) 
 	{ 
 		// Add v to u's list. 
-		//System.out.println(adjList.length);
-		//System.out.println(adjList.length);
+		//System.out.println(adjList.length + " :  u" + u);
 		adjList[u].add(v);  
 	} 
 

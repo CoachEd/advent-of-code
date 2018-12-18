@@ -203,14 +203,14 @@ public class GoblinBattle {
 		HashMap<String,Node> nodes = new HashMap<String,Node>();
 
 		//add the src and dst nodes
-		Node.idcounter = 0; //reset the counter when creating the graph
 
-		nodes.put(r1+""+c1,new Node(r1,c1));
+		nodes.put(r1+""+c1,new Node(0,r1,c1));
 		//System.out.println("Node added: " + r1 +"," + c1);
-		nodes.put(r2+""+c2,new Node(r2,c2));
+		nodes.put(r2+""+c2,new Node(1,r2,c2));
 		//System.out.println("Node added: " + r2 +"," + c2);
 
 		//add the space nodes
+		int idcounter = 2;
 		for (int r=0; r < maxrows; r++) {
 			for (int c=0; c < maxcols; c++) {
 
@@ -220,7 +220,8 @@ public class GoblinBattle {
 					continue;				
 
 				if (themap[r][c] == SPACE) {
-					Node n = new Node(r,c);
+					Node n = new Node(idcounter,r,c);
+					idcounter++;
 					//System.out.println("Nodes added: " + r + "," + c);
 					nodes.put(n.row+""+n.col,n);
 				}
@@ -228,7 +229,7 @@ public class GoblinBattle {
 
 			}	
 		}
-
+		//System.out.println("*** nodes.size(): " + nodes.size());
 		//for each node, add its surrounding edges
 		TreeSet<Edge> edges = new TreeSet<Edge>();
 		for(Map.Entry<String, Node> entry : nodes.entrySet()) {
@@ -292,16 +293,18 @@ public class GoblinBattle {
 
 		}
 
+		
 		/*
 		System.out.println("Nodes:");
 		for(Map.Entry<String, Node> entry : nodes.entrySet()) {
 			Node n = entry.getValue();
 			System.out.println(n.id + ": " + n.row + "," + n.col);
 		}
+		System.out.println("*** nodes.size(): " + nodes.size());
 		 */
 
 		//create the graph to determine if there is a path
-		Graph g = new Graph(nodes.size()); //nodes are the spaces + the src and dst
+		Graph g = new Graph(nodes.size()+2); //nodes are the spaces + the src and dst
 		//System.out.println("new graph size: " + nodes.size());
 		//System.out.println(r1+"," + c1 + "  -> " + r2+"," + c2);
 
@@ -331,14 +334,14 @@ public class GoblinBattle {
 		HashMap<String,Node> nodes = new HashMap<String,Node>();
 
 		//add the src and dst nodes
-		Node.idcounter = 0; //reset the counter when creating the graph
 
-		nodes.put(r1+""+c1,new Node(r1,c1));
+		nodes.put(r1+""+c1,new Node(0,r1,c1));
 		//System.out.println("Node added: " + r1 +"," + c1);
-		nodes.put(r2+""+c2,new Node(r2,c2));
+		nodes.put(r2+""+c2,new Node(1,r2,c2));
 		//System.out.println("Node added: " + r2 +"," + c2);
 
 		//add the space nodes
+		int idcounter = 2;
 		for (int r=0; r < maxrows; r++) {
 			for (int c=0; c < maxcols; c++) {
 
@@ -348,7 +351,8 @@ public class GoblinBattle {
 					continue;
 
 				if (themap[r][c] == SPACE) {
-					Node n = new Node(r,c);
+					Node n = new Node(idcounter, r,c);
+					idcounter++;
 					//System.out.println("Nodes added: " + r + "," + c);
 					nodes.put(n.row+""+n.col,n);
 				}
@@ -769,7 +773,7 @@ public class GoblinBattle {
 		printMap(); //t0
 		gb.tick(); printMap(); //t1
 		gb.tick(); printMap(); //t2 - 2,4 Goblin should NOT move
-		gb.tick(); printMap(); //t2 - 2,4 Goblin should NOT move
+		gb.tick(); printMap(); //t3
 
 
 
