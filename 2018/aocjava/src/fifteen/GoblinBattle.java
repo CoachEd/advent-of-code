@@ -93,14 +93,15 @@ Outcome: 54 * 536 = 28944
 			Player p = players.get(i);
 			if (p.alive) { 
 				processed++;
-				movePlayer(p);
-				playerAttack(p);
+				if (!done)
+					movePlayer(p);
+				if (!done)
+					playerAttack(p);
 			}
 			if (done)
 				break;
 		} //end players for loop
 
-		//TODO: Before the 48th round can finish, the top-left Goblin finds that there are no targets remaining
 		if (processed == alive) {
 			t++; //only increment if round completed
 			round++; //only increment if round completed
@@ -872,7 +873,14 @@ Outcome: 54 * 536 = 28944
 			//System.out.println("   after: " + players.size());
 		}
 
-		//any targets left at all?
+	}
+
+	public void movePlayer(Player p) {
+
+		//TODO:if the player finds that there are no targets remaining; immediately end the round
+		char enemy = GOBLIN;
+		if (p.c == GOBLIN)
+			enemy = ELF;
 		int count_enemies = 0;
 		for (Player p1 : players) {
 			if (!p1.alive) continue; 
@@ -880,18 +888,11 @@ Outcome: 54 * 536 = 28944
 				count_enemies++;
 		}
 		if (count_enemies == 0) {
-			System.out.println("****** no more enemies **********");
+			System.out.println("Round " + round + "   ****** no more enemies **********");
 			done = true;
 			return; //game over
 		}
-
-	}
-
-	public void movePlayer(Player p) {
-
-		if (t == 1 && p.c == ELF) {
-			printMap();
-		}
+		
 		int startr = p.row;
 		int startc = p.col;
 
