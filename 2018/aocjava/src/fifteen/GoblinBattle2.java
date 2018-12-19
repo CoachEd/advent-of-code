@@ -15,7 +15,9 @@ import utils.Edge1;
 import utils.Vertex;
 
 /*INCORRECT:
-131310 (too high)
+247500 (too high)
+245000 (too low)
+243664 (wrong)
 
  */
 public class GoblinBattle2 {
@@ -142,8 +144,6 @@ Outcome: 54 * 536 = 28944
 						alive_elves++;
 				}
 			}
-
-			//System.out.println("elves: " + alive_elves + "\ngoblins: " + alive_goblins);
 
 			//create players, walls, and spaces
 			for (int r = 0; r < themap.length; r++) {
@@ -872,6 +872,7 @@ Outcome: 54 * 536 = 28944
 			enemyToAttack.alive = false;
 			if (enemyToAttack.c == ELF)
 				elfdeaths++;
+			
 			//players.remove(enemyToAttack);
 			//System.out.println("   after: " + players.size());
 		}
@@ -895,7 +896,7 @@ Outcome: 54 * 536 = 28944
 			done = true;
 			return; //game over
 		}
-
+		
 		int startr = p.row;
 		int startc = p.col;
 
@@ -1028,29 +1029,27 @@ Outcome: 54 * 536 = 28944
 
 	public static void main(String[] args) {
 		//TESTER
+		int HP = 14; //14 is the answer
+		GoblinBattle2 gb = new GoblinBattle2(HP);
+		printMap(); //t0
 
-		boolean done = false;
-
-		int ap = 4;
 		while (!done) {
-			elfdeaths = 0;
-			GoblinBattle2 gb = new GoblinBattle2(ap);
-			while (!done) {
-				gb.tick();
-				if (elfdeaths > 0)
-					break;
-				//printMap(); //t1
-			}
-			int total_hp = 0;
-			for (Player p : players) {
-				if (p.alive) {
-					//System.out.println(p.c + ": " + p.hp);
-					total_hp += p.hp;
-				}
-			}
-			System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
-			ap = ap + 1;
+			gb.tick();
+			printMap(); //t1
 		}
+		
+		System.out.println("elves: " + alive_elves + "\ngoblins: " + alive_goblins);
+		System.out.println("rounds completed: " + round);
+		System.out.println("Elf deaths: " + elfdeaths);
+		int total_hp = 0;
+		for (Player p : players) {
+			if (p.alive) {
+				System.out.println(p.c + ": " + p.hp);
+				total_hp += p.hp;
+			}
+		}
+		System.out.println(round + " rounds * " + total_hp + " HPs = " + (round * total_hp)); 
+
 
 	} 
 
