@@ -24,7 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-//WRONG: 365, 390, 353 (too low), 362, 354, 372, 364, 355, 373
+//WRONG: 365, 390, 353 (too low), 362, 354, 372, 364, 355, 373, 387
 //CORRECT: 
 public class DeviceProgram3 {
 
@@ -48,7 +48,10 @@ public class DeviceProgram3 {
 				B = Integer.parseInt(arr[2]);
 				C = Integer.parseInt(arr[3]);
 				System.out.println("Running " + i0 + " " + A + " " + B + " " + C);
+				d.printRegisters();
 				runInstruction(i0,A,B,C);
+				d.printRegisters();
+				System.out.println();
 			}
 			d.printRegisters();
 
@@ -78,14 +81,12 @@ public class DeviceProgram3 {
 		case 4:
 			d.addi(A, B, C);
 			break;
-			
 		case 5:
-			d.gtrr(A, B, C);//?
+			d.eqrr(A, B, C);//?
 			break;		
 		case 6:
 			d.gtri(A, B, C);//?
 			break;
-			
 		case 7:
 			d.gtir(A, B, C);
 			break;
@@ -111,7 +112,7 @@ public class DeviceProgram3 {
 			d.seti(A, B, C);
 			break;
 		case 15:
-			d.eqrr(A, B, C);
+			d.gtrr(A, B, C);
 			break;	
 		default:
 			System.err.println("ERROR INSTRUCTION: " + i0);

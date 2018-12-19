@@ -28,8 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-//WRONG: 188, 4116, 669 (too high)
-//CORRECT: 493
+//FIGURE OUT WHAT CODE GOES WITH WHAT NUMBER
 public class DeviceProgram2 {
 
 	static HashMap<String,Integer> hmCounts = new HashMap<String,Integer>();
