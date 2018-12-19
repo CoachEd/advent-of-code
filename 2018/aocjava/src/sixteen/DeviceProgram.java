@@ -14,7 +14,7 @@ public class DeviceProgram {
 	static int count_samples = 0;
 
 	public static void main(String[] args) {
-		String fname = "C:\\Users\\edwin\\github\\advent-of-code\\2018\\aocjava\\src\\sixteen\\input1.txt";
+		String fname = "files/input1.txt";
 		/*
 		FORMAT: registers before, instruction, registers after
 		3 0 1 3
