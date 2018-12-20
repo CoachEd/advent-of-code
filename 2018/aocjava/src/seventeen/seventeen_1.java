@@ -14,7 +14,7 @@ public class seventeen_1 {
 	static final char CLAY = '#';
 	static final char SPRING = '+';
 	static final char WATERS = '~'; //water settled
-	static final char WATERM = '|'; //water movement
+	static final char WATERF = '|'; //water flowing
 	static int SPRING_X = 500;
 	static int SPRING_Y = 0;
 	static int MAX_ROWS = 0;
@@ -27,13 +27,15 @@ public class seventeen_1 {
 	static int yend = 0; //bottom-right corner of ground (same as above)
 	static int xend = 0;
 	static char[][] ground;
+	static ArrayList<Ground> groundelems = new ArrayList<Ground>();
+	static ArrayList<Ground> newelems = new ArrayList<Ground>();
 
 	public static void main(String[] args) {
 
 		//read the input file
 		BufferedReader br = null;
 		String line = "";
-		ArrayList< ArrayList<Coord> > veins = new ArrayList< ArrayList<Coord>>();
+		ArrayList< ArrayList<Ground> > veins = new ArrayList< ArrayList<Ground>>();
 		int maxX = -1;
 		int maxY = -1;
 		int minX = Integer.MAX_VALUE;
@@ -41,7 +43,7 @@ public class seventeen_1 {
 		try {
 			br = new BufferedReader(new FileReader(fname));
 			while ((line = br.readLine()) != null) {
-				ArrayList<Coord> vein = new ArrayList<Coord>();
+				ArrayList<Ground> vein = new ArrayList<Ground>();
 				String[] arr = line.split("\\s+");
 				String s1 = arr[0];
 				String s2 = arr[1];
@@ -67,7 +69,7 @@ public class seventeen_1 {
 					if (n3 < minY)
 						minY = n3;
 					for (int i=n2; i <= n3; i++) {
-						vein.add(new Coord(n1,i)); //x,y
+						vein.add(new Ground(n1,i,CLAY)); //x,y
 						//System.out.println("x: added " + n1+","+i);
 					}
 				} else {
@@ -81,7 +83,7 @@ public class seventeen_1 {
 					if (n3 < minX)
 						minX = n3;
 					for (int i=n2; i <= n3; i++) {
-						vein.add(new Coord(i,n1)); //x,y
+						vein.add(new Ground(i,n1,CLAY)); //x,y
 						//System.out.println("y: added " +i+","+n1);
 					}
 				}
@@ -117,53 +119,26 @@ public class seventeen_1 {
 		}
 
 		//add the veins
-		for (ArrayList<Coord> al : veins) {
-			for (Coord c : al) {
-				//System.out.println("adding " + c.y + ","+ c.x);
-				ground[c.y][c.x] = CLAY; 
+		for (ArrayList<Ground> al : veins) {
+			for (Ground g : al) {
+				ground[g.y][g.x] = CLAY; 
 			}
 		}
 
 		//add the spring
-		ground[0][500] = SPRING;
-
+		int y = SPRING_Y;
+		int x = SPRING_X;
+		ground[y][x] = SPRING;
+		groundelems.add(new Ground(x,y,SPRING));
 
 		printGround(ystart,yend,xstart,xend);
 
 		CURRX = SPRING_X;
 		CURRY = SPRING_Y;
-		boolean water_settled = false;
-		while (true) {
-			if (CURRY > maxY) {
-				//water is past the lowest y, this drop is done
-				continue;
-			}
-
-			//go down as far as you can
-			boolean moved = true;
-			while (moved) {
-				int dx = CURRX;
-				int dy = CURRY+1;
-				moved = water(dx,dy); 
-			}
-
-
-			//left,right,up?	
-
-
-			//set next currx, curry
-
-
-			if (!water_settled) {
-				//we are done
-				break;
-			}
-		} //end WHILE
-
-	}
-
-	public static boolean water(int newx, int newy) {
-		if (newx >=0 && newx < MAX_COLS && newy >=0 && newy <= MAX_ROWS) {
+		boolean done = false;
+		while (!done) {
+			newelems = new ArrayList<Ground>(); //any added ground elements during this iteration
+			printGround(ystart,yend,xstart,xend);
 
 			try {
 				Thread.sleep(DELAY_MS);
@@ -171,21 +146,184 @@ public class seventeen_1 {
 				e.printStackTrace();
 			}
 
-			//valid
-			if (ground[newy][newx] == SAND) {
-				if (ground[CURRY][CURRX] != SPRING)
-					ground[CURRY][CURRX] = SAND;
-				ground[newy][newx] = WATERM;
-				CURRX = newx;
-				CURRY = newy;
-				printGround(ystart,yend,xstart,xend);
-				return true;
+			//process all items in groundelems
+			for (Ground g : groundelems) {
+				switch(g.c) {
+				case SPRING: //spring source
+					if (down(g) == SAND) {
+						addDown(g,WATERF);
+					}
+					break;
+				case WATERF: //flowing water '|'
+					if (down(g) == SAND) {
+						addDown(g,WATERF);
+					} else if (down(g) == CLAY || down(g) == WATERS) {
+						//is it contained on both sides?
+						if ( isBordered(g) ) {
+							g.c = WATERS;
+							ground[g.y][g.x]=WATERS; 
+						} else {
+							if (right(g) == SAND) {
+								addRight(g,WATERF);
+							}
+							if (left(g) == SAND) {
+								addLeft(g,WATERF);
+							}
+						}
+					}
+					break; 
+				case WATERS: //standing water '~'
+					if (right(g) == WATERF) {
+						ground[g.y][g.x+1] = WATERS;
+					}
+					if (left(g) == WATERF) {
+						ground[g.y][g.x-1] = WATERS;
+					}
+					if (right(g) == SAND)
+						addRight(g,WATERS);
+					if (left(g) == SAND)
+						addLeft(g,WATERS);
+					break;
+				default:
+					break;
+				}
+
+
+
 			}
-		} else {
-			//invalid
-			System.out.println("ERROR: invalid coords");
+
+			//TODO: are we done?
+			//done = true
+
+			//TODO: add newelems to groundelems
+			groundelems.addAll(newelems);
+		} //end WHILE
+
+	}
+
+	public static boolean isBordered(Ground g) {
+		//is it bordered on left and right sides by clay
+		Ground t = new Ground(g); //temp
+		while (( down(t) == CLAY || down(t) == WATERS) && (rightDown(t) == CLAY || rightDown(t) == WATERS) && (right(t) == SAND || right(t) == WATERF))
+			t.x = t.x + 1;
+		boolean right_border = right(t) == CLAY; 
+		t = new Ground(g); //temp
+		while (( down(t) == CLAY || down(t) == WATERS) && (leftDown(t) == CLAY || leftDown(t) == WATERS) && (left(t) == SAND || left(t) == WATERF))
+			t.x = t.x - 1;
+		boolean left_border = left(t) == CLAY; 
+		return right_border && left_border;
+	}
+
+	public static void addDown(Ground g, char c) {
+		if (g == null) return;
+
+		//add element c down one space from elem g
+		int x = g.x;
+		int y = g.y+1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS) {
+			Ground gnew = new Ground(x,y,c);
+			ground[y][x] = gnew.c;
+			newelems.add(gnew);
 		}
-		return false;
+	}
+
+	public static void addUp(Ground g, char c) {
+		if (g == null) return;
+		int x = g.x;
+		int y = g.y-1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS) {
+			Ground gnew = new Ground(x,y,c);
+			ground[y][x] = gnew.c;
+			newelems.add(gnew);
+		}
+	}
+
+	public static void addRight(Ground g, char c) {
+		if (g == null) return;
+		int x = g.x+1;
+		int y = g.y;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS) {
+			Ground gnew = new Ground(x,y,c);
+			ground[y][x] = gnew.c;
+			newelems.add(gnew);
+		}
+	}
+
+	public static void addLeft(Ground g, char c) {
+		if (g == null) return;
+		int x = g.x-1;
+		int y = g.y;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS) {
+			Ground gnew = new Ground(x,y,c);
+			ground[y][x] = gnew.c;
+			newelems.add(gnew);
+		}
+	}
+
+	public static char up(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x;
+		int y = g.y-1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
+	}
+
+	public static char down(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x;
+		int y = g.y+1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
+	}
+
+	public static char left(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x-1;
+		int y = g.y;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
+	}
+
+	public static char leftDown(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x-1;
+		int y = g.y+1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
+	}
+
+	public static char rightDown(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x+1;
+		int y = g.y+1;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
+	}
+
+	public static char right(Ground g) {
+		char c = '\0';
+		if (g == null)
+			return c;
+		int x = g.x+1;
+		int y = g.y;
+		if (x >=0 && x < MAX_COLS && y >= 0 && y < MAX_ROWS)
+			return ground[y][x];
+		return c;
 	}
 
 	public static void printGround(int ystart, int yend, int xstart, int xend) { 
