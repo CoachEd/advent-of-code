@@ -1,6 +1,6 @@
 package seventeen;
 
-//WRONG: 468 (too low), 653 (too low), 27752 (too high), 27742(wrong)
+//WRONG: 468 (too low), 653 (too low), 27752 (too high), 27742(wrong), 27732 (wrong), 27720, 27744
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,11 +31,16 @@ public class seventeen_1a {
 	static int xstart = 0;
 	static int yend = 0; //bottom-right corner of ground (same as above)
 	static int xend = 0;
+	static int maxX = -1;
+	static int maxY = -1;
+	static int minX = Integer.MAX_VALUE;
+	static int minY = Integer.MAX_VALUE;
 	static char[][] ground;
 	static ArrayList<Ground> groundelems = new ArrayList<Ground>();
 	static ArrayList<Ground> newelems = new ArrayList<Ground>();
 	static String outfname = "files/waterout.txt";
 	static BufferedWriter bw;
+	static int count2 = 0; //audit for water
 
 	public static void main(String[] args) {
 
@@ -43,10 +48,6 @@ public class seventeen_1a {
 		BufferedReader br = null;
 		String line = "";
 		ArrayList< ArrayList<Ground> > veins = new ArrayList< ArrayList<Ground>>();
-		int maxX = -1;
-		int maxY = -1;
-		int minX = Integer.MAX_VALUE;
-		int minY = Integer.MAX_VALUE;
 		try {
 			br = new BufferedReader(new FileReader(fname));
 			while ((line = br.readLine()) != null) {
@@ -69,10 +70,14 @@ public class seventeen_1a {
 					//first coord is x
 					if (n1 > maxX)
 						maxX = n1;
+					if (n2 > maxY)
+						maxY = n2;
 					if (n3 > maxY)
 						maxY = n3;
 					if (n1 < minX)
 						minX = n1;
+					if (n2 < minY)
+						minY = n2;
 					if (n3 < minY)
 						minY = n3;
 					for (int i=n2; i <= n3; i++) {
@@ -83,10 +88,14 @@ public class seventeen_1a {
 					//first coord is y
 					if (n1 > maxY)
 						maxY = n1;
+					if (n2 > maxX)
+						maxX = n2;
 					if (n3 > maxX)
 						maxX = n3;
 					if (n1 < minY)
 						minY = n1;
+					if (n2 < minX)
+						minX = n2;
 					if (n3 < minX)
 						minX = n3;
 					for (int i=n2; i <= n3; i++) {
@@ -106,16 +115,15 @@ public class seventeen_1a {
 		System.out.println("maxX: " +  maxX + "   maxY: " + maxY);
 		System.out.println("minX: " +  minX + "   minY: " + minY);
 
-		//TEST SPECIFIC
-		//top-left part of map to show
-		ystart = 0;
+		//displayable part of the map; must be within MAX_ROWS , MAX_COLS
+		ystart = 0; //top-left part of map to show
 		xstart = minX-1;
-
-		yend = maxY; //bottom-right corner of ground (same as above)
+		yend = maxY+2; //bottom-right corner of ground (same as above)
 		xend = maxX+1;	
 
-		MAX_ROWS = yend+1+5;
-		MAX_COLS = xend+1+100;
+		//size of ground
+		MAX_ROWS = yend+1000;
+		MAX_COLS = xend+1000;
 
 		//create ground and initialize to all sand
 		ground = new char[MAX_ROWS][MAX_COLS];
@@ -137,6 +145,7 @@ public class seventeen_1a {
 		int x = SPRING_X;
 		ground[y][x] = SPRING;
 		groundelems.add(new Ground(x,y,SPRING));
+
 
 		CURRX = SPRING_X;
 		CURRY = SPRING_Y;
@@ -194,10 +203,6 @@ public class seventeen_1a {
 						ground[g.y][g.x]= WATERS;
 					}
 
-
-
-
-
 					break;
 					/*
 				case WATERS: //standing water '~'
@@ -221,31 +226,19 @@ public class seventeen_1a {
 
 			}
 
-			//TODO: are we done?
-			//done = true
-
 			//TODO: add newelems to groundelems
 			groundelems.addAll(newelems);
 			iter++;
 
-			if (iter > 9000) {
-				printGround(1900,2013,450,692);
-				System.out.println("iter: " + iter);
-				System.out.println("maxX: " +  maxX + "   maxY: " + maxY);
-				System.out.println("minX: " +  minX + "   minY: " + minY);
-			}
-
-
-			if (iter >9100)
+			//arbitrary end condition
+			if (iter > 9093)
 				done = true;
 
-			/*
-			if (newelems.size() == 0)
-				done = true;
-			 */
 		} //end WHILE
 
-
+		System.out.println("maxX: " +  maxX + "   maxY: " + maxY);
+		System.out.println("minX: " +  minX + "   minY: " + minY);
+		
 		int count = 0;
 		int minx = Integer.MAX_VALUE;
 		int maxx = -1;
@@ -254,8 +247,12 @@ public class seventeen_1a {
 		for (int r=0; r < ground.length; r++) {
 			for (int c=0; c < ground[r].length; c++) {
 				if (ground[r][c] == WATERF || ground[r][c] == WATERS) {
-					if (r <= maxY)
+					
+					//To prevent counting forever, ignore tiles with a y coordinate smaller than 
+					//the smallest y coordinate in your scan data or larger than the largest one
+					if (r <= maxY && r >= minY)
 						count++;
+
 					if (r < miny)
 						miny = r;
 					if (r > maxy)
@@ -267,15 +264,22 @@ public class seventeen_1a {
 				}
 			}
 		}
-		System.out.println("iterations: " + iter);
-		System.out.println(minx+","+miny + "     " + maxx+","+maxy);
-		//printGround(ystart,yend,xstart,xend);
+		System.out.println("count: " + count);
+		System.out.println("Printing...");
+
+
+		System.out.println((miny-1) + "," + (maxy+1) + "," + (minx-1) + "," + (maxx+1));
+		printGroundToFile(miny-1,maxy+1,minx-1,maxx+1);
+
+
+		//printGround(miny-1+1600,maxy+1,minx-1,maxx+1); //last section
+		System.out.println("\niterations: " + iter);
+		System.out.println("water: " + minx+","+miny + "     " + maxx+","+maxy);
 		System.out.println("tiles: " + count);
 		System.out.println("DONE.");
 	}
 
 	public static boolean isBordered(Ground g) {
-		char base = CLAY;
 		//is it bordered on left and right sides by clay
 		Ground t = new Ground(g); //temp
 		while (down(t) != SAND && rightDown(t) != SAND) {
@@ -306,6 +310,7 @@ public class seventeen_1a {
 			Ground gnew = new Ground(x,y,c);
 			ground[y][x] = gnew.c;
 			newelems.add(gnew);
+			if (y <= maxY) count2++;
 		}
 	}
 
@@ -317,6 +322,7 @@ public class seventeen_1a {
 			Ground gnew = new Ground(x,y,c);
 			ground[y][x] = gnew.c;
 			newelems.add(gnew);
+			if (y <= maxY) count2++;
 		}
 	}
 
@@ -328,6 +334,7 @@ public class seventeen_1a {
 			Ground gnew = new Ground(x,y,c);
 			ground[y][x] = gnew.c;
 			newelems.add(gnew);
+			if (y <= maxY) count2++;
 		}
 	}
 
@@ -339,6 +346,7 @@ public class seventeen_1a {
 			Ground gnew = new Ground(x,y,c);
 			ground[y][x] = gnew.c;
 			newelems.add(gnew);
+			if (y <= maxY) count2++;
 		}
 	}
 
@@ -411,22 +419,54 @@ public class seventeen_1a {
 	public static void printGround(int ystart, int yend, int xstart, int xend) { 
 
 
-		String s = "";
+		String s = "\n";
+		String.format("%s = %d", "joe", 35);
 		for (int y=ystart; y <= yend; y++) {
 			for (int x=xstart; x <= xend; x++) {
 				//System.out.println("x,y " + x+","+y);
-				s = s + ground[y][x];
+				if (y <= maxY)
+					s = s + ground[y][x];
+				else
+					s = s + SAND;
 			}
 			s += '\n';
 
 		}
-		System.out.println(s);
+		System.out.print(s);
+
+	}
+	public static void printGroundToFile(int ystart, int yend, int xstart, int xend) { 
 
 
+		String s = "\n";
+		String.format("%s = %d", "joe", 35);
+		for (int y=ystart; y <= yend; y++) {
+			for (int x=xstart; x <= xend; x++) {
+				//System.out.println("x,y " + x+","+y);
+				if (y <= maxY)
+					s = s + ground[y][x];
+				else
+					s = s + SAND;
+			}
+			s += '\n';
 
+		}
+		//System.out.print(s);
 
-
-
+		File fout = new File(outfname);
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(fout);
+			bw = new BufferedWriter(new OutputStreamWriter(fos));
+			bw.write(s);
+			bw.newLine();
+			bw.close();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
