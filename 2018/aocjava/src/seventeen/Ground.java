@@ -5,6 +5,18 @@ public class Ground implements Comparable<Ground> {
 	char c;
 	int y,x;
 
+	public void swap(Ground g) {
+		char tc = c;
+		int tx = x;
+		int ty = y;
+		c = g.c;
+		x = g.x;
+		y = g.y;
+		g.c = tc;
+		g.x = tx;
+		g.y = ty;
+	}
+	
 	public Ground(int x1, int y1, char c1) {
 		x = x1;
 		y = y1;

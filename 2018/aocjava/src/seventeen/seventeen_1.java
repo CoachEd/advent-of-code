@@ -1,5 +1,6 @@
 package seventeen;
 
+//WRONG: 468 (too low)
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,7 +22,7 @@ public class seventeen_1 {
 	static int MAX_COLS = 0;
 	static int CURRX = 0;
 	static int CURRY = 0;
-	static int DELAY_MS = 500;
+	static int DELAY_MS = 100;
 	static int ystart = 0;
 	static int xstart = 0;
 	static int yend = 0; //bottom-right corner of ground (same as above)
@@ -105,7 +106,7 @@ public class seventeen_1 {
 		xstart = minX-1;
 
 		yend = maxY; //bottom-right corner of ground (same as above)
-		xend = maxX+1;
+		xend = maxX+1;	
 
 		MAX_ROWS = yend+1;
 		MAX_COLS = xend+1;
@@ -131,7 +132,7 @@ public class seventeen_1 {
 		ground[y][x] = SPRING;
 		groundelems.add(new Ground(x,y,SPRING));
 
-		printGround(ystart,yend,xstart,xend);
+		//printGround(ystart,yend,xstart,xend);
 
 		CURRX = SPRING_X;
 		CURRY = SPRING_Y;
@@ -157,21 +158,35 @@ public class seventeen_1 {
 				case WATERF: //flowing water '|'
 					if (down(g) == SAND) {
 						addDown(g,WATERF);
-					} else if (down(g) == CLAY || down(g) == WATERS) {
-						//is it contained on both sides?
-						if ( isBordered(g) ) {
+					} else if (down(g) == CLAY) {
+						if (left(g) == SAND)
+							addLeft(g,WATERF);
+						if (right(g) == SAND)
+							addRight(g,WATERF);
+						if (isBordered(g)) {
 							g.c = WATERS;
-							ground[g.y][g.x]=WATERS; 
-						} else {
-							if (right(g) == SAND) {
-								addRight(g,WATERF);
-							}
-							if (left(g) == SAND) {
-								addLeft(g,WATERF);
-							}
+							ground[g.y][g.x]= WATERS; 
+						}						
+					} else if (down(g) == WATERS) {
+						if (right(g) == SAND)
+							addRight(g,WATERF);
+						if (left(g) == SAND)
+							addLeft(g,WATERF);
+						if (down(g) == WATERS && isBordered(g)) {
+							g.c = WATERS;
+							ground[g.y][g.x]= WATERS; 
 						}
 					}
-					break; 
+					
+					if (right(g) == WATERS || left(g) == WATERS) {
+						g.c = WATERS;
+						ground[g.y][g.x]= WATERS;
+					}
+
+
+
+					break;
+					/*
 				case WATERS: //standing water '~'
 					if (right(g) == WATERF) {
 						ground[g.y][g.x+1] = WATERS;
@@ -184,6 +199,7 @@ public class seventeen_1 {
 					if (left(g) == SAND)
 						addLeft(g,WATERS);
 					break;
+					 */
 				default:
 					break;
 				}
@@ -197,20 +213,42 @@ public class seventeen_1 {
 
 			//TODO: add newelems to groundelems
 			groundelems.addAll(newelems);
+			
+			if (newelems.size() == 0)
+				done = true;
 		} //end WHILE
 
+		int count = 0;
+		for (int r=0; r < ground.length; r++) {
+			for (int c=0; c < ground[r].length; c++) {
+				if (ground[r][c] == WATERF || ground[r][c] == WATERS)
+					count++;
+			}
+		}
+		printGround(ystart,yend,xstart,xend);
+		System.out.println("tiles: " + count);
+		System.out.println("DONE.");
 	}
 
 	public static boolean isBordered(Ground g) {
+		char base = CLAY;
 		//is it bordered on left and right sides by clay
 		Ground t = new Ground(g); //temp
-		while (( down(t) == CLAY || down(t) == WATERS) && (rightDown(t) == CLAY || rightDown(t) == WATERS) && (right(t) == SAND || right(t) == WATERF))
+		while (down(t) != SAND && rightDown(t) != SAND) {
+			t.c = ground[g.y][t.x+1];
 			t.x = t.x + 1;
-		boolean right_border = right(t) == CLAY; 
+			if (ground[t.y][t.x]== CLAY)
+				break;
+		}
+		boolean right_border = t.c == CLAY; 
 		t = new Ground(g); //temp
-		while (( down(t) == CLAY || down(t) == WATERS) && (leftDown(t) == CLAY || leftDown(t) == WATERS) && (left(t) == SAND || left(t) == WATERF))
+		while (down(t) != SAND && leftDown(t) != SAND) {
+			t.c = ground[g.y][t.x-1];
 			t.x = t.x - 1;
-		boolean left_border = left(t) == CLAY; 
+			if (ground[t.y][t.x]== CLAY)
+				break;			
+		}
+		boolean left_border = t.c == CLAY; 
 		return right_border && left_border;
 	}
 
