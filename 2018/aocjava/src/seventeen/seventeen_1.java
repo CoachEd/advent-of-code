@@ -32,6 +32,7 @@ public class seventeen_1 {
 	static ArrayList<Ground> newelems = new ArrayList<Ground>();
 	static String outfname = "files/waterout.txt";
 	static int count2 = 0;
+	static int countwaterretained = 0;
 	static int maxX = -1;
 	static int maxY = -1;
 	static int minX = Integer.MAX_VALUE;
@@ -231,8 +232,11 @@ public class seventeen_1 {
 		for (int r=0; r < ground.length; r++) {
 			for (int c=0; c < ground[r].length; c++) {
 				if (ground[r][c] == WATERF || ground[r][c] == WATERS) {
-					if (r <= maxY)
+					if (r <= maxY) {
 						count++;
+						if (ground[r][c] == WATERS)
+							countwaterretained++;
+					}
 					
 					if (r < miny)
 						miny = r;
@@ -249,7 +253,8 @@ public class seventeen_1 {
 		System.out.println("\niterations: " + iter);
 		System.out.println(minx+","+miny + "     " + maxx+","+maxy);
 		System.out.println("count2: " + count2);
-		System.out.println("tiles: " + count);
+		System.out.println("PART 1 tiles: " + count);
+		System.out.println("PART 2 water retained: " + countwaterretained);
 		System.out.println("DONE.");
 	}
 

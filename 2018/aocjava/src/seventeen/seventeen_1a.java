@@ -41,6 +41,7 @@ public class seventeen_1a {
 	static String outfname = "files/waterout.txt";
 	static BufferedWriter bw;
 	static int count2 = 0; //audit for water
+	static int countwaterretained = 0;
 
 	public static void main(String[] args) {
 
@@ -238,7 +239,7 @@ public class seventeen_1a {
 
 		System.out.println("maxX: " +  maxX + "   maxY: " + maxY);
 		System.out.println("minX: " +  minX + "   minY: " + minY);
-		
+
 		int count = 0;
 		int minx = Integer.MAX_VALUE;
 		int maxx = -1;
@@ -247,11 +248,14 @@ public class seventeen_1a {
 		for (int r=0; r < ground.length; r++) {
 			for (int c=0; c < ground[r].length; c++) {
 				if (ground[r][c] == WATERF || ground[r][c] == WATERS) {
-					
+
 					//To prevent counting forever, ignore tiles with a y coordinate smaller than 
 					//the smallest y coordinate in your scan data or larger than the largest one
-					if (r <= maxY && r >= minY)
+					if (r <= maxY && r >= minY) {
 						count++;
+						if (ground[r][c] == WATERS)
+							countwaterretained++;
+					}
 
 					if (r < miny)
 						miny = r;
@@ -275,7 +279,8 @@ public class seventeen_1a {
 		//printGround(miny-1+1600,maxy+1,minx-1,maxx+1); //last section
 		System.out.println("\niterations: " + iter);
 		System.out.println("water: " + minx+","+miny + "     " + maxx+","+maxy);
-		System.out.println("tiles: " + count);
+		System.out.println("PART 1 tiles: " + count);
+		System.out.println("PART 2 water retained: " + countwaterretained);
 		System.out.println("DONE.");
 	}
 
