@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class seventeen_1 {
+public class seventeen_1a {
 
-	//static String fname = "files/17_1.txt";
-	static String fname = "files/17_0.txt";
+	static String fname = "files/17_1.txt";
+	//static String fname = "files/17_0.txt";
 	static final char SAND = '.';
 	static final char CLAY = '#';
 	static final char SPRING = '+';
@@ -26,7 +26,7 @@ public class seventeen_1 {
 	static int MAX_COLS = 0;
 	static int CURRX = 0;
 	static int CURRY = 0;
-	static int DELAY_MS = 250;
+	static int DELAY_MS = 0;
 	static int ystart = 0;
 	static int xstart = 0;
 	static int yend = 0; //bottom-right corner of ground (same as above)
@@ -111,11 +111,11 @@ public class seventeen_1 {
 		ystart = 0;
 		xstart = minX-1;
 
-		yend = maxY+2; //bottom-right corner of ground (same as above)
+		yend = maxY; //bottom-right corner of ground (same as above)
 		xend = maxX+1;	
 
-		MAX_ROWS = yend+10;
-		MAX_COLS = xend+10;
+		MAX_ROWS = yend+1+5;
+		MAX_COLS = xend+1+100;
 
 		//create ground and initialize to all sand
 		ground = new char[MAX_ROWS][MAX_COLS];
@@ -144,7 +144,7 @@ public class seventeen_1 {
 		int iter = 0;
 		while (!done) {
 			newelems = new ArrayList<Ground>(); //any added ground elements during this iteration
-			printGround(ystart,yend,xstart,xend);
+			//printGround(ystart,yend,xstart,xend);
 
 			try {
 				Thread.sleep(DELAY_MS);
@@ -194,6 +194,10 @@ public class seventeen_1 {
 						ground[g.y][g.x]= WATERS;
 					}
 
+
+
+
+
 					break;
 					/*
 				case WATERS: //standing water '~'
@@ -224,9 +228,21 @@ public class seventeen_1 {
 			groundelems.addAll(newelems);
 			iter++;
 
-			if (iter > 40) //HARD-CODED END; TODO: figure the end out dynamically
+			if (iter > 9000) {
+				printGround(1900,2013,450,692);
+				System.out.println("iter: " + iter);
+				System.out.println("maxX: " +  maxX + "   maxY: " + maxY);
+				System.out.println("minX: " +  minX + "   minY: " + minY);
+			}
+
+
+			if (iter >9100)
 				done = true;
 
+			/*
+			if (newelems.size() == 0)
+				done = true;
+			 */
 		} //end WHILE
 
 
@@ -251,7 +267,7 @@ public class seventeen_1 {
 				}
 			}
 		}
-		System.out.println("\niterations: " + iter);
+		System.out.println("iterations: " + iter);
 		System.out.println(minx+","+miny + "     " + maxx+","+maxy);
 		//printGround(ystart,yend,xstart,xend);
 		System.out.println("tiles: " + count);
@@ -395,7 +411,7 @@ public class seventeen_1 {
 	public static void printGround(int ystart, int yend, int xstart, int xend) { 
 
 
-		String s = "\n";
+		String s = "";
 		for (int y=ystart; y <= yend; y++) {
 			for (int x=xstart; x <= xend; x++) {
 				//System.out.println("x,y " + x+","+y);
@@ -404,7 +420,12 @@ public class seventeen_1 {
 			s += '\n';
 
 		}
-		System.out.print(s);
+		System.out.println(s);
+
+
+
+
+
 
 	}
 
