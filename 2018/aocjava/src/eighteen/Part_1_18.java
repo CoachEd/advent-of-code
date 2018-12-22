@@ -4,13 +4,49 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+/*
+ * This program gave me the repeating order. Just project it out to 1000000000...
+t=10000    combo: 614|359
+t=20000    combo: 561|372
+t=30000    combo: 536|329
+t=40000    combo: 546|314*
+t=50000    combo: 572|316
+t=60000    combo: 597|333
+t=70000    combo: 607|352
 
-public class Part_0_18 {
+t=80000    combo: 614|359
+t=90000    combo: 561|372
+t=100000    combo: 536|329
+t=110000    combo: 546|314*
+t=120000    combo: 572|316
+t=130000    combo: 597|333
+t=140000    combo: 607|352
 
-	static String fname = "files/18_0.txt"; //sample data
-	//static String fname = "files/18_1.txt"; //Part 1 & 2 data
-	static int minutes = 10; //Part 1 duration
-	//static int minutes = 1000000000; //Part 2 duration
+t=150000    combo: 614|359
+t=160000    combo: 561|372
+t=170000    combo: 536|329
+t=180000    combo: 546|314*
+t=190000    combo: 572|316
+t=200000    combo: 597|333
+t=210000    combo: 607|352
+
+
+0: 999960000
+1: 999970000
+2: 999980000
+3: 999990000
+4: 1000000000
+answer: 180752 (546*314)
+
+ */
+public class Part_1_18 {
+
+	//static String fname = "files/18_0.txt"; //sample data
+	static String fname = "files/18_1.txt"; //Part 1 & 2 data
+	//static int minutes = 10; //Part 1 duration
+	static int minutes = 1000000000; //Part 2 duration
 
 	static boolean bShowForest = false; //Part 2
 
@@ -20,6 +56,7 @@ public class Part_0_18 {
 	static int DELAY_MS = 0;
 
 	public static void main(String[] args) {
+		HashSet<String> hmSeen = new HashSet<String>();
 		long startms = System.currentTimeMillis();
 		ArrayList<String> al = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
@@ -94,6 +131,30 @@ public class Part_0_18 {
 				if (bShowForest) {
 					System.out.println("t="+t);
 					printForest(forest);
+				}
+
+
+
+
+				int num_open = 0;
+				int num_trees = 0;
+				int num_lumber = 0;
+				for (int r1=0; r1 < forest.length; r1++) {
+					for (int c1=0; c1 < forest[r1].length; c1++) {
+						if (forest[r1][c1] == OPEN)
+							num_open++;
+						else if (forest[r1][c1] == TREES)
+							num_trees++;
+						else if (forest[r1][c1] == LUMBER)
+							num_lumber++;
+					}
+				}
+				String combo = num_trees+"|"+num_lumber;
+				if (!hmSeen.contains(combo)) {
+					hmSeen.add(combo);
+				} else {
+					if (t > 10000 && t % 7 == 0)
+						System.out.println("t=" + t + "    combo: " + combo);
 				}
 			}
 
