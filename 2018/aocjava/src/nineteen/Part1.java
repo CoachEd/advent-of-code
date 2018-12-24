@@ -49,17 +49,21 @@ public class Part1 {
 
 			//update IP register to IP value
 			d.register[d.ipbind] = d.ip;
-			System.out.print("ip=" + d.ip);
-			d.printRegisters();
-			System.out.print(" " + cmd +" " + n1 + " " + n2 + " " + n3+ " ");
+			//System.out.print("ip=" + d.ip);
+			//d.printRegisters();
+			//System.out.print(" " + cmd +" " + n1 + " " + n2 + " " + n3+ " ");
 			runInstruction(idx,n1,n2,n3);
 			d.ip = d.register[d.ipbind];
 			d.ip = d.ip + 1;
-			d.printRegisters();
-			System.out.print(" ip: " + d.ip);
-			System.out.println();
+			//d.printRegisters();
+			//System.out.print(" ip: " + d.ip);
+			//System.out.println();
 			
-			//if (++count > 1000 && count < 1100) break;
+			if (d.ip >= al.size())
+				break;
+			
+			if (++count % 10000 == 0)
+				System.out.println(d.register[0]);
 		}
 		
 		System.out.println("register[0] is " + d.register[0]);

@@ -14,10 +14,10 @@ public class Part2 {
 	static Device d = new Device();
 
 	public static void main(String[] args) {	
-		
+
 		//Part 2 - register 0 started with value 1
 		d.register[0] = 1;
-		
+
 		ArrayList<String> al = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
 			String line;
@@ -39,6 +39,7 @@ public class Part2 {
 		al.remove(0);
 
 		boolean done = false;
+		int count = 0;
 		while (!done) {
 			String s = al.get(d.ip);
 			arr = s.split("\\s+");
@@ -52,19 +53,22 @@ public class Part2 {
 			//update IP register to IP value
 			d.register[d.ipbind] = d.ip;
 			//System.out.println("ip=" + d.ip + " " + d.register[0]);
-			d.printRegisters();
+			//d.printRegisters();
 			//System.out.println(cmd +" " + n1 + " " + n2 + " " + n3);
 			runInstruction(idx,n1,n2,n3);
 			d.ip = d.register[d.ipbind];
 			d.ip = d.ip + 1;
 			//d.printRegisters();
 			//System.out.println();
+
+			if (d.register[0] > 0) {
+				System.out.println(++count + " , " + d.register[0]);
+			}
+
 			if (d.ip >= al.size()) done = true;
 		}
-		
+
 		System.out.println("register[0] is " + d.register[0]);
-
-
 
 	}
 
