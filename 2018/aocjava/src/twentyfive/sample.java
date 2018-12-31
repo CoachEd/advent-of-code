@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class sample {
 
-	public static String fname = "files/25_0_a.txt";
+	public static String fname = "files/25_1.txt";
 	public static void main(String[] args) {
 
 		ArrayList<String> al = new ArrayList<String>();
@@ -33,26 +33,77 @@ public class sample {
 			int z = Integer.parseInt(arr[3].trim());
 			points.add(new Point1(w,x,y,z));
 		}
-		
-		for (Point1 p : points) {
-			System.out.println(p.toString());
-		}
-		System.out.println();
-		
-		String s = "Constellations:\n";
+
+		ArrayList<ArrayList<Point1>> constellations = new ArrayList<ArrayList<Point1>>();
 		for (int i=0; i < points.size(); i++) {
-			s += i +": ";
-			for (int j=0; j < points.size(); j++) {
-				if (i==j) continue;
+			if (constellations.size() == 0) {
+				ArrayList<Point1> tempal = new ArrayList<Point1>();
+				tempal.add(points.get(i));
+				constellations.add(tempal);
+			} else {
 				Point1 p1 = points.get(i);
-				Point1 p2 = points.get(j);
-				if (p1.mdist(p2) <= 3)
-					s += " " + j;
+				boolean found = false;
+				for (int j=0; j < constellations.size(); j++) {
+					for (Point1 p2 : constellations.get(j)) {
+						if (p1.mdist(p2) <= 3) {
+							found = true;
+							constellations.get(j).add(p1);
+							break;
+						}
+					}
+					if (found)
+						break;
+				}
+				if (!found) {
+					ArrayList<Point1> tempal = new ArrayList<Point1>();
+					tempal.add(p1);
+					constellations.add(tempal);
+				}
+			}
+		}
+
+		boolean changed = true;
+		while (changed) {
+			//check if constellations can touch each other
+			changed = false;
+			for (int k=0; k < constellations.size()-1; k++) {
+				ArrayList<Point1> c1 = constellations.get(k);
+				ArrayList<Point1> c2 = constellations.get(k+1);
+				boolean constellations_touch = false;
+				for (Point1 p1 : c1) {
+					for (Point1 p2 : c2) {
+						if (p1.mdist(p2) <= 3) {
+							constellations_touch = true;
+							break;
+						}
+					}
+					if (constellations_touch) break;
+				}
+				if (constellations_touch) {
+					changed = true;
+					ArrayList<Point1> altemp = new ArrayList<Point1>();
+					altemp.addAll(c1);
+					altemp.addAll(c2);
+					constellations.remove(k);
+					constellations.remove(k);
+					constellations.add(altemp);
+					break;
+				}
+
+			}
+		}
+
+		//print out constellations
+		String s = "";
+		for (ArrayList<Point1> c : constellations) {
+			for (Point1 p : c) {
+				s += p.toString() + "  ";
 			}
 			s += "\n";
 		}
+		s += "Constellations: " + constellations.size();
 		System.out.println(s);
-
+		//GUESSES: 616 (too high), 612 (too high)
 
 	}
 
