@@ -66,30 +66,33 @@ public class sample {
 		while (changed) {
 			//check if constellations can touch each other
 			changed = false;
+			boolean constellations_touch = false;
 			for (int k=0; k < constellations.size()-1; k++) {
-				ArrayList<Point1> c1 = constellations.get(k);
-				ArrayList<Point1> c2 = constellations.get(k+1);
-				boolean constellations_touch = false;
-				for (Point1 p1 : c1) {
-					for (Point1 p2 : c2) {
-						if (p1.mdist(p2) <= 3) {
-							constellations_touch = true;
-							break;
+				for (int l=k+1; l < constellations.size(); l++) {
+					ArrayList<Point1> c1 = constellations.get(k);
+					ArrayList<Point1> c2 = constellations.get(l);
+					constellations_touch = false;
+					for (Point1 p1 : c1) {
+						for (Point1 p2 : c2) {
+							if (p1.mdist(p2) <= 3) {
+								constellations_touch = true;
+								break;
+							}
 						}
+						if (constellations_touch) break;
 					}
-					if (constellations_touch) break;
+					if (constellations_touch) {
+						changed = true;
+						ArrayList<Point1> altemp = new ArrayList<Point1>();
+						altemp.addAll(c1);
+						altemp.addAll(c2);
+						constellations.remove(c1);
+						constellations.remove(c2);
+						constellations.add(altemp);
+						break;
+					}				
 				}
-				if (constellations_touch) {
-					changed = true;
-					ArrayList<Point1> altemp = new ArrayList<Point1>();
-					altemp.addAll(c1);
-					altemp.addAll(c2);
-					constellations.remove(k);
-					constellations.remove(k);
-					constellations.add(altemp);
-					break;
-				}
-
+				if (constellations_touch) break;
 			}
 		}
 
@@ -103,7 +106,7 @@ public class sample {
 		}
 		s += "Constellations: " + constellations.size();
 		System.out.println(s);
-		//GUESSES: 616 (too high), 612 (too high)
+		//GUESSES: 616 (too high), 612 (too high), 272 (too low), 350 (CORRECT!)
 
 	}
 
