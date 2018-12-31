@@ -37,6 +37,21 @@ public class sample {
 		for (Point1 p : points) {
 			System.out.println(p.toString());
 		}
+		System.out.println();
+		
+		String s = "Constellations:\n";
+		for (int i=0; i < points.size(); i++) {
+			s += i +": ";
+			for (int j=0; j < points.size(); j++) {
+				if (i==j) continue;
+				Point1 p1 = points.get(i);
+				Point1 p2 = points.get(j);
+				if (p1.mdist(p2) <= 3)
+					s += " " + j;
+			}
+			s += "\n";
+		}
+		System.out.println(s);
 
 
 	}

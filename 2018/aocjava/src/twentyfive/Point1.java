@@ -11,4 +11,7 @@ public class Point1 {
 	public String toString() {
 		return w+","+x+","+y+","+z;
 	}
+	public int mdist(Point1 n) {
+		return(Math.abs(n.w-w) + Math.abs(n.x-x) + Math.abs(n.y-y) + Math.abs(n.z-z));
+	}
 }
