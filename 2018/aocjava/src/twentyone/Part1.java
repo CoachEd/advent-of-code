@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Part1 {
 
-	static String fname = "files/20_1.txt"; //part 1 data
+	static String fname = "files/21_1.txt"; //part 1 data
 	static enum FUNCS {banr,muli,bori,setr,addi,eqrr,gtri,gtir,borr,eqri,bani,addr,eqir,mulr,seti,gtrr};
 	static Device d = new Device();
 
@@ -34,6 +34,15 @@ public class Part1 {
 		System.out.println("ip bound to register " + num);
 		d.ipbind = num;
 		al.remove(0);
+		
+		/*
+		What is the lowest non-negative integer value for register 0 that causes the program 
+		to halt after executing the fewest instructions? (Executing the same instruction multiple 
+		times counts as multiple instructions executed.)
+		 */
+		//d.register[0] = 1;
+		
+		
 		boolean done = false;
 		while (!done) {
 			String s = al.get(d.ip);
@@ -42,9 +51,9 @@ public class Part1 {
 			int n1 = Integer.parseInt(arr[1].trim());
 			int n2 = Integer.parseInt(arr[2].trim());
 			int n3 = Integer.parseInt(arr[3].trim());
-			System.out.println("Executing " + cmd + "  " + n1 + " " + n2 + " " + n3);
+			//System.out.println("Executing " + cmd + "  " + n1 + " " + n2 + " " + n3);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
