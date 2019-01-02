@@ -23,19 +23,15 @@ public class part1 {
 			for (int x=0; x < cave[y].length; x++) {
 				if ( (x==mouthx && y==mouthy) || (x==targetx && y==targety)) {
 					geologic[y][x] = 0;
-					erosion[y][x] = (geologic[y][x] + depth) % 20183;
 				} else if (y==0) {
 					geologic[y][x] = x * 16807;
-					erosion[y][x] = (geologic[y][x] + depth) % 20183;
 				} else if (x==0) {
 					geologic[y][x] = y * 48271;
-					erosion[y][x] = (geologic[y][x] + depth) % 20183;
 				} else {
 					geologic[y][x] = erosion[y][x-1] * erosion[y-1][x];
-					erosion[y][x] = (geologic[y][x] + depth) % 20183;
 				}
-				if (y==targety && x == targetx)
-					System.out.println("");
+				erosion[y][x] = (geologic[y][x] + depth) % 20183;
+				
 				int result = erosion[y][x] % 3;
 				risk_level += result;
 				switch (result) {
