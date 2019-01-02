@@ -8,28 +8,23 @@ import java.util.Stack;
 import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
-
-public class part0_1 {
-
-	/*
-###########
-#.|.#.|.#.#
-#-###-#-#-#
-#.|.|.#.#.#
-#-#####-#-#
-#.#.#X|.#.#
-#-#-#####-#
-#.#.|.|.|.#
-#-###-###-#
-#.|.|.#.|.#
-###########
-	 */
-
-	public static int width = 11;
-	public static int height = 11;
+/*
+#########
+#.|.|.|.#
+#-#######
+#.|.|.|.#
+#-#####-#
+#.#.#X|.#
+#-#-#####
+#.|.|.|.#
+#########
+ */
+public class part0_0 {
+	public static int width = 9;
+	public static int height = 9;
 	public static int startx = 5;
 	public static int starty = 5;
-	public static String smap = "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$";
+	public static String smap = "^ENWWW(NEEE|SSE(EE|N))$";
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
 	public static char ROOM = '.';
@@ -52,8 +47,6 @@ public class part0_1 {
 		currx = startx;
 		curry = starty;
 		Stack<Coord> stack = new Stack<Coord>();
-		Stack<Integer> poss = new Stack<Integer>();
-		poss.push(0);
 		stack.push(new Coord(currx,curry));
 		int pos = 0;
 

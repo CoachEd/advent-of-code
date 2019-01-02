@@ -9,27 +9,29 @@ import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
 
-public class part0_1 {
+public class part0_2 {
 
 	/*
-###########
-#.|.#.|.#.#
-#-###-#-#-#
-#.|.|.#.#.#
-#-#####-#-#
-#.#.#X|.#.#
-#-#-#####-#
-#.#.|.|.|.#
-#-###-###-#
-#.|.|.#.|.#
-###########
+#############
+#.|.|.|.|.|.#
+#-#####-###-#
+#.#.|.#.#.#.#
+#-#-###-#-#-#
+#.#.#.|.#.|.#
+#-#-#-#####-#
+#.#.#.#X|.#.#
+#-#-#-###-#-#
+#.|.#.|.#.#.#
+###-#-###-#-#
+#.|.#.|.|.#.#
+#############
 	 */
 
-	public static int width = 11;
-	public static int height = 11;
-	public static int startx = 5;
-	public static int starty = 5;
-	public static String smap = "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$";
+	public static int width = 13;
+	public static int height = 13;
+	public static int startx = 7;
+	public static int starty = 7;
+	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
 	public static char ROOM = '.';
@@ -81,6 +83,7 @@ public class part0_1 {
 
 		printRoom();
 		findFurthest();
+
 	}
 
 	public static Coord move(char c,int currx, int curry) {
