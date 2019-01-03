@@ -15,47 +15,14 @@ import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
 /*
-GOOD map (my output is missing the right fork):
-#############
-#.###########
-#-###########
-#.###########
-#-###########
-#.###########
-#-###########
-#.#########.#
-#-#########-#
-#.#########.#
-#-#########-#
-#.#########.#
-#-#########-#
-#.#########.#
-#-#########-#
-#.#########.#
-#-#########-#
-#.|.|.|.|.|.#
-#-###########
-#.###########
-#-###########
-#.###########
-#-###########
-#.###########
-#-###########
-#.###########
-#-###########
-#X###########
-#############
 
-This should be 15, your code returns 13. 
-Oddly, this must be a corner-case because my input does not 
-run into this problem.
  */
-public class test1 {
+public class test1_0 {
 	public static int width = 13;
-	public static int height = 29;
-	public static int startx = 1;
-	public static int starty = 27;
-	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
+	public static int height = 13;
+	public static int startx = 7;
+	public static int starty = 7;
+	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
 	public static char ROOM = '.';
@@ -77,7 +44,6 @@ public class test1 {
 		themap[starty][startx] = ROOM;
 
 		/* test*/
-
 		
 		boolean done = false;
 		int pos = 0;
@@ -85,6 +51,7 @@ public class test1 {
 		Stack<Coord> gendpoints = new Stack<Coord>();
 		Coord curr;
 		endpoints.push(new Coord(startx,starty));
+		char prev = '\0';
 		while (!done) {
 			char c = smap.charAt(pos);
 			switch(c) {
@@ -92,13 +59,14 @@ public class test1 {
 				String[] parts = smap.split("\\(|\\)|\\|");
 
 				//if part of a group
-				if (gendpoints.size() > 0) {
+				if (gendpoints.size() > 0 && prev != ')') {
 					curr = gendpoints.peek();
 					for (char c1 : parts[0].toCharArray()) {
 						curr = move(c1,curr.x,curr.y);
 					}
 					printRoom();
-					endpoints.push(curr);
+					Coord c4 = new Coord(curr.x,curr.y);
+					endpoints.push(c4);
 				} else {
 					Stack<Coord> newendpoints = new Stack<Coord>();
 					for (Coord ep : endpoints) {
@@ -117,7 +85,8 @@ public class test1 {
 				break;
 			case '(':
 				//NNNNN(EEEEE|NNN)NNNNN
-				gendpoints.push(endpoints.peek());
+				Coord c3 = endpoints.peek();
+				gendpoints.push(new Coord(c3.x,c3.y));
 				int index = smap.lastIndexOf(')');
 				if (smap.charAt(index-1) != '|')
 					endpoints.pop();
@@ -134,6 +103,7 @@ public class test1 {
 				System.out.println("CASE SHOULD NOT HAPPEN: " + c);
 				break;
 			}
+			prev = c;
 			//printRoom();
 			System.out.println(smap);
 			//done?
