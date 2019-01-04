@@ -85,6 +85,7 @@ public class test1 {
 		Stack<Coord> gendpoints = new Stack<Coord>();
 		Coord curr;
 		endpoints.push(new Coord(startx,starty));
+		int group_id = -1;
 		while (!done) {
 			char c = smap.charAt(pos);
 			switch(c) {
@@ -116,8 +117,10 @@ public class test1 {
 				smap = smap.substring(parts[0].length());
 				break;
 			case '(':
+				group_id++;
 				//NNNNN(EEEEE|NNN)NNNNN
-				gendpoints.push(endpoints.peek());
+				Coord newc = new Coord(endpoints.peek().x, endpoints.peek().y,group_id);
+				gendpoints.push(newc);
 				int index = smap.lastIndexOf(')');
 				if (smap.charAt(index-1) != '|')
 					endpoints.pop();

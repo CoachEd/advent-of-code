@@ -14,24 +14,47 @@ import java.util.Stack;
 import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
-//LEFT OFF HERE
-public class test1_0 {
-	
-	/*
-	public static int width = 13;
-	public static int height = 13;
-	public static int startx = 7;
-	public static int starty = 7;
-	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
-	*/
-	
+/*
+GOOD map (my output is missing the right fork):
+#############
+#.###########
+#-###########
+#.###########
+#-###########
+#.###########
+#-###########
+#.#########.#
+#-#########-#
+#.#########.#
+#-#########-#
+#.#########.#
+#-#########-#
+#.#########.#
+#-#########-#
+#.#########.#
+#-#########-#
+#.|.|.|.|.|.#
+#-###########
+#.###########
+#-###########
+#.###########
+#-###########
+#.###########
+#-###########
+#.###########
+#-###########
+#X###########
+#############
+
+This should be 15, your code returns 13. 
+Oddly, this must be a corner-case because my input does not 
+run into this problem.
+ */
+public class test3 {
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
-	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
-	
-
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
 	public static char ROOM = '.';
@@ -42,8 +65,37 @@ public class test1_0 {
 	static String outfname = "files/rooms.txt";
 	static BufferedWriter bw;
 
-	public static void main(String[] args) {
+	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
+	
+	public static void parseIt(String s, int x, int y) {
+		if (s == null || s.length() == 0) return;
+		char c = s.charAt(0);
+		Coord curr = new Coord(x,y);
+		switch(c) {
+		case 'N':case 'S':case 'E':case 'W':
+			String[] parts = smap.split("\\(|\\)|\\|");
+			for (char c1 : parts[0].toCharArray()) {
+				curr = move(c1,curr.x,curr.y);
+			}
+			printRoom();
+
+			break;
+		case '(':
+
+			break;
+		case '|':
+			break;
+		case ')':
+			break;
+		default:
+			break;
+		}
 		
+
+		return;
+	}
+	
+	public static void main(String[] args) {
 		smap = smap.substring(1,smap.length()-1);
 		for (int row=0; row < themap.length; row++) {
 			for (int col=0; col < themap[row].length; col++) {
@@ -52,77 +104,11 @@ public class test1_0 {
 		}
 		themap[starty][startx] = ROOM;
 
-		//consume letters in the front
-		Coord curr = new Coord(startx,starty);
-		String[] parts = smap.split("\\(|\\)|\\|");
-		for (char c : parts[0].toCharArray()) {
-			curr = move(c,curr.x,curr.y);
-		}
-		smap = smap.substring(parts[0].length());
-		printRoom();
-
-		//now starting with '('
-
-
-		boolean done = false;
-		Stack<Coord> endpoints = new Stack<Coord>();
-		endpoints.push(curr);
-		Stack<Coord> gendpoints = new Stack<Coord>();
-		int group_id = -1;
-		while (!done) {
-			char c = smap.charAt(0);
-			switch(c) {
-			//NNNNN(EEEEE|NNN)NNNNN
-			case 'N':case'S':case'E':case'W':
-				parts = smap.split("\\(|\\)|\\|");
-				
-				//TEST
-				if (parts[0].equals("NNNNN"))
-					System.out.println("TEST");
-				
-				for (Coord c2 : endpoints) {
-					curr =  new Coord(c2.x,c2.y,group_id);
-					for (char c1 : parts[0].toCharArray()) {
-						curr = move(c1,curr.x,curr.y);
-					}
-					if (gendpoints != null) {
-						curr.group_id = group_id;
-						gendpoints.push(curr);
-					}
-				}
-
-				smap = smap.substring(parts[0].length());
-				printRoom();
-				System.out.println(smap);
-				break;
-			case '(':
-				//NNNNN(EEEEE|NNN)NNNNN
-				group_id++;
-				smap = smap.substring(1);
-				break;
-			case '|':
-				smap = smap.substring(1);
-				break;
-			case ')':
-				smap = smap.substring(1);
-				endpoints.clear();
-				endpoints.addAll(gendpoints);
-				while (gendpoints.size() > 0 && gendpoints.peek().group_id == group_id)
-					gendpoints.pop();
-				break;
-			default:
-				System.out.println("CASE SHOULD NOT HAPPEN: " + c);
-				break;
-			}
-
-			//done?
-			if (smap.length() == 0)
-				done = true;
-		}
-
-		printRoom();
-		findFurthest();
-		writeRoomsToFile();
+		/* test*/
+		parseIt(smap,startx,starty);
+		//printRoom();
+		//findFurthest();
+		//writeRoomsToFile();
 	}
 
 	public static Coord move(char c,int currx, int curry) {
