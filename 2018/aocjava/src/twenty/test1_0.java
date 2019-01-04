@@ -45,51 +45,35 @@ public class test1_0 {
 
 		/* test*/
 		
+		//original misses the last SSS leg, but factored works...
+		//smap = "ESSWWN(E|NNENN(EESS(WNSESSS|SSS)|WWWSSSSE(SW|NNNE)))"; //factored WORKS!!
+		
 		boolean done = false;
 		int pos = 0;
 		Stack<Coord> endpoints = new Stack<Coord>();
 		Stack<Coord> gendpoints = new Stack<Coord>();
-		Coord curr;
-		endpoints.push(new Coord(startx,starty));
-		char prev = '\0';
+		Coord curr = new Coord(startx,starty);
 		while (!done) {
 			char c = smap.charAt(pos);
 			switch(c) {
 			case 'N':case'S':case'E':case'W':
 				String[] parts = smap.split("\\(|\\)|\\|");
 
-				//if part of a group
-				if (gendpoints.size() > 0 && prev != ')') {
-					curr = gendpoints.peek();
-					for (char c1 : parts[0].toCharArray()) {
-						curr = move(c1,curr.x,curr.y);
-					}
-					printRoom();
-					Coord c4 = new Coord(curr.x,curr.y);
-					endpoints.push(c4);
-				} else {
-					Stack<Coord> newendpoints = new Stack<Coord>();
-					for (Coord ep : endpoints) {
-						curr = ep;
-						for (char c1 : parts[0].toCharArray()) {
-							curr = move(c1,curr.x,curr.y);
-						}
-						newendpoints.push(curr);
-					}
-					printRoom();
-					endpoints.clear();
-					endpoints.addAll(newendpoints);
-				}
-
-				smap = smap.substring(parts[0].length());
+				if (parts[0].equals("WNSE"))
+					System.out.println();
+				printRoom();
+				if (endpoints.size() > 0)
+					curr = endpoints.peek();
+				for (char c1 : parts[0].toCharArray())
+					curr = move(c1,curr.x,curr.y);
+				printRoom();
+				if (parts.length == 1)
+					smap = "";
+				else
+					smap = smap.substring(parts[0].length());
 				break;
 			case '(':
-				//NNNNN(EEEEE|NNN)NNNNN
-				Coord c3 = endpoints.peek();
-				gendpoints.push(new Coord(c3.x,c3.y));
-				int index = smap.lastIndexOf(')');
-				if (smap.charAt(index-1) != '|')
-					endpoints.pop();
+				endpoints.push(new Coord(curr.x,curr.y));
 				smap = smap.substring(1);
 				break;
 			case '|':
@@ -97,17 +81,16 @@ public class test1_0 {
 				break;
 			case ')':
 				smap = smap.substring(1);
-				gendpoints.pop();
+				endpoints.pop();
 				break;
 			default:
 				System.out.println("CASE SHOULD NOT HAPPEN: " + c);
 				break;
 			}
-			prev = c;
-			//printRoom();
+			printRoom();
 			System.out.println(smap);
 			//done?
-			if (pos >= smap.length())
+			if (smap.length() == 0)
 				done = true;
 		}
 
