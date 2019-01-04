@@ -15,7 +15,7 @@ import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
 /*
-
+WORKS???
  */
 public class test1_0 {
 	public static int width = 13;
@@ -40,29 +40,20 @@ public class test1_0 {
 				themap[row][col] = '?';
 			}
 		}
-
 		themap[starty][startx] = ROOM;
 
-		/* test*/
-		
-		//original misses the last SSS leg, but factored works...
-		//smap = "ESSWWN(E|NNENN(EESS(WNSESSS|SSS)|WWWSSSSE(SW|NNNE)))"; //factored WORKS!!
-		
 		boolean done = false;
 		int pos = 0;
 		Stack<Coord> endpoints = new Stack<Coord>();
-		Stack<Coord> gendpoints = new Stack<Coord>();
 		Coord curr = new Coord(startx,starty);
+		boolean empty_case = false;
 		while (!done) {
 			char c = smap.charAt(pos);
 			switch(c) {
 			case 'N':case'S':case'E':case'W':
 				String[] parts = smap.split("\\(|\\)|\\|");
-
-				if (parts[0].equals("WNSE"))
-					System.out.println();
 				printRoom();
-				if (endpoints.size() > 0)
+				if (endpoints.size() > 0 && !empty_case)
 					curr = endpoints.peek();
 				for (char c1 : parts[0].toCharArray())
 					curr = move(c1,curr.x,curr.y);
@@ -78,6 +69,10 @@ public class test1_0 {
 				break;
 			case '|':
 				smap = smap.substring(1);
+				if (smap.charAt(0) == ')')
+					empty_case = true;
+				else
+					empty_case = false;
 				break;
 			case ')':
 				smap = smap.substring(1);
@@ -95,10 +90,8 @@ public class test1_0 {
 		}
 
 		printRoom();
-
-
-		//findFurthest();
-		//writeRoomsToFile();
+		findFurthest();
+		writeRoomsToFile();
 	}
 
 	public static Coord move(char c,int currx, int curry) {
