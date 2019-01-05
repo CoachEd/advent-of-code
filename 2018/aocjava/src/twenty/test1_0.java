@@ -89,7 +89,7 @@ public class test1_0 {
 				break;
 			case '(':
 				//NNEE(NN|SS|)E
-				groups.pop();
+				//groups.pop();
 				groups.push(nextgroup);
 				nextgroup = new ArrayList<Coord>();
 				smap = smap.substring(1);
