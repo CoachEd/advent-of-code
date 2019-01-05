@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ import utils.Edge1;
 import utils.Vertex;
 //LEFT OFF HERE
 public class test1_0 {
-	
+
 	/*
 	public static int width = 13;
 	public static int height = 13;
@@ -24,13 +25,13 @@ public class test1_0 {
 	public static int starty = 7;
 	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
 	*/
-	
+
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
 	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
-	
+
 
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
@@ -43,7 +44,7 @@ public class test1_0 {
 	static BufferedWriter bw;
 
 	public static void main(String[] args) {
-		
+
 		smap = smap.substring(1,smap.length()-1);
 		for (int row=0; row < themap.length; row++) {
 			for (int col=0; col < themap[row].length; col++) {
@@ -52,63 +53,62 @@ public class test1_0 {
 		}
 		themap[starty][startx] = ROOM;
 
-		//consume letters in the front
-		Coord curr = new Coord(startx,starty);
-		String[] parts = smap.split("\\(|\\)|\\|");
-		for (char c : parts[0].toCharArray()) {
-			curr = move(c,curr.x,curr.y);
-		}
-		smap = smap.substring(parts[0].length());
-		printRoom();
-
-		//now starting with '('
-
-
 		boolean done = false;
-		Stack<Coord> endpoints = new Stack<Coord>();
-		endpoints.push(curr);
-		Stack<Coord> gendpoints = new Stack<Coord>();
-		int group_id = -1;
+		Stack< ArrayList<Coord> > groups = new Stack< ArrayList<Coord> >();
+		ArrayList<Coord> al = new ArrayList<Coord>();
+		ArrayList<Coord> nextgroup = new ArrayList<Coord>();
+		al.add(new Coord(startx,starty));
+		groups.add(al);
+		
+		//TESTING
+		
+		smap = "NNNNN"; //good
+		smap = "NNNNN|EE"; //good
+		smap = "NNEE(NN|SS)"; //good
+		smap = "NNEE(NN|SS)E"; //good
+		smap = "NNEE(NN|SS|)E"; //good
+		smap = "NNEE(NN|SS(EE))"; //ERROR - EE should only apply to SS
+		
 		while (!done) {
 			char c = smap.charAt(0);
 			switch(c) {
-			//NNNNN(EEEEE|NNN)NNNNN
+			//NNEE(NN|SS|)E
 			case 'N':case'S':case'E':case'W':
-				parts = smap.split("\\(|\\)|\\|");
-				
-				//TEST
-				if (parts[0].equals("NNNNN"))
-					System.out.println("TEST");
-				
-				for (Coord c2 : endpoints) {
-					curr =  new Coord(c2.x,c2.y,group_id);
-					for (char c1 : parts[0].toCharArray()) {
-						curr = move(c1,curr.x,curr.y);
-					}
-					if (gendpoints != null) {
-						curr.group_id = group_id;
-						gendpoints.push(curr);
-					}
-				}
+				String[] parts = smap.split("\\(|\\)|\\|");
 
+				al = groups.peek();
+				for (Coord coord : al) {
+					for (char c1 : parts[0].toCharArray())
+						coord = move(c1,coord.x,coord.y);
+					nextgroup.add(coord);
+				}
+				
 				smap = smap.substring(parts[0].length());
 				printRoom();
 				System.out.println(smap);
 				break;
 			case '(':
-				//NNNNN(EEEEE|NNN)NNNNN
-				group_id++;
+				//NNEE(NN|SS|)E
+				groups.pop();
+				groups.push(nextgroup);
+				nextgroup = new ArrayList<Coord>();
 				smap = smap.substring(1);
 				break;
 			case '|':
 				smap = smap.substring(1);
+				
+				if (smap.charAt(0) == ')') {
+					//special case
+					ArrayList<Coord> al2 = groups.peek();
+					nextgroup.add(new Coord(al2.get(0).x,al2.get(0).y));
+				}
+				
 				break;
 			case ')':
 				smap = smap.substring(1);
-				endpoints.clear();
-				endpoints.addAll(gendpoints);
-				while (gendpoints.size() > 0 && gendpoints.peek().group_id == group_id)
-					gendpoints.pop();
+				groups.pop();
+				groups.push(nextgroup);
+				nextgroup = new ArrayList<Coord>();
 				break;
 			default:
 				System.out.println("CASE SHOULD NOT HAPPEN: " + c);

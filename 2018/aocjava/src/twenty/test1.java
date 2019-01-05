@@ -119,7 +119,7 @@ public class test1 {
 			case '(':
 				group_id++;
 				//NNNNN(EEEEE|NNN)NNNNN
-				Coord newc = new Coord(endpoints.peek().x, endpoints.peek().y,group_id);
+				Coord newc = new Coord(endpoints.peek().x, endpoints.peek().y);
 				gendpoints.push(newc);
 				int index = smap.lastIndexOf(')');
 				if (smap.charAt(index-1) != '|')
