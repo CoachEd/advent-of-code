@@ -68,21 +68,18 @@ public class test1_0 {
 		smap = "NNEE(NN|SS)E"; //good
 		smap = "NNEE(NN|SS|)E"; //good
 		smap = "NNEE(NN|SS(EE))"; //ERROR - EE should only apply to SS
-		
 		while (!done) {
 			char c = smap.charAt(0);
 			switch(c) {
 			//NNEE(NN|SS|)E
 			case 'N':case'S':case'E':case'W':
 				String[] parts = smap.split("\\(|\\)|\\|");
-
 				al = groups.peek();
 				for (Coord coord : al) {
 					for (char c1 : parts[0].toCharArray())
 						coord = move(c1,coord.x,coord.y);
 					nextgroup.add(coord);
 				}
-				
 				smap = smap.substring(parts[0].length());
 				printRoom();
 				System.out.println(smap);
