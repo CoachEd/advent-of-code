@@ -61,7 +61,6 @@ public class test1_0 {
 		groups.add(al);
 		
 		//TESTING
-		
 		smap = "NNNNN"; //good
 		smap = "NNNNN|EE"; //good
 		smap = "NNEE(NN|SS)"; //good
