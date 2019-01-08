@@ -16,6 +16,22 @@ import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
 //LEFT OFF HERE - IF '|' multiply them out with REST
+/*
+|) YES
+|| NO
+|( NO
+
+)) YES
+)( YES
+)| YES
+
+(( NO
+(| NO
+() NO
+
+
+( always followed by NSEW
+ */
 public class test1_1 {
 
 	/*
