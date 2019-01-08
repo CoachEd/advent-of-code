@@ -34,20 +34,18 @@ import utils.Vertex;
  */
 public class test1_1 {
 
-	/*
 	public static int width = 13;
 	public static int height = 13;
 	public static int startx = 7;
 	public static int starty = 7;
 	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
-	 */
-
+	/*
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
 	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
-
+	*/
 
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
@@ -63,59 +61,74 @@ public class test1_1 {
 		ArrayList<Coord> ret = new ArrayList<Coord>();
 		if (s == null || s.length() == 0) return ret;
 
+		String next = null;
+		Coord temp = new Coord(curr.x,curr.y);
 		char c = s.charAt(0);
-		int idxleft = s.indexOf('(');
-		int idxright = s.indexOf(')');
-		int idxpipe = s.indexOf('|');
-		int idxnext = Integer.MAX_VALUE;
-		if (idxleft >= 0 && idxleft < idxnext)
-			idxnext = idxleft;
-		if (idxright >= 0 && idxright < idxnext)
-			idxnext = idxright;
-		if (idxpipe >= 0 && idxpipe < idxnext)
-			idxnext = idxpipe;
 		switch(c) {
 		case 'N':case 'S':case 'E':case 'W':
-			String s1 = s;
-			String sRest = "";
-			if (idxnext != Integer.MAX_VALUE) {
-				s1 = s1.substring(0,idxnext);
-				sRest = s.substring(idxnext);
-			}
-			Coord temp = new Coord(curr.x,curr.y);
-			for (int i=0; i < s1.length(); i++) {
-				char c2 = s1.charAt(i);
+			String[] parts = s.split("\\(|\\)|\\|");
+			System.out.println(temp.x+","+temp.y+ "  " + parts[0]); //TEST
+			for (int i=0; i < parts[0].length(); i++) {
+				char c2 = s.charAt(i);
 				temp = move(c2,temp.x,temp.y);
 			}
-			if (sRest.length() > 0) {
-				char nextc = sRest.charAt(0);
-				if (nextc == '|')
-					parseIt(sRest.substring(1),curr);
-				else if (nextc == '(') {
-					//find closing parend
-					int curr1 = 0;
-					boolean done = false;
-					while (!done) {
-						
-						
-					}
-					
-				}
+			printRoom();
+			next = s.substring(parts[0].length());
+			if (next.length() == 0) {
+				ret.add(temp);
+				return ret;
+			} else {
+				if (next.charAt(0) == '|') {
+					ret.add(temp);
+					ret.addAll(parseIt(next,curr));
+					return ret;
+				} else
+					return parseIt(next,temp);
 			}
-			break;
 		case '|':
-
-			break;
-		case ')':
-
-			break;			
+			next = s.substring(1);
+			return parseIt(next,curr);			
 		case '(':
-
-			break;				
+			//find the group, parse it, parse the rest (NEED WORK BELOW)
+			int pos=0;
+			int num_skips = 1;
+			while (s.charAt(pos) != ')' || num_skips > 0) {
+				pos++;
+				if (s.charAt(pos) == '(')
+					num_skips++;
+				else if (s.charAt(pos) == ')')
+					num_skips--;
+			}
+			String group = s.substring(1,pos);
+			String rest = s.substring(pos+1);
+			ArrayList<Coord> al = new ArrayList<Coord>();
+			if (group.endsWith("|")) {
+				//empty group case
+				al.add(new Coord(curr.x,curr.y));
+				group = group.substring(0,group.length()-1);
+			}
+			if (rest != null && rest.length() > 0) {
+				char next_char = rest.charAt(0);
+				al.addAll(parseIt(group,curr));
+				if (next_char == '|') {
+					al.addAll(parseIt(rest,curr));
+					return al;
+				}
+				ArrayList<Coord> al2 =  new ArrayList<Coord>();
+				for (Coord c3 : al) {
+					al2.addAll( parseIt(rest,c3) );
+				}
+				return al2;
+			} else {
+				return parseIt(group,curr);
+			}
+		case ')':
+			//NEEDED?
+			break;
 		default:
 			break;
 		}
-
+		printRoom();
 
 
 		return ret;
@@ -134,15 +147,22 @@ public class test1_1 {
 		themap[starty][startx] = ROOM;
 
 		//TESTING
+		/*
 		smap = "NNNNN"; 
 		smap = "NNNNN|EE"; 
 		smap = "NNNNN(EE)"; 
-		//smap = "NNEE(NN|SS)"; 
-		//smap = "NNEE(NN|SS)E"; 
-		//smap = "NNEE(NN|SS|)E"; 
-		//smap = "NNEE(NN|SS(EE))"; 
-		//smap = "NNEE(N|S)(E|W)";
+		smap = "NNEE(NN|SS)"; 
+		smap = "NNEE(NN|SS)E";
+		smap = "NNEE(NN|SS)(E|W)"; 
+		smap = "NNEE(NN|SS(EE))"; 
+		smap = "NNEE(NN|SS|)E"; 
+		smap = "NNEE(E|N(E(WN|)S|E(N|E)))";
+		*/
+		//smap = "N(E(S|)N|W(S|E))"; //not working
+		//smap = "E(S|)N|W(S|E)"; //not working
+		smap = "E(S|N)N|W(S|W)"; //not working (CASE: need to break this on '|' in two parts!!
 
+		printRoom();
 		parseIt(smap,new Coord(startx,starty));
 
 		printRoom();
