@@ -15,7 +15,7 @@ import java.util.Stack;
 import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
-//LEFT OFF HERE - IF '|' multiply them out with REST
+//SEEMS TO WORK, but takes a LOOOOONG TIME!
 /*
 |) YES
 || NO
@@ -33,19 +33,40 @@ import utils.Vertex;
 ( always followed by NSEW
  */
 public class test1_1 {
-
+	/*GOOD
 	public static int width = 13;
 	public static int height = 13;
 	public static int startx = 7;
 	public static int starty = 7;
 	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
-	/*
+
+	//GOOD
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
 	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
+
+	//GOOD
+	public static int width = 9;
+	public static int height = 9;
+	public static int startx = 5;
+	public static int starty = 5;
+	public static String smap = "^ENWWW(NEEE|SSE(EE|N))$";
+
+	//GOOD
+	public static int width = 11;
+	public static int height = 11;
+	public static int startx = 5;
+	public static int starty = 5;
+	public static String smap = "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$";
 	*/
+	//GOOD
+	public static int width = 15;
+	public static int height = 15;
+	public static int startx = 7;
+	public static int starty = 7;
+	public static String smap = "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$";
 
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
@@ -66,9 +87,9 @@ public class test1_1 {
 		char c = s.charAt(0);
 		switch(c) {
 		case 'N':case 'S':case 'E':case 'W':
-			
-			
-			
+
+
+
 			//check for top-level pipe (NEW)
 			int pos2 = 0;
 			int paren_count = 0;
@@ -78,7 +99,7 @@ public class test1_1 {
 					paren_count--;
 				else if (s.charAt(pos2) == '(')
 					paren_count++;
-				
+
 				if (paren_count == 0 && s.charAt(pos2) == '|') {
 					found_toplevel_pipe = true;
 					break;
@@ -93,10 +114,10 @@ public class test1_1 {
 				al3.addAll(parseIt(s.substring(pos2+1),curr));
 				return al3;
 			}
-			
-			
-			
-			
+
+
+
+
 			String[] parts = s.split("\\(|\\)|\\|");
 			System.out.println(temp.x+","+temp.y+ "  " + parts[0]); //TEST
 			for (int i=0; i < parts[0].length(); i++) {
@@ -188,7 +209,7 @@ public class test1_1 {
 		smap = "NNEE(NN|SS(EE))"; 
 		smap = "NNEE(NN|SS|)E"; 
 		smap = "NNEE(E|N(E(WN|)S|E(N|E)))";
-		*/
+		 */
 		//smap = "N(E(S|)N|W(S|E))"; //not working
 		//smap = "E(S|)N|W(S|E)"; //not working
 		//smap = "E(S|N)N|W(S|W)"; //not working (CASE: need to break this on '|' in two parts!!
