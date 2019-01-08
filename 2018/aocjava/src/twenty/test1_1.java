@@ -15,8 +15,8 @@ import java.util.Stack;
 import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
-//LEFT OFF HERE
-public class test1_0 {
+//LEFT OFF HERE - IF '|' multiply them out with REST
+public class test1_1 {
 
 	/*
 	public static int width = 13;
@@ -43,6 +43,70 @@ public class test1_0 {
 	static String outfname = "files/rooms.txt";
 	static BufferedWriter bw;
 
+	public static ArrayList<Coord> parseIt(String s, Coord curr) {
+		ArrayList<Coord> ret = new ArrayList<Coord>();
+		if (s == null || s.length() == 0) return ret;
+
+		char c = s.charAt(0);
+		int idxleft = s.indexOf('(');
+		int idxright = s.indexOf(')');
+		int idxpipe = s.indexOf('|');
+		int idxnext = Integer.MAX_VALUE;
+		if (idxleft >= 0 && idxleft < idxnext)
+			idxnext = idxleft;
+		if (idxright >= 0 && idxright < idxnext)
+			idxnext = idxright;
+		if (idxpipe >= 0 && idxpipe < idxnext)
+			idxnext = idxpipe;
+		switch(c) {
+		case 'N':case 'S':case 'E':case 'W':
+			String s1 = s;
+			String sRest = "";
+			if (idxnext != Integer.MAX_VALUE) {
+				s1 = s1.substring(0,idxnext);
+				sRest = s.substring(idxnext);
+			}
+			Coord temp = new Coord(curr.x,curr.y);
+			for (int i=0; i < s1.length(); i++) {
+				char c2 = s1.charAt(i);
+				temp = move(c2,temp.x,temp.y);
+			}
+			if (sRest.length() > 0) {
+				char nextc = sRest.charAt(0);
+				if (nextc == '|')
+					parseIt(sRest.substring(1),curr);
+				else if (nextc == '(') {
+					//find closing parend
+					int curr1 = 0;
+					boolean done = false;
+					while (!done) {
+						
+						
+					}
+					
+				}
+			}
+			break;
+		case '|':
+
+			break;
+		case ')':
+
+			break;			
+		case '(':
+
+			break;				
+		default:
+			break;
+		}
+
+
+
+		return ret;
+	}
+
+
+
 	public static void main(String[] args) {
 
 		smap = smap.substring(1,smap.length()-1);
@@ -53,77 +117,17 @@ public class test1_0 {
 		}
 		themap[starty][startx] = ROOM;
 
-		boolean done = false;
-		Stack< ArrayList<Coord> > groups = new Stack< ArrayList<Coord> >();
-		ArrayList<Coord> al = new ArrayList<Coord>();
-		ArrayList<Coord> nextgroup = new ArrayList<Coord>();
-
 		//TESTING
-		smap = "NNNNN"; //good
-		smap = "NNNNN|EE"; //good
-		smap = "NNEE(NN|SS)"; //good
-		smap = "NNEE(NN|SS)E"; //good
-		smap = "NNEE(NN|SS|)E"; //good
-		smap = "NNEE(NN|SS(EE))"; //ERROR - EE should only apply to SS
+		smap = "NNNNN"; 
+		smap = "NNNNN|EE"; 
+		smap = "NNNNN(EE)"; 
+		//smap = "NNEE(NN|SS)"; 
+		//smap = "NNEE(NN|SS)E"; 
+		//smap = "NNEE(NN|SS|)E"; 
+		//smap = "NNEE(NN|SS(EE))"; 
 		//smap = "NNEE(N|S)(E|W)";
-		Coord crdrecent = new Coord(startx,starty);
-		while (!done) {
-			char c = smap.charAt(0);
-			switch(c) {
-			//NNEE(NN|SS(EE))
-			case 'N':case'S':case'E':case'W':
-				String[] parts = smap.split("\\(|\\)|\\|");
-				char nextchar = smap.substring(parts[0].length()).charAt(0);
-				if (groups.size() == 0) {
-					//use most recent
-					for (char c1 : parts[0].toCharArray())
-						crdrecent = move(c1,crdrecent.x,crdrecent.y);			
-				} else {
-					al = groups.peek();
-					for (Coord coord : al) {
-						for (char c1 : parts[0].toCharArray())
-							coord = move(c1,coord.x,coord.y);
-						crdrecent = new Coord(coord.x,coord.y);
-						if (nextchar != '(')
-							nextgroup.add(crdrecent);
-					}
-				}
-				smap = smap.substring(parts[0].length());
-				printRoom();
-				System.out.println(smap);
-				break;
-			case '(':
-				//NNEE(NN|SS(EE))
-				nextgroup.add(new Coord(crdrecent.x,crdrecent.y));
-				groups.push(nextgroup);
-				nextgroup = new ArrayList<Coord>();
-				smap = smap.substring(1);
-				break;
-			case '|':
-				smap = smap.substring(1);
 
-				if (smap.charAt(0) == ')') {
-					//special case
-					ArrayList<Coord> al2 = groups.peek();
-					nextgroup.add(new Coord(al2.get(0).x,al2.get(0).y));
-				}
-
-				break;
-			case ')':
-				smap = smap.substring(1);
-				groups.pop();
-				groups.push(nextgroup);
-				nextgroup = new ArrayList<Coord>();
-				break;
-			default:
-				System.out.println("CASE SHOULD NOT HAPPEN: " + c);
-				break;
-			}
-
-			//done?
-			if (smap.length() == 0)
-				done = true;
-		}
+		parseIt(smap,new Coord(startx,starty));
 
 		printRoom();
 		findFurthest();
