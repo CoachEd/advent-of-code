@@ -66,6 +66,37 @@ public class test1_1 {
 		char c = s.charAt(0);
 		switch(c) {
 		case 'N':case 'S':case 'E':case 'W':
+			
+			
+			
+			//check for top-level pipe (NEW)
+			int pos2 = 0;
+			int paren_count = 0;
+			boolean found_toplevel_pipe = false;
+			while (true) {
+				if (s.charAt(pos2) == ')')
+					paren_count--;
+				else if (s.charAt(pos2) == '(')
+					paren_count++;
+				
+				if (paren_count == 0 && s.charAt(pos2) == '|') {
+					found_toplevel_pipe = true;
+					break;
+				}
+				pos2++;
+				if (pos2 >= s.length())
+					break;
+			}
+			if (found_toplevel_pipe) {
+				ArrayList<Coord> al3 = new ArrayList<Coord>();
+				al3.addAll(parseIt(s.substring(0,pos2),curr));
+				al3.addAll(parseIt(s.substring(pos2+1),curr));
+				return al3;
+			}
+			
+			
+			
+			
 			String[] parts = s.split("\\(|\\)|\\|");
 			System.out.println(temp.x+","+temp.y+ "  " + parts[0]); //TEST
 			for (int i=0; i < parts[0].length(); i++) {
@@ -160,7 +191,7 @@ public class test1_1 {
 		*/
 		//smap = "N(E(S|)N|W(S|E))"; //not working
 		//smap = "E(S|)N|W(S|E)"; //not working
-		smap = "E(S|N)N|W(S|W)"; //not working (CASE: need to break this on '|' in two parts!!
+		//smap = "E(S|N)N|W(S|W)"; //not working (CASE: need to break this on '|' in two parts!!
 
 		printRoom();
 		parseIt(smap,new Coord(startx,starty));
