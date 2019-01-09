@@ -24,7 +24,7 @@ public class part2 {
 			e.printStackTrace();
 		}
 
-		ArrayList<Nanobot> nanobots = new ArrayList<Nanobot>();
+		ArrayList<Nanobot2> nanobots = new ArrayList<Nanobot2>();
 		for (String s : al) {
 			String[] arr = s.split("\\s+");
 			String pos = arr[0];
@@ -39,28 +39,35 @@ public class part2 {
 			int id3 = sRadius.indexOf('=');
 			sRadius = sRadius.trim().substring(id3+1);
 			int r = Integer.parseInt(sRadius);
-			nanobots.add(new Nanobot(x,y,z,r));
+			nanobots.add(new Nanobot2(x,y,z,r));
 		}
-		
-		int max_intersecting = Integer.MIN_VALUE;
-		int maxi_index = -1;
-		for (int i=0; i < nanobots.size(); i++) {
-			int count_intersecting = 0;
-			for (int j=0; j < nanobots.size(); j++) {
-				if (i == j) continue;
-				Nanobot n1 = nanobots.get(i);
-				Nanobot n2 = nanobots.get(j);
-				if (n1.overlaps(n2))
-					count_intersecting++;
+
+		Nanobot2 center = new Nanobot2(0,0,0,1);
+		//long max_radius = 1000000000l;
+		long max_radius = 291735893;
+		long r = 291735892;
+		long maxcounts = Integer.MIN_VALUE;
+		long maxr = -1;
+		while (r < max_radius) {
+			center.r = r;
+			int count = 0;
+			for (Nanobot2 nb : nanobots) {
+				long dist = nb.mdist(center);
+				if (dist <= center.r) {
+					count++;
+				}
 			}
-			System.out.println(count_intersecting);
-			if (count_intersecting > max_intersecting) {
-				max_intersecting = count_intersecting;
-				maxi_index = i;
+			
+			if (count > maxcounts) {
+				maxcounts = count;
+				maxr = r;
 			}
+			
+			r+= 1;
 		}
-		System.out.println("maxi_index: " + maxi_index + "   max_intersecting: " + max_intersecting);
-		System.out.println(nanobots.size());
+
+		System.out.println("radius is: " + maxr + "   counts: " + maxcounts);
+//TOO HIGH: 291735892
 
 
 
