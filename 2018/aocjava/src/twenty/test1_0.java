@@ -15,23 +15,45 @@ import java.util.Stack;
 import utils.Dijkstra;
 import utils.Edge1;
 import utils.Vertex;
-//LEFT OFF HERE
-public class test1_0 {
 
-	/*
+//non recursive try
+public class test1_0 {
+	/*GOOD
 	public static int width = 13;
 	public static int height = 13;
 	public static int startx = 7;
 	public static int starty = 7;
 	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
-	 */
-
+*/
+	
+	//GOOD
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
 	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
+/*
+	//GOOD
+	public static int width = 9;
+	public static int height = 9;
+	public static int startx = 5;
+	public static int starty = 5;
+	public static String smap = "^ENWWW(NEEE|SSE(EE|N))$";
 
+	//GOOD
+	public static int width = 11;
+	public static int height = 11;
+	public static int startx = 5;
+	public static int starty = 5;
+	public static String smap = "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$";
+	
+	//GOOD
+	public static int width = 15;
+	public static int height = 15;
+	public static int startx = 7;
+	public static int starty = 7;
+	public static String smap = "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$";
+	*/
 
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
@@ -53,77 +75,85 @@ public class test1_0 {
 		}
 		themap[starty][startx] = ROOM;
 
-		boolean done = false;
-		Stack< ArrayList<Coord> > groups = new Stack< ArrayList<Coord> >();
-		ArrayList<Coord> al = new ArrayList<Coord>();
-		ArrayList<Coord> nextgroup = new ArrayList<Coord>();
-
 		//TESTING
-		smap = "NNNNN"; //good
-		smap = "NNNNN|EE"; //good
-		smap = "NNEE(NN|SS)"; //good
-		smap = "NNEE(NN|SS)E"; //good
-		smap = "NNEE(NN|SS|)E"; //good
-		smap = "NNEE(NN|SS(EE))"; //ERROR - EE should only apply to SS
-		//smap = "NNEE(N|S)(E|W)";
-		Coord crdrecent = new Coord(startx,starty);
+		smap = "NNNNN"; 
+		smap = "NNNNN|EE"; 
+		//smap = "NNNNN(EE)"; 
+		//smap = "NNEE(NN|SS)"; 
+		//smap = "NNEE(NN|SS)E";
+		//smap = "NNEE(NN|SS)(E|W)"; 
+		//smap = "NNEE(NN|SS(EE))"; 
+		//smap = "NNEE(NN|SS|)E"; 
+		//smap = "NNEE(E|N(E(WN|)S|E(N|E)))";
+		//smap = "N(E(S|)N|W(S|E))"; //not working
+		//smap = "E(S|)N|W(S|E)"; //not working
+		//smap = "E(S|N)N|W(S|W)"; //not working (CASE: need to break this on '|' in two parts!!
+
+		int pos = 0;
+		ArrayList<Coord> group = new ArrayList<Coord>();
+		Stack< ArrayList<Coord> > groups = new Stack< ArrayList<Coord> >();
+		group.add(new Coord(startx,starty));
+		groups.push(group);
+
+		boolean done = false;
 		while (!done) {
 			char c = smap.charAt(0);
 			switch(c) {
-			//NNEE(NN|SS(EE))
-			case 'N':case'S':case'E':case'W':
+			case 'N':case 'S':case 'E':case 'W':
 				String[] parts = smap.split("\\(|\\)|\\|");
-				char nextchar = smap.substring(parts[0].length()).charAt(0);
-				if (groups.size() == 0) {
-					//use most recent
-					for (char c1 : parts[0].toCharArray())
-						crdrecent = move(c1,crdrecent.x,crdrecent.y);			
+				ArrayList<Coord> grp = groups.pop();
+				ArrayList<Coord> nextgrp = new ArrayList<Coord>();
+				for (Coord curr : grp) {
+					for (int i=0; i < parts[0].length(); i++) {
+						char c2 = smap.charAt(i);
+						curr = move(c2,curr.x,curr.y);
+					}
+					nextgrp.add(new Coord(curr.x,curr.y));
+				}
+				
+				if (parts.length == 1) {
+					done = true;
 				} else {
-					al = groups.peek();
-					for (Coord coord : al) {
-						for (char c1 : parts[0].toCharArray())
-							coord = move(c1,coord.x,coord.y);
-						crdrecent = new Coord(coord.x,coord.y);
-						if (nextchar != '(')
-							nextgroup.add(crdrecent);
+					//there is a rest
+					String rest = smap.substring(parts[0].length());
+					char c3 = rest.charAt(0);
+					if (c3 == '|') {
+						//if next char is '|'
+						//use grp as the next starting point
+						groups.push(grp);
+						smap = rest.substring(1);
+					} else if (c3 == '(') {
+						//LEFT OFF HERE!!!
+						//if next char is '('
+						//use nextgrp as the next starting point
+						//get the entire group and split it apart from the next rest
+						
 					}
 				}
-				smap = smap.substring(parts[0].length());
-				printRoom();
-				System.out.println(smap);
+
 				break;
 			case '(':
-				//NNEE(NN|SS(EE))
-				nextgroup.add(new Coord(crdrecent.x,crdrecent.y));
-				groups.push(nextgroup);
-				nextgroup = new ArrayList<Coord>();
-				smap = smap.substring(1);
+				//handle entire group
 				break;
 			case '|':
-				smap = smap.substring(1);
-
-				if (smap.charAt(0) == ')') {
-					//special case
-					ArrayList<Coord> al2 = groups.peek();
-					nextgroup.add(new Coord(al2.get(0).x,al2.get(0).y));
-				}
-
+				//need this? or handled elsewhere?
 				break;
 			case ')':
-				smap = smap.substring(1);
-				groups.pop();
-				groups.push(nextgroup);
-				nextgroup = new ArrayList<Coord>();
+				//process as end of group (i.e., pop?)
 				break;
 			default:
-				System.out.println("CASE SHOULD NOT HAPPEN: " + c);
 				break;
 			}
 
-			//done?
-			if (smap.length() == 0)
-				done = true;
+			if (done)
+				break;
 		}
+
+
+
+
+
+
 
 		printRoom();
 		findFurthest();
