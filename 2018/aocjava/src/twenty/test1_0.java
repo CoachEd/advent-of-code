@@ -24,15 +24,15 @@ public class test1_0 {
 	public static int startx = 7;
 	public static int starty = 7;
 	public static String smap = "^ESSWWN(E|NNENN(EESS(WNSE|)SSS|WWWSSSSE(SW|NNNE)))$";
-*/
-	
+	 */
+
 	//GOOD
 	public static int width = 13;
 	public static int height = 29;
 	public static int startx = 1;
 	public static int starty = 27;
 	public static String smap = "^NNNNN(EEEEE|NNN)NNNNN$";
-/*
+	/*
 	//GOOD
 	public static int width = 9;
 	public static int height = 9;
@@ -46,14 +46,14 @@ public class test1_0 {
 	public static int startx = 5;
 	public static int starty = 5;
 	public static String smap = "^ENNWSWW(NEWS|)SSSEEN(WNSE|)EE(SWEN|)NNN$";
-	
+
 	//GOOD
 	public static int width = 15;
 	public static int height = 15;
 	public static int startx = 7;
 	public static int starty = 7;
 	public static String smap = "^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$";
-	*/
+	 */
 
 	public static char[][] themap = new char[height][width];
 	public static char UNKNOWN = '?';
@@ -78,9 +78,9 @@ public class test1_0 {
 		//TESTING
 		smap = "NNNNN"; 
 		smap = "NNNNN|EE"; 
-		//smap = "NNNNN(EE)"; 
-		//smap = "NNEE(NN|SS)"; 
-		//smap = "NNEE(NN|SS)E";
+		smap = "NNNNN(EE)"; 
+		smap = "NNEE(NN|SS)"; 
+		smap = "NNEE(NN|SS)E";
 		//smap = "NNEE(NN|SS)(E|W)"; 
 		//smap = "NNEE(NN|SS(EE))"; 
 		//smap = "NNEE(NN|SS|)E"; 
@@ -110,7 +110,7 @@ public class test1_0 {
 					}
 					nextgrp.add(new Coord(curr.x,curr.y));
 				}
-				
+
 				if (parts.length == 1) {
 					done = true;
 				} else {
@@ -121,14 +121,13 @@ public class test1_0 {
 						//if next char is '|'
 						//use grp as the next starting point
 						groups.push(grp);
-						smap = rest.substring(1);
-					} else if (c3 == '(') {
+					} else {
 						//LEFT OFF HERE!!!
 						//if next char is '('
 						//use nextgrp as the next starting point
-						//get the entire group and split it apart from the next rest
-						
+						groups.push(nextgrp);
 					}
+					smap = rest.substring(1);
 				}
 
 				break;
@@ -140,6 +139,8 @@ public class test1_0 {
 				break;
 			case ')':
 				//process as end of group (i.e., pop?)
+				//groups.pop();
+				smap = smap.substring(1);
 				break;
 			default:
 				break;
