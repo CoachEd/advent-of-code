@@ -24,7 +24,7 @@ public class MatrixClient extends Application {
 	private Label l;
 	private static int WIDTH=435;
 	private static int HEIGHT=825;
-	private static int REFRESH_MS = 100; //ms
+	private static int REFRESH_MS = 250; //ms
 	static String fname = "files/recording.txt"; //created by GoblinBattleOutput.java
 	private static BufferedReader br;
 	private static ArrayList<String> board;
@@ -78,6 +78,7 @@ public class MatrixClient extends Application {
 					}
 				}
 			}});
+		
 		gameThread.start();
 
 		Scene scene = new Scene(bpane,WIDTH,HEIGHT);
