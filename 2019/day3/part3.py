@@ -1,6 +1,8 @@
 import sys
 import time
 
+# FOR VISUALIZATION
+
 start_secs = time.time()
 
 crosses = []
