@@ -1,14 +1,14 @@
 import sys
 import time
-# WRONG: 264
+
 start_secs = time.time()
 
 def countOrbits(tObj,tOrbits,tList):
     tList.append(tObj)
     if tObj == 'COM':
-        return 1
+        return
     else:
-        return 1 + countOrbits(tOrbits[tObj],tOrbits,tList)
+        return countOrbits(tOrbits[tObj],tOrbits,tList)
 
 with open('input1.txt') as f:
     content = f.readlines()
@@ -22,24 +22,20 @@ for orbit in arr:
 you_orbits = []
 santa_orbits = []
 
-countOrbits('YOU',orbits,you_orbits)
-countOrbits('SAN',orbits,santa_orbits)
+countOrbits('YOU',orbits,you_orbits)  # get the objects YOU orbit
+countOrbits('SAN',orbits,santa_orbits)  # get the objects SAN orbits
 
-print(you_orbits)
-print(santa_orbits)
-
-# find intersection
+# find intersection where the YOU and SAN paths meet
 intersecting_obj = ''
 for obj in you_orbits:
     if obj in santa_orbits:
         intersecting_obj = obj
         break
-print(intersecting_obj)
+print('\n' + intersecting_obj)
 
-sum = you_orbits.index(intersecting_obj) - 1
-sum = sum + santa_orbits.index(intersecting_obj) - 1
+sum = you_orbits.index(intersecting_obj) - 1  # sum my orbits back to the intersection
+sum = sum + santa_orbits.index(intersecting_obj) - 1  # add on SAN's orbits back to the intersection
 print(sum)
 
 end_secs = time.time()
-print()
-print('elapsed time: ' + str(end_secs - start_secs) + ' seconds')
+print('\nelapsed time: ' + str(end_secs - start_secs) + ' seconds')
