@@ -206,14 +206,14 @@ for seq in perms:
   arrD = inputs.split(',')
   arrE = inputs.split(',')  
   arr_result = []
-  x0 = -1
+  x0 = None
   iA = [0,0]
   iB = [0,0]
   iC = [0,0]
   iD = [0,0]
   iE = [0,0] 
   while True:
-    if x0 == -1:
+    if x0 == None:
       x0 = 0
     x1 = ampSoftware(seq[0],x0,arrA,iA) 
     x2 = ampSoftware(seq[1],x1,arrB,iB)
