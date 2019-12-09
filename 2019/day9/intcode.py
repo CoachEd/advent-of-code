@@ -27,6 +27,12 @@ relbase =0
 while(True):
     s = str(arr[i])
 
+    # get parameter modes
+    pmodes = s[:-2]
+    if len(pmodes) == 0:
+      pmodes = '0'
+    pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
+
     # make sure opcode is at least length 2 (leading 0s)
     opcode = "{:02d}".format(int(s))
     opcode = opcode[-2:]     
@@ -36,16 +42,16 @@ while(True):
         break
     elif opcode == '01':
         # add
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
-        if pmodes[2] == '0':
+
+        # parameter 1 - determine parameter mode
+        if pmodes[2] == '0':  # absolute mode
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
-          x = arr[i+1]
+          x = arr[i+1]  # position mode
         else:
-          x = arr[int(arr[i+1])+relbase]
+          x = arr[int(arr[i+1])+relbase]  # relative mode
+
+        # parameter 2 - determine parameter mode
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1]=='1':
@@ -53,7 +59,7 @@ while(True):
         else:
           y = arr[int(arr[i+2])+relbase]
 
-        # store result
+        # parameter 3 - store the result (can only be position mode(0) or relative mode(2))
         if pmodes[0] == '0':
           arr[int(arr[i+3])] = int(x) + int(y)
         elif pmodes[0] == '2':
@@ -62,10 +68,8 @@ while(True):
         i = i + 4
     elif opcode == '02':
         # multiply
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
+
+        # parameter 1
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
@@ -73,7 +77,7 @@ while(True):
         else:
           x = arr[int(arr[i+1])+relbase]
                  
-        # store result
+        # parameter 2
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1] == '1':
@@ -81,6 +85,7 @@ while(True):
         else:
           y = arr[int(arr[i+2])+relbase]  
         
+        # parameter 3
         if pmodes[0] == '0':
           arr[int(arr[i+3])] = int(x) * int(y)
         elif pmodes[0] == '2':
@@ -90,12 +95,9 @@ while(True):
     elif opcode == '03':
         # input
         print('input?',end =" ")
-        # input
+
         n = input()
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
+
         if pmodes[2] == '0':
           arr[int(arr[i+1])] = int(n)
         else:
@@ -104,10 +106,7 @@ while(True):
         i = i + 2
     elif opcode == '04':
         # output
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
+
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
@@ -122,16 +121,13 @@ while(True):
         Opcode 5 is jump-if-true: if the first parameter is non-zero, 
         it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
         """
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
           x = arr[i+1]
         else:
           x = arr[int(arr[i+1])+relbase]
+        
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1] == '1':
@@ -149,22 +145,20 @@ while(True):
         Opcode 6 is jump-if-false: if the first parameter is zero, 
         it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
         """
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
           x = arr[i+1]
         else:
           x = arr[int(arr[i+1])+relbase]
+
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1] == '1':
           y = arr[i+2]
         else:
           y = arr[int(arr[i+2])+relbase]
+        
         if int(x) == 0:
           i = int(y)
         else:
@@ -175,16 +169,13 @@ while(True):
         Opcode 7 is less than: if the first parameter is less than the second parameter, 
         it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
         """
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
           x = arr[i+1]
         else:
           x = arr[int(arr[i+1])+relbase]
+        
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1] == '1':
@@ -210,16 +201,13 @@ while(True):
         Opcode 8 is equals: if the first parameter is equal to the second parameter, 
         it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
         """
-        pmodes = s[:-2]
-        if len(pmodes) == 0:
-          pmodes = '0'
-        pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
         if pmodes[2] == '0':
           x = arr[int(arr[i+1])]
         elif pmodes[2] == '1':
           x = arr[i+1]
         else:
           x = arr[int(arr[i+1])+relbase]
+        
         if pmodes[1] == '0':
           y = arr[int(arr[i+2])]
         elif pmodes[1] == '1':
@@ -248,10 +236,6 @@ while(True):
       	if the value is negative) by the value of 
       	the parameter.
       """
-      pmodes = s[:-2]   
-      if len(pmodes) == 0:
-        pmodes = '0'
-      pmodes = "{:03d}".format(int(pmodes)) # ensure length 3, leading 0s
       if pmodes[2] == '0':
         x = arr[int(arr[i+1])]
       elif pmodes[2] == '1':
