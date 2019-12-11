@@ -47,9 +47,10 @@ for y in range(len(arr)):
     temparr.append(arr[y][x])
   origarr.append(temparr)
 
+printArr(origarr)
 
 # main loop
-directions = ['up','down','right','left','topright','bottomright','topleft','bottomleft']
+directions = ['up','topright','right','bottomright','down','bottomleft','left','topleft']
 max_points = -1
 keep_x = -1
 keep_y = -1
@@ -57,8 +58,8 @@ for y in range(len(origarr)):
   for x in range(len(origarr[y])):
 
     #TEST
-    #if not (y == 0 and x == 0):
-    #  continue
+    if not (y == 3 and x == 8):
+      continue
 
     if origarr[y][x] == '#':
       # found an asteroid at y,x, process it
@@ -137,7 +138,7 @@ for y in range(len(origarr)):
               # went too far
               break
 
-      #printArr(arr2)
+      printArr(arr2)
       n = countArr(arr2)
       if (n > max_points):
         max_points = n
