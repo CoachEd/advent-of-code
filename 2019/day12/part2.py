@@ -97,6 +97,7 @@ for i in range(0,len(posarr)):
     potenergy = potenergy + abs(posarr[i][j])
   totenergy = totenergy + (kinenergy * potenergy)
 
+
 print(totenergy)
 
 
