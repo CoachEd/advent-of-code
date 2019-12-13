@@ -27,7 +27,7 @@ for r in tarr:
     temp2.append(0)
   posarr.append(temp)
   velarr.append(temp2)
-print(velarr)
+
 
 
 
@@ -40,13 +40,7 @@ For example, if Ganymede has an x position of 3, and Callisto has a x position o
 then Ganymede's x velocity changes by +1 (because 5 > 3) and Callisto's x velocity changes by -1 (because 3 < 5). 
 However, if the positions on a given axis are the same, the velocity on that axis does not change for that pair of moons.
 """
-steps = 20
-t = 0
-# output
-#print('t' + str(t) + ': ' + str(posarr[0][0]))
-#for m in posarr:
-  #print(str(m[0]) + ',' + str(m[1]) + ',' + str(m[2]))
-#  print(str(m[0]))
+steps = 1000
 for t in range(1,steps+1):
   # steps 1 to steps
 
@@ -81,22 +75,19 @@ for t in range(1,steps+1):
         velarr[i][2] = velarr[i][2] - 1
         velarr[j][2] = velarr[j][2] + 1
 
-
-  #print(velarr)
-
   for i in range(0,len(posarr)):
     for j in range(0,len(posarr[i])):
       posarr[i][j] = posarr[i][j] + velarr[i][j]
 
-      
-  # output
-  #print('t' + str(t) + ': ' + str(posarr[0][0]))
+# output
+for m in posarr:
+  print(str(m[0]) + ',' + str(m[1]) + ',' + str(m[2]))
+print()
+
+for m in velarr:
+  print(str(m[0]) + ',' + str(m[1]) + ',' + str(m[2]))
 
 
-#for m in velarr:
-#  print(str(m[0]) + ',' + str(m[1]) + ',' + str(m[2]))
-
-"""
 totenergy = 0
 for i in range(0,len(posarr)):
   kinenergy = 0
@@ -107,7 +98,7 @@ for i in range(0,len(posarr)):
   totenergy = totenergy + (kinenergy * potenergy)
 
 print(totenergy)
-"""
+
 
 end_secs = time.time()
 print('elapsed time: ' + str(end_secs - start_secs) + ' seconds')
