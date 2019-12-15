@@ -12,24 +12,18 @@ pr.enable()  # start profiling
 
 start_secs = time.time()
 
-s = """2 VPVL, 7 FWMGM, 2 CXFTF, 11 MNCFX => 1 STKFG
-17 NVRVD, 3 JNWZP => 8 VPVL
-53 STKFG, 6 MNCFX, 46 VJHF, 81 HVMC, 68 CXFTF, 25 GNMV => 1 FUEL
-22 VJHF, 37 MNCFX => 5 FWMGM
-139 ORE => 4 NVRVD
-144 ORE => 7 JNWZP
-5 MNCFX, 7 RFSQX, 2 FWMGM, 2 VPVL, 19 CXFTF => 3 HVMC
-5 VJHF, 7 MNCFX, 9 VPVL, 37 CXFTF => 6 GNMV
-145 ORE => 6 MNCFX
-1 NVRVD => 8 CXFTF
-1 VJHF, 6 MNCFX => 4 RFSQX
-176 ORE => 6 VJHF
+s = """10 ORE => 10 A
+1 ORE => 1 B
+7 A, 1 B => 1 C
+7 A, 1 C => 1 D
+7 A, 1 D => 1 E
+7 A, 1 E => 1 FUEL
 """
 
 arr = s.split('\n')[:-1]
 reactions = {}
 primitives = []
-surplus_dict = {}
+count_primitives = {}
 for l in arr:
   arr2 = l.split("=>")
   
@@ -54,6 +48,7 @@ for l in arr:
   qty = arr3[0]
   if found_primitive:
     primitives.append(key)
+    count_primitives[key] = 0
   temparr2 = []
   temparr2.append(int(qty))
   temparr2.append(key)
@@ -61,14 +56,32 @@ for l in arr:
   reactions[key] = temparr2
 
 print('primitives: ' + str(primitives))
-#for k in reactions:
-#  print(k + ': ' + str(reactions[k]))
+for k in reactions:
+  print(k + ': ' + str(reactions[k]))
 
-
-
-
-def countPrimitive(qty,name,primitive):
+def countPrimitive(qty,name):
   reaction = reactions[name]
+  if reaction[3] == 'ORE':
+    count_primitives[name] = count_primitives[name] + qty
+    return
+  
+  avail_qty = reaction[0]
+  if qty > avail_qty:
+    divisor = qty // avail_qty
+    remainder = qty % avail_qty
+    
+  elif qty < avail_qty:
+
+
+
+
+  for i in range(2,len(reaction),2):
+    countPrimitive(reaction[i],reaction[i+1])
+  
+
+
+
+
 
   if reaction[3] == 'ORE' and name == primitive:
     # found a primitive
@@ -77,41 +90,31 @@ def countPrimitive(qty,name,primitive):
   if reaction[3] == 'ORE':
     return 0
 
-  # CHECK SURPLUS
-  surplus = 0
-  if name in surplus_dict:
-    surplus = surplus_dict[name]
-  if surplus >= qty:
-    surplus_dict[name] = surplus - qty
-    qty = 1
-  elif surplus < qty:
-    surplus_dict[name] = 0
-    qty = qty - surplus
-
   # NEW
   qty_requested = qty
   qty_avail = reaction[0]
-  if qty != 0:
-    if qty >= qty_avail:
-      divisor = qty // qty_avail 
-      remainder = qty % qty_avail 
-      if remainder > 0:
-        divisor = divisor + 1
-      qty = divisor  
-    else:
-      # got extra here
-      #qty = qty_avail
-      qty = 1
-  
+  if qty >= qty_avail:
+    divisor = qty // qty_avail 
+    remainder = qty % qty_avail 
+    if remainder > 0:
+      divisor = divisor + 1
+    qty = divisor  
+  else:
+    # got extra here
+    qty = 1
+
+
+  # TODO: leftovers
+  # test case 3 has leftovers, but doesn't ever need to reuse them
+  # test cases 1 & 2 do NOT have leftovers
+  leftover = (qty * qty_avail) - qty_requested
+  if leftover > 0:
+    print('extra ' + name + ': ' + str(leftover))
+
+
   total = 0
   for i in range(2,len(reaction),2):
     total = total + qty * countPrimitive(reaction[i],reaction[i+1],primitive)
-
-  # save any surplus
-  if name in surplus_dict:
-    surplus_dict[name] = surplus_dict[name] +  ((qty * qty_avail) - qty_requested)
-  else:
-    surplus_dict[name] = ((qty * qty_avail) - qty_requested)
 
   return total
 
@@ -119,10 +122,10 @@ def countPrimitive(qty,name,primitive):
 
 # count needed ore
 total_ore = 0
-#primitives = ["GPVTF"] # test
+#primitives = ["VJHF"] # test
 for name in primitives:
   needed_primitive = countPrimitive(1,"FUEL",name)
-  print('needed ' + name + ': ' + str(needed_primitive))
+  #print('needed ' + name + ': ' + str(needed_primitive))
   r = reactions[name]
   qty_prim = r[0]
   #print('needed_primitive: ' + str(needed_primitive))
@@ -134,7 +137,7 @@ for name in primitives:
 
 print(total_ore)
 
-print(surplus_dict)
+
 
 """
 pr.disable()  # end profiling
