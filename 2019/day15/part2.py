@@ -1,6 +1,7 @@
 import sys
 import time
 import random
+# USE PART 2 to draw the map
 
 start_secs = time.time()
 addmem = [0 for i in range(1000000)]
@@ -43,8 +44,10 @@ found = False
 ox = -1
 oy = -1
 
+count_items = 0 # 1574
+override = False
 # north (1), south (2), west (3), and east (4)
-override = [4,4,4,1,4,2,4,2,2,2,4]
+override_arr = [4,4,4,4,4,1,1,1,4,4,4,4,3,3,3,3,3,1,1,4,4,4,4,4,4,1,1,4,1,1,2]
 
 """
 s = ''
@@ -57,7 +60,7 @@ for r in range(45,len(board) - 40):
   s = s + '\n'
 """
 
-while(not found):
+while(not found and count_items < 1620):
     s = str(arr[i])
 
     # get parameter modes
@@ -167,11 +170,13 @@ while(not found):
           if tx >= 0 and ty >= 0 and tx < width and ty < height:
             valid = True
         
-        # HACK IT UP
-        if dy == 25 and dx == 30:
-          n = 4
-        elif dy == 25 and dx == 31:
-          n = 4
+        if override and len(override_arr) > 0:
+            n = override_arr[0]
+            del override_arr[0]
+            if len(override_arr) == 0:
+                override = False
+
+
 
         last_input = int(n)
 
@@ -206,15 +211,20 @@ while(not found):
 
         if int(x) == 0:
           # 0: The repair droid hit a wall. Its position has not changed.
+          if board[newy][newx] == ' ':
+            count_items = count_items + 1          
           board[newy][newx] = '#'
         elif int(x) == 2:
           # 2: The repair droid has moved one step in the requested direction; 
           #    its new position is the location of the oxygen system.
+          if board[newx][newy] == ' ':
+            count_items = count_items + 1          
           board[dy][dx] = '.'
           dx = newx
           dy = newy
           board[dy][dx] = '@'
           found = True
+          override = True
           ox = newx
           oy = newy
           s = ''
@@ -261,13 +271,14 @@ while(not found):
               else:              
                 s = s + board[r][c]
             s = s + '\n'
-          
           print(s)           
           #print('startx,starty: ' + str(startx) + ',' + str(starty)) 
           #print('endx,endy: ' + str(endx) + ',' + str(endy)) 
 
         elif int(x) == 1:
           # 1: The repair droid has moved one step in the requested direction.
+          if board[dy][dx] == ' ':
+            count_items = count_items + 1
           board[dy][dx] = '.'
           dx = newx
           dy = newy
@@ -276,6 +287,14 @@ while(not found):
             maxx = dx
           if dy > maxy:
             maxy = dy
+          
+          if override:
+            s = ''
+            for r in range(0,len(board)):
+                for c in range(0,len(board[r])):           
+                    s = s + board[r][c]
+                s = s + '\n'
+            print(s) 
         
 
 
