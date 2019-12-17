@@ -35,21 +35,17 @@ for phs in range(1,phases+1):
         
         sum=0
         for j in range (0,slen):
-            
             if ppos < idx1:
-                p=0
+                pass
             elif ppos < idx2:
                 p=1
+                sum = sum + s[j]
             elif ppos < idx3:
-                p=0
+                pass
             elif ppos < idx4:
-                p=-1
+                sum = sum - s[j]
             else:
-                p=0
                 ppos=0
-                              
-            if p != 0:                             
-                sum = sum + s[j]*p
                 
             ppos=ppos+1            
 
@@ -59,10 +55,8 @@ for phs in range(1,phases+1):
         
     s=news
 
-ans = ''
-for i in range(0,8):
-    ans = ans + str(s[i])
-print(ans + ' , phases: ' + str(phases))
+print(s[0:8])
+print('phases: ' + str(phases))
 
 
 
