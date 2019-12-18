@@ -480,6 +480,7 @@ print(instr)
 # ANSWER:
 # L,12,L,6,L,8,R,6,L,8,L,8,R,4,R,6,R,6,L,12,L,6,L,8,R,6,L,8,L,8,R,4,R,6,R,6,L,12,R,6,L,8,L,12,R,6,L,8,L,8,L,8,R,4,R,6,R,6,L,12,L,6,L,8,R,6,L,8,L,8,R,4,R,6,R,6,L,12,R,6,L,8
 """
+Main Routine: A,B,A,B,C,C,B,A,B,C
 L,12,L,6,L,8,R,6,   A
 
 L,8,L,8,R,4,R,6,R,6,  B
