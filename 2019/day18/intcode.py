@@ -11,23 +11,20 @@ def printBoard(starty,startx,arr):
     s = s + '\n' 
   print(s)
 
-#starty = 765 # 350
-#startx = 820
-#width = 1170
-#height = 870
-found = False
+# finds the answer
+#width = 1100
+#startx = 800
+#starty = 800
+#height = 920 
 
+# performance testing
 width = 1100
 startx = 800
-starty = 800  #    (812,911) 
-height = 920 
+starty = 911
+height = 913 
 
+found = False
 prev_char = ''
-
-
-
-
-
 moves = []
 board = [ ['.' for x in range(width)] for y in range(height)]
 for ypos in range(starty,height):
