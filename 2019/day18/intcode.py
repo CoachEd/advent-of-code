@@ -304,7 +304,7 @@ for m in moves:
           # nothing
           pass
 
-printBoard(starty,startx,board)
+#printBoard(starty,startx,board)
 print('startx,starty ' + str(startx) + ',' + str(starty))
 print('answer should be x,y 929,812 , 9290812')
 
