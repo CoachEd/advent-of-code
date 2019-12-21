@@ -15,11 +15,14 @@ def printBoard(starty,startx,arr):
 #startx = 820
 #width = 1170
 #height = 870
+found = False
 
-width = 1290
-startx = 800 + 60    
-starty = 900  # 
-height = 1060 
+width = 1100
+startx = 800
+starty = 800  #    (812,911) 
+height = 920 
+
+prev_char = ''
 
 
 
@@ -49,7 +52,7 @@ for m in moves:
   i = 0
   relbase =0
   move_index = 0
-  while(True):
+  while not found:
       s = str(arr[i])
 
       # get parameter modes
@@ -145,8 +148,27 @@ for m in moves:
             x = arr[int(arr[i+1])+relbase]
 
           #print(x)
+          
           if int(x) == 1:
             board[ m[1] ] [m[0] ] = '#'
+
+
+          curr_char = board[ m[1] ][ m[0] ]
+          if prev_char == '.':
+            if curr_char == '#':
+              # check it
+              poss_x = m[0]
+              poss_y = m[1] - 99
+              if poss_x+99 >= 0 and (poss_x+99) < len(board[0]) and poss_y >=0 and poss_y < len(board):
+                if board[ poss_y ][ poss_x + 99 ] == '#':
+                  # found it
+                  print('found it x,y' + str(poss_x) + ',' + str(poss_y) + ':  ' + str(poss_x*10000+poss_y) )
+                  found = True
+                  break
+          prev_char = curr_char
+
+
+
           i = i + 2
       elif opcode == '05':
           # jump-if-true
@@ -284,7 +306,7 @@ for m in moves:
 
 printBoard(starty,startx,board)
 print('startx,starty ' + str(startx) + ',' + str(starty))
-
+print('answer should be x,y 929,812 , 9290812')
 
 
 
