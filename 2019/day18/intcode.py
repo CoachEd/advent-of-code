@@ -308,7 +308,5 @@ printBoard(starty,startx,board)
 print('startx,starty ' + str(startx) + ',' + str(starty))
 print('answer should be x,y 929,812 , 9290812')
 
-
-
 end_secs = time.time()
 print('\nelapsed time: ' + str(end_secs - start_secs) + ' seconds')
