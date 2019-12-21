@@ -16,10 +16,11 @@ def printBoard(starty,startx,arr):
 #width = 1170
 #height = 870
 
-width = 1290
-startx = 800 + 60    
-starty = 900  # 
-height = 1060 
+width = 1000
+addl = 10
+startx = 700    
+starty = 700  # 
+height = starty + 100 
 
 
 
