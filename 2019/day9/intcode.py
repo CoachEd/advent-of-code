@@ -3,7 +3,7 @@ import time
 
 start_secs = time.time()
 print('For D9P1, enter 1. For D9P2, enter 2.\n')
-addmem = [0 for i in range(1000000)]
+addmem = [0 for i in range(1000)] # TODO: BUMP THIS UP IN CASE OF "Index out of range" errors
 
 #works
 #arr = '104,1125899906842624,99'
