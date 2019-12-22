@@ -3,11 +3,12 @@ import time
 import math
 from copy import copy, deepcopy
 
+"""
 import cProfile, pstats
 from io import StringIO
 pr = cProfile.Profile()  # create a profile object
 pr.enable()  # start profiling
-
+"""
 
 
 def applyGravity(x1,x2,vx1,vx2):
@@ -139,14 +140,14 @@ while True:
   updatePositions(x3,y3,z3,vx3,vy3,vz3)
   updatePositions(x4,y4,z4,vx4,vy4,vz4)
 
-  """
+  
   totenergy = 0
   totenergy = totenergy + sumPlanet(x1,y1,z1,vx1,vy1,vz1)
   totenergy = totenergy + sumPlanet(x2,y2,z2,vx2,vy2,vz2)
   totenergy = totenergy + sumPlanet(x3,y3,z3,vx3,vy3,vz3)
   totenergy = totenergy + sumPlanet(x4,y4,z4,vx4,vy4,vz4)
 
-
+  """
   stemp = str(alldata)
   if str(totenergy) in s:
     if stemp in s1:
@@ -158,10 +159,12 @@ while True:
     s = s + '|' + str(totenergy)
   """
 
-  if t == 100000:
+
+  if t == 1000:
     break
 
 
+"""
 pr.disable()  # end profiling
 
 # print out some stats.
@@ -170,6 +173,9 @@ sortby = 'cumulative'
 ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
 ps.print_stats()
 print(s.getvalue())
+"""
+
+print(totenergy)
 
 end_secs = time.time()
 print('elapsed time: ' + str(end_secs - start_secs) + ' seconds')
