@@ -12,24 +12,19 @@ pr.enable()  # start profiling
 
 start_secs = time.time()
 
-s = """2 VPVL, 7 FWMGM, 2 CXFTF, 11 MNCFX => 1 STKFG
-17 NVRVD, 3 JNWZP => 8 VPVL
-53 STKFG, 6 MNCFX, 46 VJHF, 81 HVMC, 68 CXFTF, 25 GNMV => 1 FUEL
-22 VJHF, 37 MNCFX => 5 FWMGM
-139 ORE => 4 NVRVD
-144 ORE => 7 JNWZP
-5 MNCFX, 7 RFSQX, 2 FWMGM, 2 VPVL, 19 CXFTF => 3 HVMC
-5 VJHF, 7 MNCFX, 9 VPVL, 37 CXFTF => 6 GNMV
-145 ORE => 6 MNCFX
-1 NVRVD => 8 CXFTF
-1 VJHF, 6 MNCFX => 4 RFSQX
-176 ORE => 6 VJHF
+s = """9 ORE => 2 A
+8 ORE => 3 B
+7 ORE => 5 C
+3 A, 4 B => 1 AB
+5 B, 7 C => 1 BC
+4 C, 1 A => 1 CA
+2 AB, 3 BC, 4 CA => 1 FUEL
 """
 
 arr = s.split('\n')[:-1]
 reactions = {}
-primitives = []
 surplus_dict = {}
+elems_dict = {}
 for l in arr:
   arr2 = l.split("=>")
   
@@ -40,8 +35,6 @@ for l in arr:
   arr3 = reaction.split(' ')
   found_primitive = False
   for c in arr3:
-    if c == 'ORE':
-      found_primitive = True
     if c.isnumeric():
       temparr1.append(int(c))
     else:
@@ -52,89 +45,68 @@ for l in arr:
   arr3 = produces.split(' ')
   key = arr3[1]
   qty = arr3[0]
-  if found_primitive:
-    primitives.append(key)
   temparr2 = []
   temparr2.append(int(qty))
   temparr2.append(key)
   temparr2.extend(temparr1)
   reactions[key] = temparr2
 
-print('primitives: ' + str(primitives))
-#for k in reactions:
-#  print(k + ': ' + str(reactions[k]))
 
+for k in reactions:
+  print(k + ': ' + str(reactions[k]))
 
+def countOre(qty_requested,elem):
+  global reactions
+  print('countOre ' + str(qty_requested) + ',' + elem)
+  reaction = reactions[elem]
+  qty_batch = reaction[0]
 
-
-def countPrimitive(qty,name,primitive):
-  reaction = reactions[name]
-
-  if reaction[3] == 'ORE' and name == primitive:
-    # found a primitive
-    return qty
-  
   if reaction[3] == 'ORE':
+    if not elem in elems_dict:
+      elems_dict[elem] = 0
+    elems_dict[elem] = elems_dict[elem] + qty_requested
+    return
+
+  div = 1
+  if qty_requested > qty_batch:
+    div = qty_requested // qty_batch
+    rem = qty_requested % qty_batch
+    if rem > 0:
+      div = div + 1
+
+  """
+  # try to use any surplus
+  if not elem in surplus_dict:
+    surplus_dict[elem] = 0
+  surplus = surplus_dict[elem]
+  if qty_requested <= surplus:
+    surplus_dict[elem] = surplus - qty_requested
     return 0
-
-  # CHECK SURPLUS
-  surplus = 0
-  if name in surplus_dict:
-    surplus = surplus_dict[name]
-  if surplus >= qty:
-    surplus_dict[name] = surplus - qty
-    qty = 1
-  elif surplus < qty:
-    surplus_dict[name] = 0
-    qty = qty - surplus
-
-  # NEW
-  qty_requested = qty
-  qty_avail = reaction[0]
-  if qty != 0:
-    if qty >= qty_avail:
-      divisor = qty // qty_avail 
-      remainder = qty % qty_avail 
-      if remainder > 0:
-        divisor = divisor + 1
-      qty = divisor  
-    else:
-      # got extra here
-      #qty = qty_avail
-      qty = 1
-  
-  total = 0
-  for i in range(2,len(reaction),2):
-    total = total + qty * countPrimitive(reaction[i],reaction[i+1],primitive)
-
-  # save any surplus
-  if name in surplus_dict:
-    surplus_dict[name] = surplus_dict[name] +  ((qty * qty_avail) - qty_requested)
   else:
-    surplus_dict[name] = ((qty * qty_avail) - qty_requested)
+    qty_requested = qty_requested - surplus
+    surplus_dict[elem] = 0
+  """
 
-  return total
+  """
+  qty_needed = 1
+  if qty_requested <= qty_batch:
+    # request one batch; there may be surplus
+    surplus_dict[elem] = surplus_dict[elem] + (qty_batch - qty_requested)
+  else:
+    # need multiple batches
+    div = qty_requested // qty_batch
+    rem = qty_requested % qty_batch
+    qty_needed = div
+    if rem > 0:
+      qty_needed = qty_needed + 1
+  """
+  for i in range(2,len(reaction),2):
+    countOre(div*reaction[i],reaction[i+1])
 
+  return
 
-
-# count needed ore
-total_ore = 0
-#primitives = ["GPVTF"] # test
-for name in primitives:
-  needed_primitive = countPrimitive(1,"FUEL",name)
-  print('needed ' + name + ': ' + str(needed_primitive))
-  r = reactions[name]
-  qty_prim = r[0]
-  #print('needed_primitive: ' + str(needed_primitive))
-  qty_ore = r[2]
-  total_primitive = 0
-  while total_primitive < needed_primitive:
-    total_primitive = total_primitive + qty_prim
-    total_ore = total_ore + qty_ore
-
-print(total_ore)
-
-print(surplus_dict)
+print( countOre(1,'FUEL') )
+print(elems_dict)
 
 """
 pr.disable()  # end profiling
