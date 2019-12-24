@@ -137,23 +137,38 @@ def countOre(qty_requested,elem):
 
   return
 
-countOre(1,'FUEL')
+def runCountOre(num_fuel):
+  global surplus_dict
+  global elems_dict
+  surplus_dict = {}
+  elems_dict = {}
+  countOre(num_fuel,'FUEL')
+  total_ore = 0
+  for e in elems_dict:
+    r = reactions[e]
+    qty_needed = elems_dict[e]
+    qty_batch = r[0]
+    qty_ore = r[2]
+    if qty_needed <= qty_batch:
+      total_ore = total_ore + qty_batch
+    else:
+      div = qty_needed // qty_batch
+      rem = qty_needed % qty_batch
+      if rem > 0:
+        div = div + 1
+      total_ore = total_ore + div * qty_ore
 
-total_ore = 0
-for e in elems_dict:
-  r = reactions[e]
-  qty_needed = elems_dict[e]
-  qty_batch = r[0]
-  qty_ore = r[2]
-  if qty_needed <= qty_batch:
-    total_ore = total_ore + qty_batch
-  else:
-    div = qty_needed // qty_batch
-    rem = qty_needed % qty_batch
-    if rem > 0:
-      div = div + 1
-    total_ore = total_ore + div * qty_ore
-print('total ore: ' + str(total_ore))
+  print()
+  print('num_fuel = ' + str(num_fuel) )
+  print(1000000000000)
+  print(total_ore)
+  print()
+
+# narrowed down to this
+for i in range(3756870,3756870+10):
+    runCountOre(i)
+
+
 
 
 
