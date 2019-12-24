@@ -55,7 +55,7 @@ def getNeighbors(x,y,arr):
   return neighbors
 
 
-steps = 100
+steps = 10
 print('t' + str(0) + ': ' + getBoard(arr))
 
 layouts = []
@@ -83,7 +83,7 @@ for t in range(1,steps+1):
     break
   else:
     layouts.append(new_board)
-  #print('t' + str(t) + ': ' + getBoard(arr))
+  print('t' + str(t) + ': ' + getBoard(arr))
 
 # calculate biodiversity rating
 """
