@@ -141,13 +141,24 @@ while True:
   updatePositions(x4,y4,z4,vx4,vy4,vz4)
 
   
+  
+  key = str(alldata[18])+','+str(alldata[19])+','+str(alldata[20]) # 1  
+  if key in alldata:
+    #print('t' + str(t) + ': ' + key)
+    key = key + '|' + str(alldata[6])+','+str(alldata[7])+','+str(alldata[8]) + '|' + str(alldata[0])+','+str(alldata[1])+','+str(alldata[2]) + '|' + str(alldata[12])+','+str(alldata[13])+','+str(alldata[14])
+    if key in alldata:
+      print('t' + str(t) + ': ' + str(alldata))
+    else:
+      alldata.append(key)
+  else:
+    alldata.append(key)
+  """
   totenergy = 0
   totenergy = totenergy + sumPlanet(x1,y1,z1,vx1,vy1,vz1)
   totenergy = totenergy + sumPlanet(x2,y2,z2,vx2,vy2,vz2)
   totenergy = totenergy + sumPlanet(x3,y3,z3,vx3,vy3,vz3)
   totenergy = totenergy + sumPlanet(x4,y4,z4,vx4,vy4,vz4)
 
-  """
   stemp = str(alldata)
   if str(totenergy) in s:
     if stemp in s1:
@@ -160,7 +171,7 @@ while True:
   """
 
 
-  if t == 1000:
+  if t == 1000000:
     break
 
 
@@ -175,7 +186,7 @@ ps.print_stats()
 print(s.getvalue())
 """
 
-print(totenergy)
+#print(totenergy)
 
 end_secs = time.time()
 print('elapsed time: ' + str(end_secs - start_secs) + ' seconds')

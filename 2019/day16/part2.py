@@ -1,6 +1,7 @@
 import sys
 import time
 import math
+import numpy as np
 from copy import copy, deepcopy
 import cProfile, pstats
 from io import StringIO
@@ -20,17 +21,23 @@ str1='59765216634952147735419588186168416807782379738264316903583191841332176615
 #The first seven digits of your initial input signal also represent the message offset.
 offset = int(str1[0:7])
 str1 = 10000 * str1
-slen = len(str1)
-
-s = []
-for c in str1:
-    s.append(int(c))
 
 phases=100
+slen = len(str1)
+tmp = []
+print('creating array...')
+for c in str1:
+    tmp.append(int(c))
+s = np.array(tmp)
+suma = []
+sumb = []
+print('array created...')
+
 for phs in range(1,phases+1):
-    
+    print('phase ' + str(phs))
     news=[]
     for i in range(1,slen+1):
+        print('i: ' + str(i))
         ppos=1
        
         idx1=i
@@ -38,6 +45,8 @@ for phs in range(1,phases+1):
         idx3=i*3
         idx4=i*4
         
+        suma = []
+        sumb = []
         sum=0
         for j in range (0,slen):
             
@@ -54,16 +63,23 @@ for phs in range(1,phases+1):
                 ppos=0
                               
             if p != 0:                             
-                sum = sum + s[j]*p
+                suma.append(s[j])
+                sumb.append(p)
                 
             ppos=ppos+1            
 
-        sum=str(sum)                          
+        sumc = np.sum(np.array(suma) * np.array(sumb))
+        sum = str(sumc)                          
         keep=sum[-1:]
         news.append(int(keep))
         
     s=news
 
+# part 1
+#print(s[0:8])
+#print('phases: ' + str(phases))
+
+# part 2
 ans = ''
 for i in range(offset,offset+8):
     ans = ans + str(s[i])
