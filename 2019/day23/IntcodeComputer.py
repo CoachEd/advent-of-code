@@ -12,12 +12,21 @@ class IntcodeComputer:
         self.i = 0
         self.relbase = 0
         self.halt = False
+        self.input_queue = [id]
+        self.output_queue = []
+        self.gotX = False
+        self.x = None
+        self.y = None
+
+    def recv(self,x,y):
+      self.input_queue.append(x)
+      self.input_queue.append(y)
 
     def execute_instruction(self):
 
         if self.halt:
           print('program ended.')
-          return False
+          return []
 
         s = str(self.arr[self.i])
 
@@ -88,9 +97,22 @@ class IntcodeComputer:
             self.i = self.i + 4
         elif opcode == '03':
             # input
-            print('input?',end =" ")
-
-            n = input()
+            #print('input?',end =" ")
+            #n = input()
+            if len(self.input_queue) == 1:
+              n = self.input_queue.pop(0)  # remove left-most; append new inputs to the end
+            elif len(self.input_queue) > 1:
+              n = self.input_queue.pop(0)
+              if self.gotX:
+                self.y = n
+                self.gotX = False
+                print('Computer ' + str(self.id) + ' recvd x,y: ' + str(self.x) + ',' + str(self.y))
+              else:
+                self.x = n
+                self.gotX = True
+              
+            else:
+              n = -1
 
             if pmodes[2] == '0':
               self.arr[int(self.arr[self.i+1])] = int(n)
@@ -107,7 +129,10 @@ class IntcodeComputer:
               x = self.arr[self.i+1]
             else:
               x = self.arr[int(self.arr[self.i+1])+self.relbase]
-            print(x)
+            
+            #print('Computer ' + str(self.id) + ': ' + str(x) )
+            self.output_queue.append(x)
+
             self.i = self.i + 2
         elif opcode == '05':
             # jump-if-true
@@ -242,7 +267,13 @@ class IntcodeComputer:
         else:
             # nothing
             pass
-        return True
+
+        if len(self.output_queue) == 3:
+          out_arr = self.output_queue.copy()
+          self.output_queue = []
+          return out_arr
+        
+        return []
 
 
 
