@@ -1,6 +1,16 @@
 import sys
 import time
 
+
+"""
+Parameter modes are stored in the same value as the instruction's opcode. 
+The opcode is a two-digit number based only on the ones and tens digit of the value, that is, 
+the opcode is the rightmost two digits of the first value in an instruction. 
+Parameter modes are single digits, one per parameter, read right-to-left from the opcode: 
+the first parameter's mode is in the hundreds digit, the second parameter's mode is in the thousands digit, 
+the third parameter's mode is in the ten-thousands digit, and so on. Any missing modes are 0.
+"""
+
 class IntcodeComputer:
 
     def __init__(self, prog_str, id):
@@ -17,6 +27,7 @@ class IntcodeComputer:
         self.gotX = False
         self.x = None
         self.y = None
+        self.idle = False
 
     def recv(self,x,y):
       self.input_queue.append(x)
@@ -27,7 +38,7 @@ class IntcodeComputer:
         if self.halt:
           print('program ended.')
           return []
-
+        self.idle = False
         s = str(self.arr[self.i])
 
         # get parameter modes
@@ -106,13 +117,14 @@ class IntcodeComputer:
               if self.gotX:
                 self.y = n
                 self.gotX = False
-                print('Computer ' + str(self.id) + ' recvd x,y: ' + str(self.x) + ',' + str(self.y))
+                #print('Computer ' + str(self.id) + ' recvd x,y: ' + str(self.x) + ',' + str(self.y))
               else:
                 self.x = n
                 self.gotX = True
               
             else:
               n = -1
+              self.idle = True
 
             if pmodes[2] == '0':
               self.arr[int(self.arr[self.i+1])] = int(n)
@@ -130,7 +142,7 @@ class IntcodeComputer:
             else:
               x = self.arr[int(self.arr[self.i+1])+self.relbase]
             
-            #print('Computer ' + str(self.id) + ': ' + str(x) )
+            print('Computer ' + str(self.id) + ': ' + str(x) )
             self.output_queue.append(x)
 
             self.i = self.i + 2
@@ -275,14 +287,4 @@ class IntcodeComputer:
         
         return []
 
-
-
-"""
-Parameter modes are stored in the same value as the instruction's opcode. 
-The opcode is a two-digit number based only on the ones and tens digit of the value, that is, 
-the opcode is the rightmost two digits of the first value in an instruction. 
-Parameter modes are single digits, one per parameter, read right-to-left from the opcode: 
-the first parameter's mode is in the hundreds digit, the second parameter's mode is in the thousands digit, 
-the third parameter's mode is in the ten-thousands digit, and so on. Any missing modes are 0.
-"""
 

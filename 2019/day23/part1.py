@@ -32,8 +32,3 @@ while not done:
         dest_c = computers[int(dest_addr)]
         dest_c.recv(x,y)
 
-
-  
-#running = True
-#while running:
-#  running = c1.execute_instruction()
