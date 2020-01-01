@@ -11,15 +11,19 @@ for i in range(50):
 print()
 
 done = False
-last_x = -1
-last_y = -1
-prev_y = None
+network_idle_cnt = 0
+
+# set this sufficiently large, or else the NIC will accidentally interpret idle, when not really idle
+# setting it too low will result in a wrong answer
+network_idle_max = 4000 
+
+last_x = None
+last_y = None
+save_y = None
 while not done:
   network_idle = True
   for c in computers:
     out_arr = c.execute_instruction()
-    if not c.idle:
-      network_idle = False
     # the NIC will use three output instructions 
     # that provide the destination address of the packet followed by its X and Y values
     if len(out_arr) > 0:
@@ -27,33 +31,31 @@ while not done:
       x = int(out_arr[1])
       y = int(out_arr[2])
       #print('Computer ' + str(c.id) + ' sending ' + str(dest_addr) + ',' + str(x) + ',' + str(y))
+      
       if dest_addr == 255:
-        # The NAT
-        print('NAT ' + str(dest_addr) + ',' + str(x) + ',' + str(y))
         last_x = x
         last_y = y
       else:
-        print('Computer ' + str(dest_addr) + ',' + str(x) + ',' + str(y))
-        dest_c = computers[dest_addr]
+        dest_c = computers[int(dest_addr)]
         dest_c.recv(x,y)
-        network_idle = False
-
+  if not c.idle:
+    network_idle = False
   if network_idle:
-    print('idle')
-    print()
-    c = computers[0]
-    print('Computer ' + str(0) + ',' + str(last_x) + ',' + str(last_y))
-    c.recv(last_x,last_y)
-    if prev_y is None:
-      prev_y = last_y
+    network_idle_cnt = network_idle_cnt + 1
+  if network_idle_cnt > network_idle_max:
+    #print('network_idle: ' + str(network_idle))
+    network_idle_cnt = 0
+    dest_c = computers[0]
+    dest_c.recv(last_x,last_y)
+    print('255 sent y: ' + str(last_y))
+    if save_y == None:
+      save_y = last_y
     else:
-      if last_y == prev_y:
-        # done
-        print('y = ' + str(last_y) )
+      if last_y == save_y:
+        print()
+        print('found dup y: ' + str(last_y))
+        print()
         done = True
       else:
-        prev_y = last_y
-  #else:
-    #print('NOT idle')
-  #  pass
-
+        save_y = last_y
+    
