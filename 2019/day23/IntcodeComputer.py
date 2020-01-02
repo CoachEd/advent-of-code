@@ -27,7 +27,7 @@ class IntcodeComputer:
         self.gotX = False
         self.x = None
         self.y = None
-        self.idle = False
+        self.idle = None
 
     def recv(self,x,y):
       self.input_queue.append(x)
@@ -38,9 +38,8 @@ class IntcodeComputer:
         if self.halt:
           print('program ended.')
           return []
-        self.idle = False
+        self.idle = True
         s = str(self.arr[self.i])
-
         # get parameter modes
         pmodes = s[:-2]
         if len(pmodes) == 0:
@@ -107,12 +106,15 @@ class IntcodeComputer:
         
             self.i = self.i + 4
         elif opcode == '03':
+
             # input
             #print('input?',end =" ")
             #n = input()
             if len(self.input_queue) == 1:
+              self.idle = False
               n = self.input_queue.pop(0)  # remove left-most; append new inputs to the end
             elif len(self.input_queue) > 1:
+              self.idle = False
               n = self.input_queue.pop(0)
               if self.gotX:
                 self.y = n
@@ -121,10 +123,8 @@ class IntcodeComputer:
               else:
                 self.x = n
                 self.gotX = True
-              
             else:
               n = -1
-              self.idle = True
 
             if pmodes[2] == '0':
               self.arr[int(self.arr[self.i+1])] = int(n)
@@ -134,7 +134,7 @@ class IntcodeComputer:
             self.i = self.i + 2
         elif opcode == '04':
             # output
-
+            self.idle = False
             if pmodes[2] == '0':
               x = self.arr[int(self.arr[self.i+1])]
             elif pmodes[2] == '1':
@@ -142,7 +142,7 @@ class IntcodeComputer:
             else:
               x = self.arr[int(self.arr[self.i+1])+self.relbase]
             
-            print('Computer ' + str(self.id) + ': ' + str(x) )
+            #print('Computer output ' + str(self.id) + ': ' + str(x) )
             self.output_queue.append(x)
 
             self.i = self.i + 2
