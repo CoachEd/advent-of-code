@@ -48,7 +48,7 @@ gravs['abbb'] = [3,-1,-1,-1]
 gravs['abcc'] = [3,1,-2,-2]
 gravs['aacc'] = [2,2,-2,-2]
 
-steps = 1000
+steps = 100000
 for t in range(1,steps+1):
   # steps 1 to steps
 
