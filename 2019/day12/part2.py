@@ -152,13 +152,14 @@ while True:
       alldata.append(key)
   else:
     alldata.append(key)
-  """
+
   totenergy = 0
   totenergy = totenergy + sumPlanet(x1,y1,z1,vx1,vy1,vz1)
   totenergy = totenergy + sumPlanet(x2,y2,z2,vx2,vy2,vz2)
   totenergy = totenergy + sumPlanet(x3,y3,z3,vx3,vy3,vz3)
   totenergy = totenergy + sumPlanet(x4,y4,z4,vx4,vy4,vz4)
-
+  print(totenergy)
+  """
   stemp = str(alldata)
   if str(totenergy) in s:
     if stemp in s1:
@@ -171,7 +172,7 @@ while True:
   """
 
 
-  if t == 1000000:
+  if t == 1000:
     break
 
 
