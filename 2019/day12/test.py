@@ -5,7 +5,6 @@ from copy import copy, deepcopy
 
 start_secs = time.time()
 
-gravs = [3, 1, -1, -3]
 inp1 = """<x=3, y=2, z=-6>
 <x=-13, y=18, z=10>
 <x=-8, y=-1, z=13>
@@ -30,6 +29,7 @@ for r in tarr:
 
   posarr.append(temp + temp2)
 
+
 """
 To apply gravity, consider every pair of moons. 
 On each axis (x, y, and z), the velocity of each moon changes by exactly +1 or -1 to pull the moons together. 
@@ -48,8 +48,11 @@ gravs['abbb'] = [3,-1,-1,-1]
 gravs['abcc'] = [3,1,-2,-2]
 gravs['aacc'] = [2,2,-2,-2]
 
-steps = 100000
-for t in range(1,steps+1):
+
+arr = []
+done = False
+t = 0
+while not done:
   # steps 1 to steps
 
   # apply gravity to velocity
@@ -82,6 +85,22 @@ for t in range(1,steps+1):
   #print(posarr)
   
 
+
+  t = t + 1
+
+  # need to speed this up
+  s1 = ''
+  for p in posarr:
+    for d in p:
+      s1 = s1 + str(d) + ','
+  if s1 in arr:
+    print('done at t' + str(t))
+    done = True
+  else:
+    arr.append(s1)
+
+
+"""
 totenergy = 0
 
 for p in posarr:
@@ -93,9 +112,7 @@ for p in posarr:
     kinenergy = kinenergy + abs(p[i])
 
   totenergy = totenergy + (kinenergy * potenergy)
-
-print(totenergy)
-
+"""
 
 end_secs = time.time()
 print('elapsed time: ' + str(end_secs - start_secs) + ' seconds')
