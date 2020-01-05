@@ -28,7 +28,7 @@ for r in tarr:
     temp2.append(0)
 
   posarr.append(temp + temp2)
-
+print(posarr)
 
 """
 To apply gravity, consider every pair of moons. 
@@ -89,16 +89,19 @@ while not done:
   t = t + 1
 
   # need to speed this up
-  s1 = ''
+  posarr.sort(key = lambda x: x[i])
+  arrtemp = []
   for p in posarr:
     for d in p:
-      s1 = s1 + str(d) + ','
-  if s1 in arr:
+      arrtemp.append(d)
+  if arrtemp in arr:
     print('done at t' + str(t))
     done = True
   else:
-    arr.append(s1)
+    arr.append(arrtemp)
 
+  if t % 1000 == 0:
+    print(t)
 
 """
 totenergy = 0
