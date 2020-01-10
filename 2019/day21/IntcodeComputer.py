@@ -14,7 +14,13 @@ class IntcodeComputer:
         self.relbase = 0
         self.halt = False
         self.output_queue = []
+        self.instructions = 0
+
         self.input_queue = []
+        for com in ['NOT C T','AND D T','OR T J','NOT B J','NOT A J','NOT B T','AND T J','NOT C T','AND T J','AND D J',         'NOT C T','AND D T','OR T J','NOT B J',          'WALK']:
+          for c1 in com:
+            self.input_queue.append(ord(c1))
+          self.input_queue.append(10)
 
     def halt_computer(self):
       self.halt = True
@@ -49,12 +55,15 @@ class IntcodeComputer:
             # INPUT
             #print('input?',end =" ")
 
+            n = None
             if len(self.input_queue) == 0:
-              # waiting for user input
-              
-              #print('Input? ')
+              print('Input? ')
               n = input()
+            else:
+              n = self.input_queue.pop(0)
 
+            if int(n) == 10:
+              self.instructions = self.instructions + 1
             if pmodes[2] == '0':
               self.arr[int(self.arr[self.i+1])] = int(n)
             else:
