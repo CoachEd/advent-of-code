@@ -35,7 +35,9 @@ class IntcodeComputer:
           
           # LOTS OF WORK NEEDED HERE
 
-          
+
+          # combos
+
           # length 3 hole @#...
 
 
