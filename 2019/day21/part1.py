@@ -5,5 +5,5 @@ comp_str = '109,2050,21101,0,966,1,21102,1,13,0,1105,1,1378,21101,0,20,0,1106,0,
 c = IntcodeComputer(comp_str,0)
 
 c.execute_forever()
-print(c.instructions)
-print(c.output_str)
+print(c.output_queue[0])
+print()
