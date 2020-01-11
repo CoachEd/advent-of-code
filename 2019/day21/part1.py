@@ -6,3 +6,4 @@ c = IntcodeComputer(comp_str,0)
 
 c.execute_forever()
 print(c.instructions)
+print(c.output_str)

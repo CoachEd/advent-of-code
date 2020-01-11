@@ -15,9 +15,55 @@ class IntcodeComputer:
         self.halt = False
         self.output_queue = []
         self.instructions = 0
+        self.output_str = ''
 
         self.input_queue = []
-        for com in ['NOT C T','AND D T','OR T J','NOT B J','NOT A J','NOT B T','AND T J','NOT C T','AND T J','AND D J',         'NOT C T','AND D T','OR T J','NOT B J',          'WALK']:
+        
+        program = [
+          'NOT C T','AND D T','OR T J',
+          'NOT B J',
+          'NOT A J',
+          'NOT B T','AND T J',
+          'NOT C T','AND T J',
+          'AND D J',
+          'NOT C T','AND D T','OR T J',
+          'NOT B J',
+          'WALK']
+
+        #
+        program = [
+          
+          # LOTS OF WORK NEEDED HERE
+          # length 3 hole @#...
+
+
+          # length 1 hole @##.#
+          'NOT C J',
+          'AND A J',
+          'AND B J',
+          'AND D J',
+
+          # length 2 hole @#..#
+          'NOT B J',
+          'AND J T',
+          'AND A T',
+          'AND D T',
+          'NOT C J',
+          'AND T J',
+
+          
+          'NOT J T',
+
+          'NOT A J',
+          'AND T J',
+          
+
+
+
+          'WALK'
+        ]
+
+        for com in program:
           for c1 in com:
             self.input_queue.append(ord(c1))
           self.input_queue.append(10)
@@ -84,11 +130,11 @@ class IntcodeComputer:
             
             x = int(x)
             if x == 10:
-              output_str = ''
+              self.output_str = ''
               for elem in self.output_queue:
-                output_str = output_str + chr(elem)
+                self.output_str = self.output_str + chr(elem)
               self.output_queue = []
-              print(output_str)
+              print(self.output_str)
             else:
               self.output_queue.append(x)
             
