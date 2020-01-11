@@ -18,28 +18,9 @@ class IntcodeComputer:
         self.output_str = ''
 
         self.input_queue = []
-        
-        program = [
-          'NOT C T','AND D T','OR T J',
-          'NOT B J',
-          'NOT A J',
-          'NOT B T','AND T J',
-          'NOT C T','AND T J',
-          'AND D J',
-          'NOT C T','AND D T','OR T J',
-          'NOT B J',
-          'WALK']
 
         #
         program = [
-          
-          # LOTS OF WORK NEEDED HERE
-
-
-          # combos
-
-          # length 3 hole @#...
-
 
           # length 1 hole @##.#
           'NOT C J',
@@ -48,18 +29,14 @@ class IntcodeComputer:
           'AND D J',
 
           # length 2 hole @#..#
-          'NOT B J',
-          'AND J T',
+          'NOT C T',
           'AND A T',
           'AND D T',
-          'NOT C J',
-          'AND T J',
-
+          'OR T J',
           
-          'NOT J T',
-
-          'NOT A J',
-          'AND T J',
+          # length 3 hole @...#
+          'NOT A T',
+          'OR T J',
           
 
 
@@ -336,7 +313,5 @@ comp_str = '109,2050,21101,0,966,1,21102,1,13,0,1105,1,1378,21101,0,20,0,1106,0,
 c = IntcodeComputer(comp_str,0)
 
 c.execute_forever()
-print(c.instructions)
-print(c.output_str)
-
-
+print(c.output_queue[0])
+print()
