@@ -34,6 +34,8 @@ class IntcodeComputer:
         program = [
           
           # LOTS OF WORK NEEDED HERE
+
+          
           # length 3 hole @#...
 
 
