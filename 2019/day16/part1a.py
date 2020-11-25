@@ -58,7 +58,7 @@ for phs in range(1,phases+1):
             #if (s[j] == 0 or marr[idx] == 0):
             #    continue
             sum = sum + marr[ idx ] * s[j]
-        news[i-1] = abs(sum) % 10
+        news[i-1] = abs(sum) % 1               
     s=news
 
 print(s[0:8])
