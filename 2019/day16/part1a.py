@@ -11,14 +11,16 @@ def sum_row(arr,marr,row_num,mindex,firstone):
     if len(arr) == 0:
         return 0
 
-    if firstone:
+    if firstone and row_num > 0:
         sub1 = -1
         firstone = False
     if mindex == 0 or mindex ==2:
         del arr[:row_num+1+sub1]
     else:
         for i in range(0,row_num+1+sub1):
-            print( str(arr[i]) + ' * ' + str(marr[mindex]) )
+            if i >= len(arr):
+                break
+            #print( str(arr[i]) + ' * ' + str(marr[mindex]) )
             sum = sum + arr[i] * marr[mindex]
         del arr[:row_num+1+sub1] 
     mindex = mindex + 1
@@ -31,23 +33,18 @@ marr = [0, 1, 0, -1]
 #print()
 #print( sum_row([1,2,3,4,5,6,7,8],marr,1,0,True)) # -8
 #print()
-print( sum_row([1,2,3,4,5,6,7,8],marr,2,0,True)) # 
-print()
-sys.exit()
-
-
-
-
+#print( sum_row([1,2,3,4,5,6,7,8],marr,2,0,True)) # 
+#print()
+#print( sum_row([1,2,3,4,5,6,7,8],marr,4,0,True)) # 
+#print()
+#sys.exit()
 
 pr = cProfile.Profile()  # create a profile object
 pr.enable()  # start profiling
 print()
 
-
 # 33 seconds is still too slow
 start_secs = time.time()
-
-
 
 """
 Input signal: 12345678
@@ -71,7 +68,7 @@ str1='59765216634952147735419588186168416807782379738264316903583191841332176615
 #PART2
 #The first seven digits of your initial input signal also represent the message offset.
 #offset = int(str1[0:7])
-str1 = 10000 * str1
+#str1 = 10000 * str1
 
 
 slen = len(str1) # 650
@@ -83,15 +80,11 @@ for c in str1:
 phases=100
 news=[None]*slen
 for phs in range(1,phases+1):
-    for i in range(1,slen+1):
-        sum=0
-        for j in range (0,slen):
-            # ((pos+1) DIV 2 mod 4)
-            idx = ( (j+1) // i) % 4
-            #if (s[j] == 0 or marr[idx] == 0):
-            #    continue
-            sum = sum + marr[ idx ] * s[j]
-        news[i-1] = abs(sum) % 1               
+    for i in range(0,slen):
+        if i == 0:
+            news[i] = abs(sum_row(s.copy(),marr,i,1,True)) % 10
+        else:
+            news[i] = abs(sum_row(s.copy(),marr,i,0,True)) % 10
     s=news
 
 print(s[0:8])
