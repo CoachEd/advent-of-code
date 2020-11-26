@@ -5,8 +5,14 @@ from copy import copy, deepcopy
 import cProfile, pstats
 from io import StringIO
 
-marr =  [0, 1, 0, -1]
+marr =  [0, 1, 0, -1] # -1 0 1 => 0 1 2 
 
+c1 = []
+for i in range(0,10):
+    temp = []
+    for j in range(0,3):
+        temp.append(i*(j-1))
+    c1.append(temp)
 
 #TODO: instead of deleting from the array, keep the array but skip forward    
 def sum_row(arr,row_num,slen):
@@ -25,7 +31,7 @@ def sum_row(arr,row_num,slen):
             for i in range(curr_index,curr_index+row_num+1+sub1):
                 if i >= slen:
                     break
-                sum = sum + arr[i] * marr[mindex]
+                sum = sum + c1[arr[i]][marr[mindex]+1]
             curr_index = curr_index + row_num+1+sub1 
         sub1 = 0
         mindex = mindex + 1
@@ -50,9 +56,9 @@ marr = [0, 1, 0, -1]
 #print()
 #sys.exit()
 
-#pr = cProfile.Profile()  # create a profile object
-#pr.enable()  # start profiling
-#print()
+pr = cProfile.Profile()  # create a profile object
+pr.enable()  # start profiling
+print()
 
 # 33 seconds is still too slow
 start_secs = time.time()
@@ -91,11 +97,11 @@ print('phases: ' + str(phases))
 #pr.disable()  # end profiling
 
 # print out some stats.
-#s = StringIO()
-#sortby = 'cumulative'
-#ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-#ps.print_stats()
-#print(s.getvalue())
+s = StringIO()
+sortby = 'cumulative'
+ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+ps.print_stats()
+print(s.getvalue())
 
 
 end_secs = time.time()
