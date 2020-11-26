@@ -9,43 +9,44 @@ marr =  [0, 1, 0, -1]
 
 
 #TODO: instead of deleting from the array, keep the array but skip forward    
-def sum_row(arr,row_num):
+def sum_row(arr,row_num,slen):
     sum = 0
     sub1 = 0
     mindex = 0
+    curr_index = 0
     if row_num == 0:
         mindex = 1
     if row_num > 0:
         sub1 = -1
-
     while True:
         if mindex == 0 or mindex ==2:
-            del arr[:row_num+1+sub1]
+            curr_index = curr_index + row_num+1+sub1
         else:
-            for i in range(0,row_num+1+sub1):
-                if i >= len(arr):
+            for i in range(curr_index,curr_index+row_num+1+sub1):
+                if i >= slen:
                     break
-                #print( str(arr[i]) + ' * ' + str(marr[mindex]) )
                 sum = sum + arr[i] * marr[mindex]
-            del arr[:row_num+1+sub1]
+            curr_index = curr_index + row_num+1+sub1 
         sub1 = 0
         mindex = mindex + 1
         if mindex > 3:
             mindex = 0
-        if len(arr) == 0:
+        if curr_index >= slen:
             break
-
     return sum
 
 
 marr = [0, 1, 0, -1]
-#print( sum_row([1,2,3,4,5,6,7,8],0)) # -4
+
+#arr2 = [1,2,3,4,5,6,7,8]
+#slen2 = len(arr2)
+#print( sum_row(arr2,0,slen2)) # -4
 #print()
-#print( sum_row([1,2,3,4,5,6,7,8],1)) # -8
+#print( sum_row(arr2,1,slen2)) # -8
 #print()
-#print( sum_row([1,2,3,4,5,6,7,8],2)) # 
+#print( sum_row(arr2,2,slen2)) # 
 #print()
-#print( sum_row([1,2,3,4,5,6,7,8],3)) # 
+#print( sum_row(arr2,3,slen2)) # 
 #print()
 #sys.exit()
 
@@ -66,7 +67,7 @@ str1='59765216634952147735419588186168416807782379738264316903583191841332176615
 slen = len(str1) # 650
 
 s = [None] * slen
-for i in range(0,len(str1)):
+for i in range(0,slen):
     s[i] = int(str1[i])
 
 phases=100
@@ -74,7 +75,7 @@ news=[None]*slen
 for phs in range(1,phases+1):
     #print('phs: ' + str(phs))
     for i in range(0,slen):
-        news[i] = abs(sum_row(s.copy(),i)) % 10
+        news[i] = abs(sum_row(s,i,slen)) % 10
     s=news
 
 print(s[0:8])
@@ -85,7 +86,6 @@ print('phases: ' + str(phases))
 #for i in range(offset,offset+8):
 #    ans = ans + str(s[i])
 #print(ans + ' , phases: ' + str(phases))
-
 
 #print()
 #pr.disable()  # end profiling
