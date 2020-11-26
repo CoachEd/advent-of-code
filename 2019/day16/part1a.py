@@ -56,9 +56,9 @@ marr = [0, 1, 0, -1]
 #print()
 #sys.exit()
 
-pr = cProfile.Profile()  # create a profile object
-pr.enable()  # start profiling
-print()
+#pr = cProfile.Profile()  # create a profile object
+#pr.enable()  # start profiling
+#print()
 
 # 33 seconds is still too slow
 start_secs = time.time()
@@ -97,11 +97,11 @@ print('phases: ' + str(phases))
 #pr.disable()  # end profiling
 
 # print out some stats.
-s = StringIO()
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-print(s.getvalue())
+#s = StringIO()
+#sortby = 'cumulative'
+#ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+#ps.print_stats()
+#print(s.getvalue())
 
 
 end_secs = time.time()
