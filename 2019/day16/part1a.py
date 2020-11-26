@@ -6,7 +6,9 @@ import cProfile, pstats
 from io import StringIO
 
 marr =  [0, 1, 0, -1]
-    
+
+
+#TODO: instead of deleting from the array, keep the array but skip forward    
 def sum_row(arr,row_num):
     sum = 0
     sub1 = 0
