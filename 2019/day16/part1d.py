@@ -30,6 +30,11 @@ def sum_row(arr,row_num,mindex):
       mindex = mindex - 1
     # skip the first one
 
+
+    origoffset = mindex
+    # loop 9,999 more times
+    # check dictionary first
+
     for i in range(0,slen):
         key[i] = marr[mindex]
         sum = sum + arr[i] * marr[ mindex ]

@@ -1,4 +1,7 @@
 import sys
+import time
+
+start_secs = time.time()
 l=[]
 my_file = open("inp.txt", "r")
 Lines = my_file.readlines()
@@ -20,7 +23,8 @@ for s in l:
         num = num + 1
         
 print(num)
-    
+end_secs = time.time()
+print(str(end_secs-start_secs))   
     
     
     
