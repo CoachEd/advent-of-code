@@ -21,18 +21,25 @@ marr =  [0, 1, 0, -1]
 #The first seven digits of your initial input signal also represent the message offset.
 #offset = int(str1[0:7])
 #str1 = 10000 * str1   # PART 2
-
-def sum_row(arr,row_num):
+d1 = dict()
+def sum_row(arr,row_num,mindex):
     sum = 0
-
+    cnt = 0
+    if row_num > 0:
+      cnt = 1
+      mindex = mindex - 1
     # skip the first one
+
     for i in range(0,slen):
-        mindex = ((i+1)//(row_num+1)) % 4
+        key[i] = marr[mindex]
         sum = sum + arr[i] * marr[ mindex ]
-        #if row_num == 2:
-        #  print(str(arr[i]) + '*' + str(marr[mindex]))
-    #if row_num == 2:
-    #  print()
+        cnt = cnt + 1
+        if cnt >= row_num+1:
+          mindex = mindex + 1
+          cnt = 0
+        if mindex > 3:
+          mindex = 0
+
     return sum
 
 #arr2 = [1,2,3,4,5,6,7,8]
@@ -63,9 +70,10 @@ for phs in range(1,phases+1):
     #print('phs: ' + str(phs))
 
     for i in range(0,slen):
-        x = sum_row(s,i)
+        x = sum_row(s,i,1)
         news[i] = abs(x) % 10
     s=news
+    #print(s)
 
 print(s[0:8])
 print('phases: ' + str(phases))
