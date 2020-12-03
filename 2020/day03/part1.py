@@ -1,6 +1,8 @@
 import sys
 from random import randrange
+import time
 
+start_secs = time.time()
 
 l=[None]*323
 i=0
@@ -25,7 +27,10 @@ while True:
         num = num + 1
         
 print('Part 1: ' + str(num))
+end_secs = time.time()
+print(str(end_secs-start_secs))   
 
+# output - for fun
 print()
 trees=['\U0001F332','\U0001F333','\U0001F334','\U0001F384']
 reset='\x1b[0m'
