@@ -6,9 +6,9 @@ import cProfile, pstats
 from io import StringIO
 
 
-pr = cProfile.Profile()  # create a profile object
-pr.enable()  # start profiling
-print()
+#pr = cProfile.Profile()  # create a profile object
+#pr.enable()  # start profiling
+#print()
 
 
 # 33 seconds is still too slow
@@ -71,15 +71,15 @@ print('phases: ' + str(phases))
 #print(ans + ' , phases: ' + str(phases))
 
 
-print()
-pr.disable()  # end profiling
+#print()
+#pr.disable()  # end profiling
 
 # print out some stats.
-s = StringIO()
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-print(s.getvalue())
+#s = StringIO()
+#sortby = 'cumulative'
+#ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+#ps.print_stats()
+#print(s.getvalue())
 
 
 end_secs = time.time()
