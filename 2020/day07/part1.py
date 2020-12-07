@@ -1,12 +1,9 @@
 import sys
+import time
 
-#sample
-# bright indigo bags contain 
-# 4 shiny turquoise bags, 3 wavy yellow 
-#bags.
+start_secs = time.time()
 
 l=[]
-
 my_file = open("inp.txt", "r")
 Lines = my_file.readlines()
 for line in Lines:
@@ -28,7 +25,6 @@ for e in l:
             idx=temp2.find(' ')
             num=temp2[0:idx]
             col=temp2[idx+1:]
-            #arr3.append(col+':'+num)
             arr3.append(col)
     d[c1]=arr3
 
@@ -55,10 +51,5 @@ for x, y in d.items():
     if n2 > 0:
         tot = tot + 1
 print(tot)
-
-        
-        
-        
-    
-        
-       
+end_secs = time.time()
+print(str(end_secs-start_secs))

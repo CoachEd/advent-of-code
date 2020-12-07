@@ -1,12 +1,8 @@
 import sys
+import time
 
-#sample
-# bright indigo bags contain 
-# 4 shiny turquoise bags, 3 wavy yellow 
-#bags.
-
+start_secs = time.time()
 l=[]
-
 my_file = open("inp.txt", "r")
 Lines = my_file.readlines()
 for line in Lines:
@@ -32,30 +28,22 @@ for e in l:
     d[c1]=arr3
 
 def countBags(qty,c):
-    
     arr=d[c]
     if arr[0] == 'no other':
         return 0
-
     num = 0
     for e in arr:
         if arr[0] != 'no other':
             arr2=e.split(':')
             n = int(arr2[1])
             c1=arr2[0]
-            num = num + n
-            print(c1)
-            num = num + n*countBags(qty,c1)
+            num = num + n + n*countBags(qty,c1)
     return num
 
 bags = countBags(1,'shiny gold')
 print(bags)
-
-
-#35500 too high
-#16614 too low
-#37771 too high
-#1 + 1*7 + 2 + 2*11 = 32
+end_secs = time.time()
+print(str(end_secs-start_secs))
         
     
         
