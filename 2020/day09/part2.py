@@ -38,7 +38,7 @@ for i in range (25,len1):
 
 # Part 2
 num = ans
-for i in range(0,len1-1):  
+for i in range(0,len1-1):
     sum = l[i]
     for j in range(i+1,len1):        
         sum = sum + l[j]    
