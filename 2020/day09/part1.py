@@ -1,4 +1,7 @@
 import sys
+import time
+
+start_secs = time.time()
 
 l=[]
 
@@ -29,4 +32,6 @@ for i in range (25,len(l)):
     for x in range(i-25+1,i):
         sums[x].append(l[x]+l[i])
 
-        
+end_secs = time.time()
+print()
+print(str(end_secs-start_secs))        
