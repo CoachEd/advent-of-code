@@ -29,30 +29,19 @@ for i in range (25,len1):
             break
     if not found:
         ans = l[i]
-        print('Part 1: ' + str(l[i])) # answer: 167829540
+        print('Part 1: ' + str(l[i])) # answer: 167829540    
         break
     del sums[i-25]
     sums[i-1]=[]
     for x in range(i-25+1,i):
         sums[x].append(l[x]+l[i])
 
-end_secs = time.time()
-print(str(end_secs-start_secs))   
-
 # Part 2
 num = ans
-for i in range(0,len1-1):
-    if l[i] >= num:
-        i = i + 25
-        continue
+for i in range(0,len1-1):  
     sum = l[i]
-    for j in range(i+1,len1):
-        sum = sum + l[j]
-        if sum >= num:
-            break
-        if l[j] >= num:
-            i = i + 25
-            break
+    for j in range(i+1,len1):        
+        sum = sum + l[j]    
         if sum == num:
             min1=99999999999999999
             max1=-1
@@ -64,8 +53,10 @@ for i in range(0,len1-1):
             ans = max1+min1
             print('Part 2: ' + str(ans)) # answer: 28045630       
             end_secs = time.time()
-            print(str(end_secs-start_secs))            
-            sys.exit()
+            print(str(end_secs-start_secs) + ' total')            
+            sys.exit()   
+        elif sum > num:
+            break
 
 
         
