@@ -53,7 +53,7 @@ for i in range(0,len1-1):
             ans = max1+min1
             print('Part 2: ' + str(ans)) # answer: 28045630       
             end_secs = time.time()
-            print(str(end_secs-start_secs) + ' total')            
+            print(str(end_secs-start_secs) )
             sys.exit()   
         elif sum > num:
             break
