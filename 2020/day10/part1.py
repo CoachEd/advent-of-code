@@ -1,19 +1,25 @@
 import sys
-import time
 
-start_secs = time.time()
-
-# read in input file
 l=[]
+
 my_file = open("inp.txt", "r")
-lines = my_file.readlines()
-for line in lines: 
-    l.append(line.strip())
+Lines = my_file.readlines()
+for line in Lines:
+    l.append(int(line.strip()))
 
-# TODO
+l.sort()
 
+one=0
+three=0
+src=0
+for i in range(0,len(l)):
+    diff = l[i] - src
+    if diff == 1:
+        one = one + 1
+    elif diff == 3:
+        three = three+ 1
+    src = l[i]
 
-
-
-end_secs = time.time()
-print(str(end_secs-start_secs))
+three = three + 1
+ans  = one * three
+print('part 1: ' + str(ans))
