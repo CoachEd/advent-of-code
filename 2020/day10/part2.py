@@ -50,10 +50,8 @@ def count_paths(src):
             num_paths = num_paths + x
     return num_paths
 
-print(count_paths(0))
+print('Part 2: ' + str(count_paths(0)))
 
 end_secs = time.time()
 print()
 print(str(end_secs-start_secs))         
-#ans=count_leaves(t)
-#print('part 2: ' + str(ans))
