@@ -48,8 +48,9 @@ like xyx, abcdefeghi (efe), or even aaa.
 """
 
 cnt = 0
-for w in l:
 
+for w in l:
+    pass
 
 print('Part 2: ' + str(cnt))
 
