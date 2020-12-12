@@ -46,13 +46,30 @@ like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
 It contains at least one letter which repeats with exactly one letter between them, 
 like xyx, abcdefeghi (efe), or even aaa.
 """
-
 cnt = 0
-
 for w in l:
-    pass
+    # rule 1
+    b = False
+    for i in range(0,len(w)-1):
+        s = w[i:i+2]
+        if w[i+2:].find(s) != -1:
+            b = True
+            break    
+    if not b:
+        continue
 
-print('Part 2: ' + str(cnt))
+    # rule 2
+    b = False
+    for i in range(0,len(w)-3):
+        s = w[i:i+3]
+        if s[0] == s[2] and s[0] != s[1]:
+            b = True
+            break
+    if not b:
+        continue    
+    cnt = cnt + 1
+
+print('Part 2: ' + str(cnt)) # 409 too high , 65
 
 end_secs = time.time()
 print(str(end_secs-start_secs))
