@@ -1,5 +1,8 @@
 import sys
 from copy import copy, deepcopy
+import time
+
+start_secs = time.time()
 
 def getQuadrant(r,c,wr,wc):
     wposr = r + wr
@@ -130,5 +133,6 @@ for s in l:
             wcol = wcol * -1
 
 print('Part 2: '+ str(abs(row)+abs(col)))                
-                
+end_secs = time.time()
+print('--- ' + str(end_secs-start_secs)+ ' secs ---')                
    
