@@ -47,29 +47,34 @@ It contains at least one letter which repeats with exactly one letter between th
 like xyx, abcdefeghi (efe), or even aaa.
 """
 cnt = 0
+idx=0
 for w in l:
+    idx = idx +1
     # rule 1
     b = False
-    for i in range(0,len(w)-1):
+    for i in range(0,len(w)-3):
         s = w[i:i+2]
+        #print(s + ' , ' + w[i+2:])
         if w[i+2:].find(s) != -1:
             b = True
-            break    
+            break
     if not b:
         continue
 
     # rule 2
     b = False
-    for i in range(0,len(w)-3):
+    for i in range(0,len(w)-2):
         s = w[i:i+3]
-        if s[0] == s[2] and s[0] != s[1]:
+        if (s[0] == s[2]):
+            #print(s + '   ' + w)
             b = True
             break
     if not b:
-        continue    
+        continue
+    #print(idx)
     cnt = cnt + 1
 
-print('Part 2: ' + str(cnt)) # 409 too high , 65
+print('Part 2: ' + str(cnt)) # 409 too high , 65, 67, 59
 
 end_secs = time.time()
 print(str(end_secs-start_secs))
