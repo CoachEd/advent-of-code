@@ -2,7 +2,9 @@ import sys
 from copy import copy, deepcopy
 import itertools
 from itertools import combinations
+import time
 
+start_secs = time.time()
 
 #68719476735
 
@@ -72,6 +74,8 @@ for key, value in mem.items():
 
 
 print ('Part 2: ' + str(sum))
+end_secs = time.time()
+print('--- ' + str(end_secs-start_secs)+ ' secs ---')     
 """
 mask = 100X100X101011111X100000100X11010011
 mem[33323] = 349380

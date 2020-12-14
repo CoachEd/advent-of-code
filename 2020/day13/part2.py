@@ -24,49 +24,29 @@ def get_times(l,t,d):
         #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
     return True
 
-
 # INPUT DATA
 # LCM: 867200349647749
-s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-#t = 100000000000000
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#t=0
+
 s='7,13,x,x,59,x,31,19'
 
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509' # 398015 #ORIG
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,509' # 11684
+#s='41,x,x,x,x,x,x,x,x,x,509' # 1517
 
 
-#ALGORITHM
-# run each number with first number to get offsets,
-# least common multiplier is the repeating time when it will appear again
-# 91, 413, 217, 133 (LCM: 3162341)
-# Pattern:
-# 1068781
-# 4231122
-# 7393463
+
+
+
+
+t=0
 
 # TESTS
-t = 0 # orig: 100000000000000
+#t = 0 # orig: 100000000000000
 #s = '2,x,7'
-#s='7,13,x,x,59,x,31,19' # Ans: 1068781  #TRY: 91, 413, 217, 133 (LCM: 3,162,341)
-#s='7,13'
-#s='91,x,x,x,59'
-#s='5369,x,31'
-#s='166439,19'
-# 91 413 217 133
-#LCM 3162341
-#ANS 1068781
-# 91 413 217 133
-
-#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' #943
-#s='943,x,x,x,x,x,x,x,x,x,509' # 479987
-#s='479987,x,x,x,x,x,x,x,x,x,x,x,x,13' # 6239831
-#s='6239831,17' # 106077127
-#s='106077127,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29' # 
-
-#s='67,7,59,61' #  first occurs at timestamp 754018.
-#s='67,x,7,59,61' #  first occurs at timestamp 779210.
-#s='67,7,x,59,61' #  first occurs at timestamp 1261476.
-#s='1789,37,47,1889' #  first occurs at timestamp 1202161486.
-
+#s='7,13,x,x,59,x,31,19' # Ans: 1068781  #TRY: 91 413 217 133 (LCM: 3162341)
 arr = s.split(',')
 times=[]
 d = dict()
@@ -78,11 +58,24 @@ for e in arr:
     offset = offset + 1
 
 
-for i in range(451763,451763+3162341):
-    if get_times(times,i,d):
+#for i in range(867200349647749,0,-23):
+#    if get_times(times,i,d):
+#        print('HERE: ' + str(i))
+#        break
+found = False
+#t=867200349647749
+#100000000000000
+#867200349647749
+for i in range(0,3162341,1):
+    found = get_times(times,i,d)
+    if found:
         print(i)
         break
 
+
+end_secs = time.time()
+print()
+print(str(end_secs-start_secs) + ' seconds')
 
 sys.exit()
 
@@ -123,7 +116,6 @@ while True:
         print()
         print('Part 2: ' + str(t))
         break
-    #t = t + times[0]
     t = t + 1
    
        
