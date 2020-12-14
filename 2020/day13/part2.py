@@ -8,20 +8,35 @@ import functools
 
 start_secs = time.time()
 print('running...')
-def get_times(l,t):
+def get_times(l,t,d):
     # arriving in table
     # t % bus ID = current minute in schedule (e.g., if 6, then bus 7 is arrving in 1 minute)
-    print('At t = ' + str(t) + '...')
-    for b in l:
-        print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
+    #print(d)
+    #print('At t = ' + str(t) + '...')
+    for i in range(0,len(l)):
+        b = l[i]
+        if i == 0:
+            if b-(t%b) != b:
+                return False
+        else:
+            if b-(t%b) != d[b]:
+                return False
+        #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
+    return True
 
+
+# INPUT DATA
+# LCM: 867200349647749
 s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-t = 100000000000000
+#t = 100000000000000
+s='7,13,x,x,59,x,31,19'
+
+
 
 #ALGORITHM
 # run each number with first number to get offsets,
 # least common multiplier is the repeating time when it will appear again
-# 91, 413, 217, 133 (LCM: 3,162,341)
+# 91, 413, 217, 133 (LCM: 3162341)
 # Pattern:
 # 1068781
 # 4231122
@@ -30,16 +45,22 @@ t = 100000000000000
 # TESTS
 t = 0 # orig: 100000000000000
 #s = '2,x,7'
-s='7,13,x,x,59,x,31,19' # Ans: 1068781  #TRY: 91, 413, 217, 133 (LCM: 3,162,341)
+#s='7,13,x,x,59,x,31,19' # Ans: 1068781  #TRY: 91, 413, 217, 133 (LCM: 3,162,341)
 #s='7,13'
 #s='91,x,x,x,59'
 #s='5369,x,31'
 #s='166439,19'
 # 91 413 217 133
 #LCM 3162341
-
+#ANS 1068781
 # 91 413 217 133
 
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' #943
+#s='943,x,x,x,x,x,x,x,x,x,509' # 479987
+#s='479987,x,x,x,x,x,x,x,x,x,x,x,x,13' # 6239831
+#s='6239831,17' # 106077127
+#s='106077127,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29' # 
 
 #s='67,7,59,61' #  first occurs at timestamp 754018.
 #s='67,x,7,59,61' #  first occurs at timestamp 779210.
@@ -56,6 +77,14 @@ for e in arr:
         d[int(e)] = offset
     offset = offset + 1
 
+
+for i in range(451763,451763+3162341):
+    if get_times(times,i,d):
+        print(i)
+        break
+
+
+sys.exit()
 
 #7,13,x,x,59,x,31,19
 #find LCM least common multiplier among the times
@@ -93,12 +122,6 @@ while True:
         #get_times(times,t)
         print()
         print('Part 2: ' + str(t))
-         
-        arr4.append(t)
-        reps = reps + 1
-        if reps < 2:
-            t = t + 1
-            continue
         break
     #t = t + times[0]
     t = t + 1
@@ -114,8 +137,7 @@ while True:
     #    # bus1 arrived
     #    print(str(t) + ' bus ' + str(bus1) + ' arrived.')
    
-print(arr4)
-print(arr4[1]-arr4[0])
+
 
 
 
