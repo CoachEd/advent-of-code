@@ -1,5 +1,3 @@
-
-
 import sys
 import time
 import math
@@ -40,20 +38,32 @@ def get_times(l,t,d):
 # LCM: 23437847287777
 # LCM: 571654811897
 s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509'
+t = 0
+#this approach!!
+#t=398015 + ( 208338975 * 479987)   # then every 479987 GOOD
+t=398015 + + ( 208338975 * 479987 )
+
+
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69, then every 943
-t=69 + (943*106044538706)
+#t=69 + (943*106044538706)
 #100000000000000
 
 
-#s='7,13,x,x,59,x,31,19' # ANSWER  1068681   LCM: 3162341 (product of all numbers)
-#s='7,13' # t=77 , then every 91 
+#s='7,13,x,x,59,x,31,19' # ANSWER  1068781   LCM: 3162341 (product of all numbers)
+#s='7,13' # t=77 , then every 91
 #s='7,x,x,x,59' # 350, then every  413
 #s='7,x,x,x,x,x,31' # 56, then every 217
-#s='7,x,x,x,x,x,x,19' # 126, then every 133 
+#s='7,x,x,x,x,x,x,19' # 126, then every 133
 #t= 77
 #t = 350
 #s='4,x,x,5'
-#t=77
+
+#WORKS!!  
+#s='7,13,x,x,59,x,31' # 70147, then every 166439
+#t=70147
+#t=0
 
 
 
@@ -136,16 +146,15 @@ while True:
     if done:
         reps = reps + 1
         #get_times(times,t)
-        print(t)
-        #if (reps < 5):
-            #t = t + times[0]
-        #    t = t + 943
-        #    continue
+        #print(t)
+        #if (reps < 3):
+        #   t = t + times[0]
+        #   continue
         print()
         print('Part 2: ' + str(t))
         break
     #t = t + times[0]
-    t = t + 943
+    t = t + 479987
        
     #if t > 1068788:
     #    print('not found')
@@ -164,5 +173,3 @@ while True:
 end_secs = time.time()
 print()
 print(str(end_secs-start_secs) + ' seconds')
-
-
