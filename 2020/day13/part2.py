@@ -25,23 +25,46 @@ def get_times(l,t,d):
     return True
 
 # INPUT DATA
-# LCM: 867200349647749
-#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-#t=0
+# LCM: 867200349647749: the product of all numbers
 
-s='7,13,x,x,59,x,31,19'
+# LCM: 533661753629384 # TOO HIGH
+#      375005556604432
+#      187502778302216
+# LCM: 133415438407346
+# LCM: 102023570546794
+#  T = 100000000000000
+
+# LCM: 66707719203673
+# LCM: 51011785273397
+# LCM: 45642123665671
+# LCM: 23437847287777
+# LCM: 571654811897
+s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69, then every 943
+t=69 + (943*106044538706)
+#100000000000000
+
+
+#s='7,13,x,x,59,x,31,19' # ANSWER  1068681   LCM: 3162341 (product of all numbers)
+#s='7,13' # t=77 , then every 91 
+#s='7,x,x,x,59' # 350, then every  413
+#s='7,x,x,x,x,x,31' # 56, then every 217
+#s='7,x,x,x,x,x,x,19' # 126, then every 133 
+#t= 77
+#t = 350
+#s='4,x,x,5'
+#t=77
+
+
+
+
+
+
 
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509' # 398015 #ORIG
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,509' # 11684
 #s='41,x,x,x,x,x,x,x,x,x,509' # 1517
-
-
-
-
-
-
-t=0
 
 # TESTS
 #t = 0 # orig: 100000000000000
@@ -57,27 +80,26 @@ for e in arr:
         d[int(e)] = offset
     offset = offset + 1
 
-
 #for i in range(867200349647749,0,-23):
 #    if get_times(times,i,d):
 #        print('HERE: ' + str(i))
 #        break
 found = False
+#
 #t=867200349647749
 #100000000000000
 #867200349647749
-for i in range(0,3162341,1):
-    found = get_times(times,i,d)
-    if found:
-        print(i)
-        break
+#for i in range(0,3162341,1):
+##    found = get_times(times,i,d)
+#    if found:
+#        print(i)
+#        break
 
 
-end_secs = time.time()
-print()
-print(str(end_secs-start_secs) + ' seconds')
+#end_secs = time.time()
+##print()
+#print(str(end_secs-start_secs) + ' seconds')
 
-sys.exit()
 
 #7,13,x,x,59,x,31,19
 #find LCM least common multiplier among the times
@@ -112,12 +134,18 @@ while True:
                
 
     if done:
+        reps = reps + 1
         #get_times(times,t)
+        print(t)
+        #if (reps < 5):
+            #t = t + times[0]
+        #    t = t + 943
+        #    continue
         print()
         print('Part 2: ' + str(t))
         break
-    t = t + 1
-   
+    #t = t + times[0]
+    t = t + 943
        
     #if t > 1068788:
     #    print('not found')
