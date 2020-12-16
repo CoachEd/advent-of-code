@@ -22,11 +22,38 @@ def get_times(l,t,d):
 
 # INPUT DATA
 s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-t = 0
 
-s='7,13,x,x,59,x,31,19' # ANSWER  1068781   LCM: 3162341 (product of all numbers)
-s='7,13,x,x,59,x,31' # ANSWER 70147, then every 166439. BTW, 70147 * 998634 = 1068781
-t = 0
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69, every 943
+#s='41,x,x,x,x,x,x,x,x,x,509'  # 398028, every 479987
+#s='509,x,x,x,x,x,x,x,x,x,x,x,x,13' # 4717921, every 6239831
+#s='13,17' # 35917089 , every 106077127
+#s='17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29'  # 2687845265, every 3076236683
+#s='29,x,401' # 107279892502 , every 1233570909883
+#s='401,x,x,x,x,x,37' # 43282261738409 , every 45642123665671
+#s='37,x,x,x,x,x,x,x,x,x,x,x,x,19' # ******* ANSWER: 225850756401099 (- 73 = 225850756401026) (225850756401099 - 12)
+                                                  # 100000000000000
+                                                  # WRONG: 225850756401026, 225850756401099
+#t=43282261738409+ 6  # prev answer +  spots away
+#every= 45642123665671 # every from prev answer
+
+
+
+
+#every = 1 #default
+#s='7,13,x,x,59,x,31,19' 
+
+
+
+
+
+#s='4,x,x,5,6' # 32 , then every 60
+#s='4,x,x,5' # 12 , then every 20
+#s='5,6' # 35 - 3 (spots back) = 32
+#t=15 # 12+3
+#every = 20
+
+
+
 
 arr = s.split(',')
 times=[]
@@ -41,6 +68,36 @@ for e in arr:
 found = False
 
 print(d)
+
+
+print()
+print('Running...')
+t=225850756400993
+for i in range(t,999999999999999,1):
+    b = get_times(times,i,d)
+    if b:
+        print('FOUND: ' + str(i))
+        break
+        
+sys.exit()
+#every = 23
+#n=1000000
+#for i in range(225850756400740-n,225850756400740+n,1):
+#    if ( get_times(times,t,d) ):
+#        print('FOUND!!!!!! ' + i)
+#        break
+
+#print('done')
+#sys.exit()
+
+
+
+
+
+
+
+
+
 iterations = 0
 reps = 0
 arr4=[]
@@ -61,17 +118,17 @@ while True:
     if done:
 
         # TESTING
-        if True:
+        if False:
             reps = reps + 1
             print(t)
             if (reps < 3):
-                t = t + times[0]
+                t = t + every
                 continue
             print()
 
         print('Part 2: ' + str(t))
         break
-    t = t + times[0]
+    t = t + every
 
 end_secs = time.time()
 print()
