@@ -156,13 +156,14 @@ s='1789,37,47,1889' # first occurs at timestamp 1202161486.
 #sys.exit()
 
 
-#t=225850756401099-9
-#for i in range(t,t+1):
-#    b = get_times(times,i,d)
-#    if b:
-#        print(i)
-#        break
-#sys.exit()
+t=225850756401099
+  
+for i in range(100000000000000,t+100000000000000):
+    b = get_times(times,i,d)
+    if b:
+        print(i)
+        break
+sys.exit()
 
 
 
