@@ -29,7 +29,7 @@ for line in Lines:
 ranges=[]
 for i in range(0, len(rules)):
     arr = rules[i].split(':')
-    fiels = arr[0].strip()
+    fields = arr[0].strip()
     ranges.append(arr[1].replace(' or ','-').split('-'))
 for i in range(0, len(ranges)):
     for j in range(0,len(ranges[i])):

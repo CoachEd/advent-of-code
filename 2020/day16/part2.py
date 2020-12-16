@@ -1,145 +1,120 @@
-
 import sys
-import time
-import math
-import random
-import functools
-
-start_secs = time.time()
-print('running...')
-def get_times(l,t,d):
-    # arriving in table
-    # t % bus ID = current minute in schedule (e.g., if 6, then bus 7 is arrving in 1 minute)
-    for i in range(0,len(l)):
-        b = l[i]
-        if i == 0:
-            if b-(t%b) != b:
-                return False
-        else:
-            if b-(t%b) != d[b]:
-                return False
-        #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
-    return True
-
-# INPUT DATA
-#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-
-#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # 69, every 943
-#s='41,x,x,x,x,x,x,x,x,x,509'  # 398028, every 479987
-#s='509,x,x,x,x,x,x,x,x,x,x,x,x,13' # 4717921, every 6239831
-#s='13,17' # 35917089 , every 106077127
-#s='17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29'  # 2687845265, every 3076236683
-#s='29,x,401' # 107279892502 , every 1233570909883
-#s='401,x,x,x,x,x,37' # 43282261738409 , every 45642123665671
-#s='37,x,x,x,x,x,x,x,x,x,x,x,x,19' # ******* ANSWER: 225850756401099 (- 73 = 225850756401026) (225850756401099 - 12)
-                                                  # 100000000000000
-                                                  # WRONG: 225850756401026, 225850756401099
-#t=43282261738409+ 6  # prev answer +  spots away
-#every= 45642123665671 # every from prev answer
-
-
-
-
-#every = 1 #default
-s='7,13,x,x,59,x,31,19'
-t=0
-every=1
-#s='7,13' # ans,evr 77,81
-#s='13,x,x,59'
-#s='59,x,31'
-#t= 1686987+ 2    # prev+spots
-#s='31,19'
-#every= 1925937
-
-#answer 1068781
-  #ans: 20946359 ****** TOO BG!!
-  #evr: 36592803
-
-
-
-
-
-#s='4,x,x,5,6' # 32 , then every 60
-#s='4,x,x,5' # 12 , then every 20
-#s='5,6' # 35 - 3 (spots back) = 32
-#t=15 # 12+3
-#every = 20
-
-
-
-
-arr = s.split(',')
-times=[]
-d = dict()
-offset = 0
-for e in arr:
-    if e != 'x':
-        times.append(int(e))
-        d[int(e)] = offset
-    offset = offset + 1
-
-found = False
-
-print(d)
-
 
 print()
-print('Running...')
-#t=225850756400993
-#for i in range(t,999999999999999,1):
-#    b = get_times(times,i,d)
-#    if b:
-#        print('FOUND: ' + str(i))
-#        break
-       
-#sys.exit()
-#every = 23
-#n=1000000
-#for i in range(225850756400740-n,225850756400740+n,1):
-#    if ( get_times(times,t,d) ):
-#        print('FOUND!!!!!! ' + i)
-#        break
+def poss_fields(v,i):
+    #vfields = [set() for x in range(1000)]
+    st = v[i]
+    return(st)
 
-#print('done')
-#sys.exit()
+rules=[]
+yticket=[]
+ntickets=[]
+ltickets=[]
+v=[0]*1000
+my_file = open("inp.txt", "r")
+part=1
+Lines = my_file.readlines()
+maxi=-1
+for line in Lines:
+    s = line.strip()
+    if part==1:
+      if len(s) == 0:
+        part = part+ 1
+        continue
+      rules.append( line.strip())
+    elif part==2:
+      if len(s) == 0:
+        part=part+1
+        continue
+      if s.find('ticket') == -1:
+        yticket = s.split(',')
+    elif part== 3:
+      if s.find('ticket') == -1:
+        ltickets.append(line)
+
+ranges=[]
+fields = []
+for i in range(0, len(rules)):
+    arr = rules[i].split(':')
+    field = arr[0].strip()
+    fields.append(field)
+    ranges.append(arr[1].replace(' or ','-').split('-'))
+
+for i in range(0, len(ranges)):
+    for j in range(0,len(ranges[i])):
+        ranges[i][j]=int(ranges[i][j])
+        if ranges[i][j] > maxi:
+            maxi=ranges[i][j]
+
+for i in range(0, len(yticket)):    
+    yticket[i] = int(yticket[i])
+    if yticket[i] > maxi:
+        maxi = yticket[i]
+
+for s in ltickets:
+    arr=s.split(',')
+    ntickets.append(arr)
+for i in range(0, len(ntickets)):
+    for j in range(0,len(ntickets[i])):
+        ntickets[i][j]=int(ntickets[i][j])
+        if ntickets[i][j] > maxi:
+            maxi=ntickets[i][j]
+
+vfields = [set() for x in range(1000)]
+for i in range(0,len(ranges)):
+    x=ranges[i][0]
+    y=ranges[i][1]
+    x1=ranges[i][2]
+    y1=ranges[i][3]
+    field = fields[i]
+    minf = sys.maxsize
+    maxf = -1
+    for j in range(x,y+1):
+        if j < minf:
+            minf = j
+        if j > maxf:
+            maxf = j 
+        v[j]=1
+        vfields[j].add(field)
+    for j in range(x1,y1+1):
+        if j < minf:
+            minf = j
+        if j > maxf:
+            maxf = j         
+        v[j]=1
+        vfields[j].add(field)
 
 
-iterations = 0
-reps = 0
-arr4=[]
-while True:
-    done = True
-    for b, o in d.items():
-        x = t % b
-        if b == times[0]:
-            if x != 0:
-                # not a good time
-                done = False
-                break
-        else:
-            if b-x != o:
-                done = False
-                break
+good_tickets = []
 
-    if done:
+for arr in ntickets:
+    good = True
+    for n in arr:
+        if v[n] == 0:
+            good = False
+            break
+    if good:
+        good_tickets.append(arr)
+    
+# good_tickets do NOT include my ticket
+unique_fields = set()
+for i in range(0,20):
+    #print('Field ' + str(i)+ ': ')
+    d = dict()
+    for ticket in good_tickets:
+        field = ticket[i]
+        unique_fields.add(field)
+        st = poss_fields(vfields,field)
+        for nm in st:
+            if not nm in d:
+                d[nm]=1
+            else:
+                d[nm] = d[nm] + 1
 
-        # TESTING
-        if False:
-            reps = reps + 1
-            arr4.append(t)
-            if (reps < 3):
-                t = t + every
-                continue
-            print('ans: '+str(arr4[0]))
-            print('evr: '+str(arr4[2]-arr4[1]))
-
-        print()
-        print('Part 2: ' + str(t))
-        break
-    t = t + every
-
-end_secs = time.time()
-print()
-print(str(end_secs-start_secs) + ' seconds')
+        #num_poss_fields = len(poss_fields(vfields,field)) # all fields map to 19 or 20 possible fields
 
 
+print('min field: ' + str(minf)) # 48
+print('max field: ' + str(maxf)) # 961
+print('# good tickets: ' + str(len(good_tickets))) # 190
+print('unique_fields: ' + str(unique_fields))
