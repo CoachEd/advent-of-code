@@ -23,44 +23,58 @@ def get_times(l,t,d):
     return True
 
 # INPUT DATA
-s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-s='23,x,x,x,x,x,x,x,x,x,x,x,x,41'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
 t=0
 every=1
-# 69,943
+s='23,x,x,x,x,x,x,x,x,x,x,x,x,41' # ans/evr: 69 / 943
 
-s='41,x,x,x,x,x,x,x,x,x,509'
-t= 69+13
+t=69 + 13
 every=943
+s='41,x,x,x,x,x,x,x,x,x,509'  # ans/evr: 398028 / 479987
 
-
-s='509,x,x,x,x,x,x,x,x,x,x,x,x,13'
 t=398028 + 10
 every=479987
+s='509,x,x,x,x,x,x,x,x,x,x,x,x,13,17' # ans/evr: 35917076 / 106077127
 
-s='13,17'
-t=4717921+ 13
-every=6239831
+t=35917076 + 14
+every=106077127
+s='17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29' # ans/evr: 2687845265 / 3076236683
+
+t=2687845265 + 15
+every=3076236683
+s='29,x,401,x,x,x,x,x,37'   # ans/evr: 43282261738407  / 45642123665671
+
+t=43282261738407 + 8
+every=45642123665671
+s='37,x,x,x,x,x,x,x,x,x,x,x,x,19'  # THE ANSWER: 225850756401099 - 60 = 225850756401039 YESSSSSSS!!!
+
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,13'
+#t=398015
+#every=479987
+
+#s='13,17'
+#t=4717921+ 13
+#every=6239831
 
 
-s='17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29'
-t= 35917089 + 1
-every= 106077127
+#s='17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29'
+#t= 35917089 + 1
+#every= 106077127
 
 
-s='29,x,401'
-t= 2687845265+15
-every= 3076236683
+#s='29,x,401'
+#t= 2687845265+15
+#every= 3076236683
 
 
-s='401,x,x,x,x,x,37'
-t= 107279892502+2
-every= 1233570909883
+#s='401,x,x,x,x,x,37'
+#t= 107279892502+2
+#every= 1233570909883
 
 
-s='37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-t= 43282261738409+6
-every= 45642123665671
+#s='37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#t= 43282261738409+6
+#every= 45642123665671
 
 #ans: 
 #     225850756401099 ?????
@@ -68,7 +82,7 @@ every= 45642123665671
 
 
 
-s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
 #t=225850756401099
 #every=1
 
@@ -106,11 +120,31 @@ s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,1
 #t=0
 #every=1
 #s='7,x,x,x,59' # ans: 350, evr: 413
-#t=0
-#every=1
-#s='59,x,x,19' # ans: 1593  (subtract the +4 = 1589) ??????
 #t=350+4
 #every=413
+#s='59,x,x,19' # ans: 1593  (subtract the +4 = 1589) ??????
+
+
+# SAMPLE TRY 3
+#s='7,13,x,x,59,x,31,19'
+#t=0
+#every=1
+"""
+s='7,13' # ans/ever 77/91
+
+t=77+1 # 13 is 1 away from 7
+every=91
+s='13,x,x,59' # ans/ever 351/5369
+
+t=351+3
+every=5369
+s='59,x,31' #ans/erver 70151/166439
+
+t=70151+2
+every=166439
+s='31,19' # ans/every 1068787 / 3162341  (1068787 is off by 6!!: 1068781) SUBTRACT 6, since 19 is 6 away from the first number??
+"""
+
 
 
 #s='4,x,x,5,6' # 32 , then every 60
@@ -155,7 +189,7 @@ s='1789,37,47,1889' # first occurs at timestamp 1202161486.
 #print(get_times(times,225850756401099-6,d))
 #sys.exit()
 
-
+"""
 t=225850756401099
   
 for i in range(100000000000000,t+100000000000000):
@@ -164,7 +198,7 @@ for i in range(100000000000000,t+100000000000000):
         print(i)
         break
 sys.exit()
-
+""" 
 
 
 
