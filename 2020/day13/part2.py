@@ -22,6 +22,9 @@ def get_times(l,t,d):
         #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
     return True
 
+
+
+### MANUAL SOLUTION - BEGIN
 # INPUT DATA
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
 t=0
@@ -47,6 +50,10 @@ s='29,x,401,x,x,x,x,x,37'   # ans/evr: 43282261738407  / 45642123665671
 t=43282261738407 + 8
 every=45642123665671
 s='37,x,x,x,x,x,x,x,x,x,x,x,x,19'  # THE ANSWER: 225850756401099 - 60 = 225850756401039 YESSSSSSS!!!
+### MANUAL SOLUTION - END
+
+
+
 
 #s='23,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,13'
 #t=398015
