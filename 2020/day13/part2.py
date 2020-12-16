@@ -62,7 +62,7 @@ t= 43282261738409+6
 every= 45642123665671
 
 #ans: 
-#     225850756401099
+#     225850756401099 ?????
 #evr: 867200349647749
 
 
@@ -88,7 +88,7 @@ every=1
 #every= 45642123665671 # every from prev answer
 
 
-
+# SAMPLE TRY 1
 #s='7,13,x,x,59,x,31,19'
 #s='7,13' # ans,evr 77,91
 #s='13,x,x,59'
@@ -96,13 +96,20 @@ every=1
 #s='31,19'
 #t= 70151+2 # prev+spots
 #every= 166439
-
 #real answer 1068788
 #ans:        1068787
 
 
-
-#[QPython] Press enter to exit ...
+#SAMPLE TRY 2
+#s='7,x,x,x,59,x,x,19' #REAL ANSWER: 1589
+#t=0
+#every=1
+#s='7,x,x,x,59' # ans: 350, evr: 413
+#t=0
+#every=1
+#s='59,x,x,19' # ans: 1593  (subtract the +4 = 1589) ??????
+#t=350+4
+#every=413
 
 
 #s='4,x,x,5,6' # 32 , then every 60
@@ -144,10 +151,10 @@ s='1789,37,47,1889' # first occurs at timestamp 1202161486.
 #sys.exit()
 
 # ATTEMPT
-print(get_times(times,225850756401099,d))
-sys.exit()
+#print(get_times(times,225850756401099-6,d))
+#sys.exit()
 
-"""
+
 t=225850756401099
 for i in range(t-200,t+200):
     b = get_times(times,i,d)
@@ -155,7 +162,7 @@ for i in range(t-200,t+200):
         print(i)
         break
 sys.exit()
-"""
+
 
 
 
@@ -200,7 +207,7 @@ while True:
     if done:
 
         # TESTING
-        if False:
+        if True:
             reps = reps + 1
             arr4.append(t)
             if (reps < 3):
