@@ -10,16 +10,18 @@ print('running...')
 def get_times(l,t,d):
     # arriving in table
     # t % bus ID = current minute in schedule (e.g., if 6, then bus 7 is arrving in 1 minute)
+    ret = True
     for i in range(0,len(l)):
         b = l[i]
+        print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
         if i == 0:
             if b-(t%b) != b:
-                return False
+                ret = False
         else:
             if b-(t%b) != d[b]:
-                return False
+                ret = False
         #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
-    return True
+    return ret
 
 # INPUT DATA
 s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
