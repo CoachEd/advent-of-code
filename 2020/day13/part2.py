@@ -10,18 +10,17 @@ print('running...')
 def get_times(l,t,d):
     # arriving in table
     # t % bus ID = current minute in schedule (e.g., if 6, then bus 7 is arrving in 1 minute)
-    ret = True
     for i in range(0,len(l)):
         b = l[i]
-        print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
+        #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
         if i == 0:
             if b-(t%b) != b:
-                ret = False
+                return False
         else:
             if b-(t%b) != d[b]:
-                ret = False
+                return False
         #print('Bus ' + str(b) + ' arriving in ' + str(b-(t%b)) + ' minutes.')
-    return ret
+    return True
 
 # INPUT DATA
 s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
@@ -69,9 +68,9 @@ every= 45642123665671
 
 
 
-s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
-t=225850756401099
-every=1
+#s='23,x,x,x,x,x,x,x,x,x,x,x,x,41,x,x,x,x,x,x,x,x,x,509,x,x,x,x,x,x,x,x,x,x,x,x,13,17,x,x,x,x,x,x,x,x,x,x,x,x,x,x,29,x,401,x,x,x,x,x,37,x,x,x,x,x,x,x,x,x,x,x,x,19'
+#t=225850756401099
+#every=1
 
 
 
@@ -157,13 +156,13 @@ s='1789,37,47,1889' # first occurs at timestamp 1202161486.
 #sys.exit()
 
 
-t=225850756401099
-for i in range(t-200,t+200):
-    b = get_times(times,i,d)
-    if b:
-        print(i)
-        break
-sys.exit()
+#t=225850756401099-9
+#for i in range(t,t+1):
+#    b = get_times(times,i,d)
+#    if b:
+#        print(i)
+#        break
+#sys.exit()
 
 
 
