@@ -1,0 +1,20 @@
+**COLUMN 0 could be field: departure track
+**COLUMN 1 could be field: seat
+**COLUMN 2 could be field: arrival station
+**COLUMN 3 could be field: departure date
+**COLUMN 4 could be field: departure location
+**COLUMN 5 could be field: class
+**COLUMN 6 could be field: duration
+**COLUMN 7 could be field: departure time
+**COLUMN 8 could be field: row
+**COLUMN 9 could be field: departure platform
+**COLUMN 10 could be field: arrival location
+**COLUMN 11 could be field: departure station
+**COLUMN 12 could be field: arrival platform
+**COLUMN 13 could be field: arrival track
+**COLUMN 14 could be field: type
+**COLUMN 15 could be field: train
+**COLUMN 16 could be field: price
+**COLUMN 17 could be field: zone
+**COLUMN 18 could be field: wagon
+**COLUMN 19 could be field: route

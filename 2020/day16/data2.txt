@@ -1,0 +1,210 @@
+column 0 could be field: departure station
+column 0 could be field: departure platform
+column 0 could be field: departure track
+column 0 could be field: departure time
+column 0 could be field: arrival location
+column 0 could be field: class
+column 0 could be field: duration
+column 0 could be field: row
+
+column 1 could be field: departure location
+column 1 could be field: departure station
+column 1 could be field: departure platform
+column 1 could be field: departure track
+column 1 could be field: departure date
+column 1 could be field: departure time
+column 1 could be field: arrival location
+column 1 could be field: class
+column 1 could be field: duration
+column 1 could be field: row
+column 1 could be field: seat
+
+column 2 could be field: departure location
+column 2 could be field: departure station
+column 2 could be field: departure platform
+column 2 could be field: departure track
+column 2 could be field: departure date
+column 2 could be field: departure time
+column 2 could be field: arrival location
+column 2 could be field: arrival station
+column 2 could be field: class
+column 2 could be field: duration
+column 2 could be field: row
+column 2 could be field: seat
+column 2 could be field: wagon
+column 2 could be field: zone
+
+column 3 could be field: departure station
+column 3 could be field: departure platform
+column 3 could be field: departure track
+column 3 could be field: departure date
+column 3 could be field: departure time
+column 3 could be field: arrival location
+column 3 could be field: class
+column 3 could be field: duration
+column 3 could be field: row
+
+column 4 could be field: departure location
+column 4 could be field: departure station
+column 4 could be field: departure platform
+column 4 could be field: departure track
+column 4 could be field: departure date
+column 4 could be field: departure time
+column 4 could be field: arrival location
+column 4 could be field: class
+column 4 could be field: duration
+column 4 could be field: row
+
+column 5 could be field: arrival location
+column 5 could be field: class
+column 5 could be field: duration
+
+column 6 could be field: arrival location
+column 6 could be field: duration
+
+column 7 could be field: departure station
+column 7 could be field: departure time
+column 7 could be field: arrival location
+column 7 could be field: class
+column 7 could be field: duration
+column 7 could be field: row
+
+column 8 could be field: arrival location
+column 8 could be field: class
+column 8 could be field: duration
+column 8 could be field: row
+
+column 9 could be field: departure station
+column 9 could be field: departure platform
+column 9 could be field: departure time
+column 9 could be field: arrival location
+column 9 could be field: class
+column 9 could be field: duration
+column 9 could be field: row
+
+**COLUMN 10 could be field: arrival location
+
+column 11 could be field: departure station
+column 11 could be field: arrival location
+column 11 could be field: class
+column 11 could be field: duration
+column 11 could be field: row
+
+**column 12 could be field: arrival platform
+
+column 13 could be field: departure location
+column 13 could be field: departure station
+column 13 could be field: departure platform
+column 13 could be field: departure track
+column 13 could be field: departure date
+column 13 could be field: departure time
+column 13 could be field: arrival location
+column 13 could be field: arrival station
+column 13 could be field: arrival track
+column 13 could be field: class
+column 13 could be field: duration
+column 13 could be field: price
+column 13 could be field: row
+column 13 could be field: seat
+column 13 could be field: train
+column 13 could be field: type
+column 13 could be field: wagon
+column 13 could be field: zone
+
+column 14 could be field: departure location
+column 14 could be field: departure station
+column 14 could be field: departure platform
+column 14 could be field: departure track
+column 14 could be field: departure date
+column 14 could be field: departure time
+column 14 could be field: arrival location
+column 14 could be field: arrival station
+column 14 could be field: class
+column 14 could be field: duration
+column 14 could be field: row
+column 14 could be field: seat
+column 14 could be field: type
+column 14 could be field: wagon
+column 14 could be field: zone
+
+column 15 could be field: departure location
+column 15 could be field: departure station
+column 15 could be field: departure platform
+column 15 could be field: departure track
+column 15 could be field: departure date
+column 15 could be field: departure time
+column 15 could be field: arrival location
+column 15 could be field: arrival station
+column 15 could be field: class
+column 15 could be field: duration
+column 15 could be field: row
+column 15 could be field: seat
+column 15 could be field: train
+column 15 could be field: type
+column 15 could be field: wagon
+column 15 could be field: zone
+
+column 16 could be field: departure location
+column 16 could be field: departure station
+column 16 could be field: departure platform
+column 16 could be field: departure track
+column 16 could be field: departure date
+column 16 could be field: departure time
+column 16 could be field: arrival location
+column 16 could be field: arrival station
+column 16 could be field: class
+column 16 could be field: duration
+column 16 could be field: price
+column 16 could be field: row
+column 16 could be field: seat
+column 16 could be field: train
+column 16 could be field: type
+column 16 could be field: wagon
+column 16 could be field: zone
+
+column 17 could be field: departure location
+column 17 could be field: departure station
+column 17 could be field: departure platform
+column 17 could be field: departure track
+column 17 could be field: departure date
+column 17 could be field: departure time
+column 17 could be field: arrival location
+column 17 could be field: class
+column 17 could be field: duration
+column 17 could be field: row
+column 17 could be field: seat
+column 17 could be field: zone
+
+column 18 could be field: departure location
+column 18 could be field: departure station
+column 18 could be field: departure platform
+column 18 could be field: departure track
+column 18 could be field: departure date
+column 18 could be field: departure time
+column 18 could be field: arrival location
+column 18 could be field: class
+column 18 could be field: duration
+column 18 could be field: row
+column 18 could be field: seat
+column 18 could be field: wagon
+column 18 could be field: zone
+
+column 19 could be field: departure location
+column 19 could be field: departure station
+column 19 could be field: departure platform
+column 19 could be field: departure track
+column 19 could be field: departure date
+column 19 could be field: departure time
+column 19 could be field: arrival location
+column 19 could be field: arrival station
+column 19 could be field: arrival track
+column 19 could be field: class
+column 19 could be field: duration
+column 19 could be field: price
+column 19 could be field: route
+column 19 could be field: row
+column 19 could be field: seat
+column 19 could be field: train
+column 19 could be field: type
+column 19 could be field: wagon
+column 19 could be field: zone
