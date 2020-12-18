@@ -1,17 +1,56 @@
 import sys
 import time
 import copy
-from mpl_toolkits import mplot3d 
 import numpy as np 
-import matplotlib.pyplot as plt 
-
-"""
-python -m pip install -U pip
-python -m pip install -U matplotlib
-"""
 
 start_secs = time.time()
+sz = 1000
+offset = sz // 2
+a = np.zeros((sz,sz,sz)) # z,y,x
 
+def getp(z,y,x):
+    return a[z+offset][y+offset][x+offset]
+def setp(z,y,x,v):
+    a[z+offset][y+offset][x+offset] = v
+
+minz=sys.maxsize
+miny=sys.maxsize
+minx=sys.maxsize
+maxz=0
+maxy=0
+maxx=0
+
+def setBounds(arr):
+    global minx
+    global miny
+    global minz
+    global maxx
+    global maxy
+    global maxz
+    # set the min and max x,y,z
+    for z in range(0,len(arr)):
+        for y in range(0,len(arr[z])):
+            for x in range(0,len(arr[z][y])):
+                if getp(z,y,x) == 1:
+                    if x > maxx:
+                        maxx = x
+                    if x < minx:
+                        minx = x
+                    if y > maxy:
+                        maxy = y
+                    if y < miny:
+                        miny = y
+                    if z > maxz:
+                        maxz = z
+                    if z < minz:
+                        minz = z
+    minx = minx - 2 - offset
+    miny = miny - 2 - offset
+    minz = minz - 2 - offset
+    maxx = maxx + 2 - offset
+    maxy = maxy + 2 - offset
+    maxz = maxz + 2 - offset
+            
 # read in input file
 l=[]
 my_file = open("inp.txt", "r")
@@ -19,45 +58,23 @@ lines = my_file.readlines()
 for line in lines: 
     l.append(line.strip())
 
-# syntax for 3-D projection 
-fig = plt.figure() 
-ax = plt.axes(projection ='3d') 
-
-zdata =[]
-ydata =[]
-xdata =[]
+z=0
 for y in range(0, len(l)):
     for x in range(0,len(l[y])):
         if l[y][x] == '#':
-            zdata.append(0) # one surface initially
-            ydata.append(y)
-            xdata.append(x)
+            setp(z,y,x,1)
 
-# plotting 
-ax = plt.axes(projection="3d") # default 3D view
-#ax.view_init(azim=270, elev=270) # TOP VIEW
-scatter = ax.scatter3D(xdata, ydata, zdata, c='r')
-plt.show()  # show 3D plot
-data = np.array(scatter._offsets3d).T
-print('z,y,x:')
-for p in data:
-    x=str(int(p[0]))
-    y=str(int(p[1]))
-    z=str(int(p[2]))
-    print(z+','+y+','+x)
+#data2 = copy.deepcopy(data) # 2D list of points
 
-data2 = copy.deepcopy(data) # 2D list of points
-data2[0][0] = 9
-scatter = ax.scatter3D(data2[0],data2[1],data2[2], c='r')
-plt.show()  # show 3D plot
-
-
-for p in data:
-    x=p[0]
-    y=p[1]
-    z=p[2]
-
-
+setBounds(a) # set min/max x,y,z
+s = ''
+for z in range(minz,maxz+1):
+    s = s + 'z=' + str(z) + '\n'
+    for y in range(miny,maxy+1):
+        for x in range(minx,maxx+1):
+            s = s + str(getp(z,y,z))
+        s = s + '\n'
+print(s)            
 
 
 
