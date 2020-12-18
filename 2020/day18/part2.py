@@ -12,7 +12,7 @@ lines = my_file.readlines()
 for line in lines: 
     s = line.strip()
     l.append(s)
-print(len(l))
+
 def calc(n,m,op):
     if op == '+':
         return n + m
@@ -29,7 +29,35 @@ def isOp(c):
 
 def plain_equation(s):
     # no parends here
-    #1+2*3+4*5+6
+    # 1 + 2 * 3 + 4 * 5 + 6
+
+    # handle addition first
+    stack = []
+    if s.find('+') != -1:
+        sarr = re.split(' ',s)
+        stack = []
+        while True:
+            c = sarr[0]
+            sarr = sarr[1:]
+            if len(stack) == 0 or c != '+':
+                stack.append(c)
+            else:
+                if c == '+':
+                    # process multiplication
+                    num1 = int(stack.pop())
+                    num2 = int(sarr[0])
+                    ans = num1 + num2
+                    stack.append(str(ans))
+                    sarr = sarr[1:]
+            if len(sarr) == 0 and '+' not in stack:
+                break
+
+    if len(stack) > 0:
+        s=''
+        for c in stack:
+            s = s + c + ' '
+        s = s.strip()
+
     sarr = re.split(' ',s)
     ans = 0
     stack = []
@@ -47,11 +75,10 @@ def plain_equation(s):
         if len(stack) == 1 and len(sarr) == 0:
             break
 
-    return stack[0]
+    return int(stack[0])
 
 #1 + 2 * 3 + 4 * 5 + 6
 #1 + (2 * (3+1))
-
 
 sum = 0
 for s in l:
@@ -68,7 +95,7 @@ for s in l:
         sum = sum + ans
         continue
 
-    #2 * 3 + (4 * 5)
+    #1 + (2 * 3) + (4 * (5 + 6)
     # we have at least one pair of parends
     #print('processing... ' + s)
     while True:
@@ -109,7 +136,7 @@ for s in l:
         if len(stack) <= 1 and len(sarr) == 0:
             break
 
-print('part 1: ' + str(sum))  # too low: 202553431416
+print('part 2: ' + str(sum))  # too low: 202553431416
 
 print()
 end_secs = time.time()
