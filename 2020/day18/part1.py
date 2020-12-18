@@ -12,7 +12,7 @@ lines = my_file.readlines()
 for line in lines: 
     s = line.strip()
     l.append(s)
-
+print(len(l))
 def calc(n,m,op):
     if op == '+':
         return n + m
@@ -60,8 +60,12 @@ for s in l:
     s = s.replace('(','( ').replace(')',' )')
     sarr =  re.split(' ',s)
     if not '(' in sarr:
-        ans = plain_equation(''.join(sarr))
-        print('ans: ' + str(ans))  # NEVER REACH THIS???
+        s4 = ''
+        for c4 in sarr:
+            s4 = s4 + ' ' + c4
+        s4 = s4.strip()
+        ans = plain_equation(s4)
+        sum = sum + ans
         continue
 
     #2 * 3 + (4 * 5)
@@ -75,7 +79,7 @@ for s in l:
                 s3 = s3 + c3 + ' '
             s3 = s3.strip()
             ans = plain_equation(s3)
-            print('****' + str(ans))
+            sum = sum + ans
             break
 
         if len(sarr) > 0:
@@ -105,7 +109,7 @@ for s in l:
         if len(stack) <= 1 and len(sarr) == 0:
             break
 
-
+print('part 1: ' + str(sum))  # too low: 202553431416
 
 print()
 end_secs = time.time()
