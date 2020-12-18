@@ -53,6 +53,7 @@ def plain_equation(s):
 #1 + (2 * (3+1))
 
 
+sum = 0
 for s in l:
     stack = []
     ans = 0
@@ -60,7 +61,7 @@ for s in l:
     sarr =  re.split(' ',s)
     if not '(' in sarr:
         ans = plain_equation(''.join(sarr))
-        print('ans: ' + str(ans))
+        print('ans: ' + str(ans))  # NEVER REACH THIS???
         continue
 
     #2 * 3 + (4 * 5)
@@ -74,7 +75,7 @@ for s in l:
                 s3 = s3 + c3 + ' '
             s3 = s3.strip()
             ans = plain_equation(s3)
-            print(ans)
+            print('****' + str(ans))
             break
 
         if len(sarr) > 0:
