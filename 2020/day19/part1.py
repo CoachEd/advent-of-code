@@ -1,11 +1,22 @@
 import sys
+import re
+import time
+
+start_secs = time.time()
 
 l=[]
+msgs=[]
+parsing_rules = True
 my_file = open("inp.txt", "r")
 Lines = my_file.readlines()
 for line in Lines:
     s = line.strip()
-    l.append(s)
+    if len(s) == 0:
+        parsing_rules = False
+    if parsing_rules:
+        l.append(s)        
+    else:
+        msgs.append(s)
 
 d=dict()
 for s in l:
@@ -17,6 +28,17 @@ for s in l:
     else:
         d[rule_num]=rule
 
+def isMatch(p,s):
+    m = re.match(p,s)
+    if m == None:
+        return False
+    else:
+        (i,j) = m.span()
+        if (j-i) == len(s):
+            return True
+        else:
+            return False
+
 def parse(rule):
     global d
     if rule == 'a' or rule == 'b':
@@ -25,9 +47,10 @@ def parse(rule):
     if rule.find('|') == -1:
         arr = rule.split() 
         for r in arr:
-            s = s + parse(d[r])
+            s = s + '(' + parse(d[r]) + ')'
         return s
     else:
+        s = '('
         arr2 = rule.split('|')
         for i in range(0,len(arr2)):
             arr = arr2[i].split()
@@ -35,8 +58,17 @@ def parse(rule):
                 s = s + parse(d[r])
             if i < len(arr2)-1:
                 s = s + '|'
-        return s
+        return s + ')'
 
-print(d)
-print(parse('1'))
-print(parse('2'))
+
+p = parse(d['0'])
+
+count = 0
+for m in msgs:
+    if isMatch(p,m):
+        count = count + 1
+print('part 1: ' + str(count))
+
+    
+end_secs = time.time()
+print('--- ' + str(end_secs-start_secs) + ' secs ---')
