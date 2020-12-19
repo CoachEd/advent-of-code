@@ -70,6 +70,7 @@ def parse(rule):
 
 
 p = parse(d['0'])
+print(p)
 
 count = 0
 for m in msgs:
