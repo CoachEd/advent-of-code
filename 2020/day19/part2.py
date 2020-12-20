@@ -33,8 +33,19 @@ for s in l:
 # 11: 42 31 | 42 11 31
 # 31: 116 71 | 53 120
 # 42: 53 134 | 116 106
-d['8'] = '42 | 42 8'
-d['11'] = '42 31 | 42 11 31'
+
+#d['8'] = '42 | 42 8'
+#d['11'] = '42 31 | 42 11 31'
+
+d['8'] = '42 | c'
+d['11'] = '42 31 | d'
+
+#d['8'] = '42 | 42 8'
+#d['11'] = '42 31 | 42 11 31'
+
+#d['31'] = '116 71 | 53 120'
+#d['42'] = '53 134 | 116 106'
+# next rule number: 138
 
 def isMatch(p,s):
     m = re.match(p,s)
@@ -49,7 +60,7 @@ def isMatch(p,s):
 
 def parse(rule):
     global d
-    if rule == 'a' or rule == 'b':
+    if rule == 'a' or rule == 'b' or rule == 'c' or rule == 'd':
         return rule
     s=''
     if rule.find('|') == -1:
@@ -63,21 +74,26 @@ def parse(rule):
         for i in range(0,len(arr2)):
             arr = arr2[i].split()
             for r in arr:
-                s = s + parse(d[r])
+                if r == 'c' or r == 'd':
+                    s = s + r
+                else:
+                    s = s + parse(d[r])
             if i < len(arr2)-1:
                 s = s + '|'
         return s + ')'
 
+#p = parse(d['0'])
+#print(p)
 
-p = parse(d['0'])
-print(p)
 
+
+
+p="(((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))|(a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))+))(((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))(b(b((a((b((b|a)b|aa)|a(b)(a))a|((bb|ab)b|(b(b|a)|aa)a)b)|b((b(b)(a)|a(bb|ab))b|((bb|ab)b|(b(b|a)|aa)a)a))b|(b(a((b)(a))(a)|b((b)(a)a|(b)(a)b))|a((b(bb|ab)|a(b)(a))b|((ab|b(b|a))a|((b|a)a|ab)b)a))a)|a(b(((b(b(b|a)|aa)|a((b|a))((b|a)))b|(((b|a)b|aa)a|(b)(a)b)a)b|(a(((b|a)a|ab)b|((b|a))((b|a))a)|b((b)(b)b|(b)(a)a))a)|a(b((b|a))((a(ab|aa)|b(aa|bb)))|a((b(b)(a)|a(b)(b))b|(a(bb|ab)|b(a)(b))a))))|a(b(b((b((b)(b)b|(ab|aa)a)|a((bb|ab)b|(bb|ba)a))b|(b(a((b|a)b|aa)|b(bb|ba))|a(((b|a)a|ab)a|(ab|aa)b))a)|a(((b(b(b|a)|aa)|a(bb|ba))b|(((b|a)b|aa))((b|a))a)a|(a((b)(b)b|(b)(a)a)|b(b(bb|ba)|a(b)(b)))b))|a((b(((bb|ba))((b|a))a|((b|a))((bb|ab))b)|a(((a)(b)a|((b|a))((b|a))b)b|((bb|ab)a|((b|a)a|ab)b)a))a|(b(b((bb|ba))(b)|a(((b|a)b|aa))(a))|a((b((b|a))((b|a))|a(bb|ab))b|((ba|ab)a|(bb|ab)b)a))b)))|(a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))+(b(b((a((b((b|a)b|aa)|a(b)(a))a|((bb|ab)b|(b(b|a)|aa)a)b)|b((b(b)(a)|a(bb|ab))b|((bb|ab)b|(b(b|a)|aa)a)a))b|(b(a((b)(a))(a)|b((b)(a)a|(b)(a)b))|a((b(bb|ab)|a(b)(a))b|((ab|b(b|a))a|((b|a)a|ab)b)a))a)|a(b(((b(b(b|a)|aa)|a((b|a))((b|a)))b|(((b|a)b|aa)a|(b)(a)b)a)b|(a(((b|a)a|ab)b|((b|a))((b|a))a)|b((b)(b)b|(b)(a)a))a)|a(b((b|a))((a(ab|aa)|b(aa|bb)))|a((b(b)(a)|a(b)(b))b|(a(bb|ab)|b(a)(b))a))))|a(b(b((b((b)(b)b|(ab|aa)a)|a((bb|ab)b|(bb|ba)a))b|(b(a((b|a)b|aa)|b(bb|ba))|a(((b|a)a|ab)a|(ab|aa)b))a)|a(((b(b(b|a)|aa)|a(bb|ba))b|(((b|a)b|aa))((b|a))a)a|(a((b)(b)b|(b)(a)a)|b(b(bb|ba)|a(b)(b)))b))|a((b(((bb|ba))((b|a))a|((b|a))((bb|ab))b)|a(((a)(b)a|((b|a))((b|a))b)b|((bb|ab)a|((b|a)a|ab)b)a))a|(b(b((bb|ba))(b)|a(((b|a)b|aa))(a))|a((b((b|a))((b|a))|a(bb|ab))b|((ba|ab)a|(bb|ab)b)a))b)))+))"
 count = 0
 for m in msgs:
     if isMatch(p,m):
         count = count + 1
-print('part 2: ' + str(count))
-
+print('part 2: ' + str(count))   # 437 too high, 386 too high
     
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
