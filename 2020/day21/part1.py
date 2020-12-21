@@ -39,7 +39,7 @@ for i in range(1,len(arr)):
 print()
 print(s1)
 
-"""THROUGH INTERSECTIONS (e.g., everything that contains soy against each other, we whittle down to:)
+"""THROUGH INTERSECTIONS (e.g., everything that contains soy against each other, then another round of whittling down to get the remaining two items (i.e., comparing any food that had that singular item), we whittle down to:)
 soy may be:       {'vkdxfj'}
 eggs may be:      {'hn'}
 fish IS:          {'dgsdtj'}
