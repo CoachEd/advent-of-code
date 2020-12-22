@@ -32,9 +32,9 @@ for s in l:
 # 8: 42 | 42 8
 # 11: 42 31 | 42 11 31
 
-d['8'] = '42 42'  # 277
+d['8'] = '42 | 42 42 42 42 42'  # 277
 #d['11'] = '42 31 | 42 42 42 31 31 31'
-d['11'] = '42 31 | 42 42 31 31'
+d['11'] = '42 31 | 42 42 42 42 42 42 42 31 31 31 31 31 31 31'
 
 """
 Only Rule 0 uses Rule 8 and Rule 11, no other rule
@@ -135,6 +135,7 @@ count = 0
 for m in msgs:
     if isMatch(p,m):
         count = count + 1
+        print(m)
         
         
 print('part 2: ' + str(count))   
@@ -142,6 +143,7 @@ print('part 2: ' + str(count))
 # 249 too low
 # 294 WRONG
 # 308 WRONG
+# 378 WRONG
 
 
 
