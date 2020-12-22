@@ -33,9 +33,7 @@ for line in lines:
     else:
         p1.append(int(line))
 
-def play_subgame():
-    global d1
-    global d2
+def play_subgame(d1,d2):
     global subgame_round
     global subgame_num    
     if len(d1) == 0:
@@ -75,7 +73,7 @@ def play_subgame():
             print('The winner of game ' + str(subgame_num) + ' is player 2!')
             d2 = d2 + [c2,c1]
     subgame_round = subgame_round + 1
-    return play_subgame()
+    return play_subgame(d1,d2)
 
 
 def play():
