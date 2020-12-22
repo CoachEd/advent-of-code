@@ -66,6 +66,7 @@ p = parse(d['0'])
 count = 0
 for m in msgs:
     if isMatch(p,m):
+        print(m)
         count = count + 1
 print('part 1: ' + str(count))
 
