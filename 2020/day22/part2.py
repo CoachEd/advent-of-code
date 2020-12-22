@@ -102,7 +102,6 @@ def play():
 
     p1_hist.append(p1)
     p2_hist.append(p2)
-
     print()
     print('-- Round ' + str(round) + ' (Game ' + str(game_num) + ') --')
     print('Player 1\'s deck: ' + str(p1))
@@ -121,10 +120,10 @@ def play():
             print('Player 1 wins round ' + str(round) + ' of game ' + str(game_num) + '!')
         else:
             p2 = p2 + [c2,c1]
-            print('Player 2 wins round ' + str(round) + ' of game ' + str(game_num) + '!')
+            print('Player 2 wins round ' + str(round) + ' of game ' + str(game_num) + '!')     
     else:
-        d1 = p1.copy()
-        d2 = p2.copy()
+        d1 = p1.copy()[:c1]
+        d2 = p2.copy()[:c2]
         print('Playing a sub-game to determine the winner...')
         subgame_num = subgame_num + 1
         subgame_round = 1
@@ -141,12 +140,11 @@ def play():
 
 
 # main
-play()
+result = play()
 print(p1)
 print(p2)
 
-arr = None
-if len(p1) > 0:
+if result == 'p1':
     arr = p1
 else:
     arr = p2
@@ -159,13 +157,7 @@ for i in range(len(arr)-1,-1,-1):
 print('part 2: ' + str(score)) 
 # 35162 too high
 # 31300 too high
-
-
-
-
-
-
-
+# 9428 too low
 
 print()
 end_secs = time.time()
