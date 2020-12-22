@@ -96,12 +96,16 @@ def play():
         print('INSTANT WIN for p2')
         return 'p2'        
     if len(p1) == 0:
+        print('CLASSIC WIN for p2')
         return 'p2'
     if len(p2) == 0:
+        print('CLASSIC WIN for p1')
         return 'p1'
 
     p1_hist.append(p1)
     p2_hist.append(p2)
+    print(p1_hist)
+    print(p2_hist)
     print()
     print('-- Round ' + str(round) + ' (Game ' + str(game_num) + ') --')
     print('Player 1\'s deck: ' + str(p1))
@@ -130,6 +134,7 @@ def play():
             p1 = p1 + [c1,c2]
         else:
             p2 = p2 + [c2,c1]
+              
     round = round + 1
     print()
     return play()
