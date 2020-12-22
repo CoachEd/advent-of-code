@@ -37,8 +37,10 @@ def play_subgame(d1,d2):
     global subgame_round
     global subgame_num    
     if len(d1) == 0:
+        print('The winner of game ' + str(subgame_num) + ' is player 2!')
         return 'p2'
     if len(d2) == 0:
+        print('The winner of game ' + str(subgame_num) + ' is player 1!')
         return 'p1'
 
     print('\n-- Round ' + str(subgame_round) + ' (Game ' + str(subgame_num) + ') --')

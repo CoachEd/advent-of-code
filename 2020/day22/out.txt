@@ -112,6 +112,7 @@ Player 2's deck: [7, 5, 10, 2, 9, 8]
 Player 1 plays: 1
 Player 2 plays: 7
 Player 2 wins round 6 of game 2!
+The winner of game 2 is player 2!
 
 
 -- Round 10 (Game 1) --
@@ -167,14 +168,23 @@ Player 2's deck: [10, 9, 7, 5]
 Player 1 plays: 8
 Player 2 plays: 10
 Player 2 wins round 1 of game 4!
+The winner of game 4 is player 2!
 The winner of game 5 is player 2!
 
 -- Round 3 (Game 5) --
-Player 1's deck: [8]
+Player 1's deck: [8, 3]
 Player 2's deck: [10, 9, 7, 5, 4, 1]
 Player 1 plays: 8
 Player 2 plays: 10
 Player 2 wins round 3 of game 5!
+
+-- Round 4 (Game 5) --
+Player 1's deck: [3]
+Player 2's deck: [9, 7, 5, 4, 1, 10, 8]
+Player 1 plays: 3
+Player 2 plays: 9
+Player 2 wins round 4 of game 5!
+The winner of game 5 is player 2!
 
 
 -- Round 14 (Game 1) --
@@ -193,12 +203,13 @@ Player 2 plays: 4
 Playing a sub-game to determine the winner...
 
 
--- Round 4 (Game 6) --
+-- Round 5 (Game 6) --
 Player 1's deck: [8]
 Player 2's deck: [10, 9, 7, 5]
 Player 1 plays: 8
 Player 2 plays: 10
-Player 2 wins round 4 of game 6!
+Player 2 wins round 5 of game 6!
+The winner of game 6 is player 2!
 
 
 -- Round 16 (Game 1) --
@@ -220,4 +231,4 @@ Player 2 wins round 17 of game 1!
 [7, 5, 6, 2, 4, 1, 10, 8, 9, 3]
 part 2: 291
 
-0.00036907196044921875
+0.0004820823669433594
