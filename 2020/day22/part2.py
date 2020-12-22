@@ -33,17 +33,16 @@ for line in lines:
     else:
         p1.append(int(line))
 
-def play_subgame(d1,d2):
-    global subgame_round
-    global subgame_num    
+def play_subgame(d1,d2,game_num1,round_num):   
+    global game_num
     if len(d1) == 0:
-        print('The winner of game ' + str(subgame_num) + ' is player 2!')
+        print('The winner of game ' + str(game_num1) + ' is player 2!')
         return 'p2'
     if len(d2) == 0:
-        print('The winner of game ' + str(subgame_num) + ' is player 1!')
+        print('The winner of game ' + str(game_num1) + ' is player 1!')
         return 'p1'
 
-    print('\n-- Round ' + str(subgame_round) + ' (Game ' + str(subgame_num) + ') --')
+    print('\n-- Round ' + str(round_num) + ' (Game ' + str(game_num1) + ') --')
     print('Player 1\'s deck: ' + str(d1))
     print('Player 2\'s deck: ' + str(d2))
 
@@ -57,25 +56,22 @@ def play_subgame(d1,d2):
         # classic mode
         if c1 >= c2:
             d1 = d1 + [c1,c2]
-            print('Player 1 wins round ' + str(subgame_round) + ' of game ' + str(subgame_num) + '!')
+            print('Player 1 wins round ' + str(round_num) + ' of game ' + str(game_num1) + '!')
         else:
             d2 = d2 + [c2,c1]
-            print('Player 2 wins round ' + str(subgame_round) + ' of game ' + str(subgame_num) + '!')
+            print('Player 2 wins round ' + str(round_num) + ' of game ' + str(game_num1) + '!')
     else:
         print('Playing a sub-game to determine the winner...\n')
-        subgame_num = subgame_num + 1
-        subgame_round = 1   
-        winner = play_subgame(d1.copy()[:c1],d2.copy()[:c2])
-        subgame_num = subgame_num + 1
+        game_num = game_num + 1
+        winner = play_subgame(d1.copy()[:c1],d2.copy()[:c2],game_num1+1,1)
         if winner == 'p1':
-            print('The winner of game ' + str(subgame_num) + ' is player 1!')
+            print('The winner of game ' + str(game_num1) + ' is player 1!')
             d1 = d1 + [c1,c2]
         else:
-            print('The winner of game ' + str(subgame_num) + ' is player 2!')
+            print('The winner of game ' + str(game_num1) + ' is player 2!')
             d2 = d2 + [c2,c1]
 
-    subgame_round = subgame_round + 1
-    return play_subgame(d1,d2)
+    return play_subgame(d1,d2,game_num1,round_num+1)
 
 
 def play():
@@ -105,7 +101,7 @@ def play():
     p1_hist.append(p1)
     p2_hist.append(p2)
     print()
-    print('-- Round ' + str(round) + ' (Game ' + str(game_num) + ') --')
+    print('-- Round ' + str(round) + ' (Game ' + str(1) + ') --')
     print('Player 1\'s deck: ' + str(p1))
     print('Player 2\'s deck: ' + str(p2))
     c1 = p1[0]
@@ -119,15 +115,16 @@ def play():
         # classic mode
         if c1 >= c2:
             p1 = p1 + [c1,c2]
-            print('Player 1 wins round ' + str(round) + ' of game ' + str(game_num) + '!')
+            print('Player 1 wins round ' + str(round) + ' of game ' + str(1) + '!')
         else:
             p2 = p2 + [c2,c1]
-            print('Player 2 wins round ' + str(round) + ' of game ' + str(game_num) + '!')     
+            print('Player 2 wins round ' + str(round) + ' of game ' + str(1) + '!')     
     else:
         print('Playing a sub-game to determine the winner...\n')
         subgame_num = subgame_num + 1
         subgame_round = 1
-        winner = play_subgame(p1.copy()[:c1],p2.copy()[:c2])
+        game_num = game_num + 1
+        winner = play_subgame(p1.copy()[:c1],p2.copy()[:c2],game_num,1)
         if winner == 'p1':
             p1 = p1 + [c1,c2]
         else:
