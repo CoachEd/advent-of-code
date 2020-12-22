@@ -104,8 +104,6 @@ def play():
 
     p1_hist.append(p1)
     p2_hist.append(p2)
-    print(p1_hist)
-    print(p2_hist)
     print()
     print('-- Round ' + str(round) + ' (Game ' + str(game_num) + ') --')
     print('Player 1\'s deck: ' + str(p1))
