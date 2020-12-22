@@ -31,10 +31,18 @@ for s in l:
 # replace rules for Part 2:
 # 8: 42 | 42 8
 # 11: 42 31 | 42 11 31
-
 """
+Only Rule 0 uses Rule 8 and Rule 11, no other rule
+
+0: 8 11 
 8: 42 | 42 8
 11: 42 31 | 42 11 31
+
+-or-
+
+(42 | 42 8) (42 31 | 42 11 31)
+Is this it? (42+)(42+31+)
+
 42: "a" 134 | "b" 106
 31: "b" 71 | "a" 120
 
@@ -113,18 +121,18 @@ def parse(rule):
                 s = s + '|'
         return s + ')'
 
-#p = parse(d['0'])
+#p = parse(d['42'])
 #print(p)
+#sys.exit()
 
 
-
-
-p="(((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))|(a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a))){2,}))(((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a)))(b(b((a((b((b|a)b|aa)|a(b)(a))a|((bb|ab)b|(b(b|a)|aa)a)b)|b((b(b)(a)|a(bb|ab))b|((bb|ab)b|(b(b|a)|aa)a)a))b|(b(a((b)(a))(a)|b((b)(a)a|(b)(a)b))|a((b(bb|ab)|a(b)(a))b|((ab|b(b|a))a|((b|a)a|ab)b)a))a)|a(b(((b(b(b|a)|aa)|a((b|a))((b|a)))b|(((b|a)b|aa)a|(b)(a)b)a)b|(a(((b|a)a|ab)b|((b|a))((b|a))a)|b((b)(b)b|(b)(a)a))a)|a(b((b|a))((a(ab|aa)|b(aa|bb)))|a((b(b)(a)|a(b)(b))b|(a(bb|ab)|b(a)(b))a))))|a(b(b((b((b)(b)b|(ab|aa)a)|a((bb|ab)b|(bb|ba)a))b|(b(a((b|a)b|aa)|b(bb|ba))|a(((b|a)a|ab)a|(ab|aa)b))a)|a(((b(b(b|a)|aa)|a(bb|ba))b|(((b|a)b|aa))((b|a))a)a|(a((b)(b)b|(b)(a)a)|b(b(bb|ba)|a(b)(b)))b))|a((b(((bb|ba))((b|a))a|((b|a))((bb|ab))b)|a(((a)(b)a|((b|a))((b|a))b)b|((bb|ab)a|((b|a)a|ab)b)a))a|(b(b((bb|ba))(b)|a(((b|a)b|aa))(a))|a((b((b|a))((b|a))|a(bb|ab))b|((ba|ab)a|(bb|ab)b)a))b)))|(a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a))){2,}(b(b((a((b((b|a)b|aa)|a(b)(a))a|((bb|ab)b|(b(b|a)|aa)a)b)|b((b(b)(a)|a(bb|ab))b|((bb|ab)b|(b(b|a)|aa)a)a))b|(b(a((b)(a))(a)|b((b)(a)a|(b)(a)b))|a((b(bb|ab)|a(b)(a))b|((ab|b(b|a))a|((b|a)a|ab)b)a))a)|a(b(((b(b(b|a)|aa)|a((b|a))((b|a)))b|(((b|a)b|aa)a|(b)(a)b)a)b|(a(((b|a)a|ab)b|((b|a))((b|a))a)|b((b)(b)b|(b)(a)a))a)|a(b((b|a))((a(ab|aa)|b(aa|bb)))|a((b(b)(a)|a(b)(b))b|(a(bb|ab)|b(a)(b))a))))|a(b(b((b((b)(b)b|(ab|aa)a)|a((bb|ab)b|(bb|ba)a))b|(b(a((b|a)b|aa)|b(bb|ba))|a(((b|a)a|ab)a|(ab|aa)b))a)|a(((b(b(b|a)|aa)|a(bb|ba))b|(((b|a)b|aa))((b|a))a)a|(a((b)(b)b|(b)(a)a)|b(b(bb|ba)|a(b)(b)))b))|a((b(((bb|ba))((b|a))a|((b|a))((bb|ab))b)|a(((a)(b)a|((b|a))((b|a))b)b|((bb|ab)a|((b|a)a|ab)b)a))a|(b(b((bb|ba))(b)|a(((b|a)b|aa))(a))|a((b((b|a))((b|a))|a(bb|ab))b|((ba|ab)a|(bb|ab)b)a))b))){2,}))"
+# (42)(42+31+)
+p="((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a))))(((a(b((((a(a)(a)|b(b)(a))b|((b|a))(((b|a))((b|a)))a)b|(b(b(bb|ba)|a(ab|aa))|a(a((b|a)b|aa)|b((b|a)a|ab)))a)b|((b(b(ba|ab)|a(b)(b))|a((b)(a)a|(b)(a)b))a|((a(a)(a)|b(bb|ab))a|((ab|aa)a|(b)(a)b)b)b)a)|a(b(b(a((a)(b)a|((b|a))((b|a))b)|b(b(a)(b)|a(ba|ab)))|a((((b|a))((b|a))b|(b)(a)a)b|((b|a))(((b|a)a|ab))a))|a(b(a((ab|aa)a|(b)(a)b)|b(b(a)(a)|a(ba|ab)))|a(b(a)((b)(b))|a(((b|a)a|ab)b|(ab|aa)a)))))|b(b(b(b(b((b)(b)b|(bb|ba)a)|a(b((b|a))((b|a))|a(b(b|a)|aa)))|a((b(ab|aa)|a(ba|ab))b|(((b|a)b|aa)a|((b|a))((b|a))b)a))|a(((b(a)(b)|a(ba|ab))b|(a((b|a)b|aa)|b(b)(a))a)b|(((a)(a)a|(b)(b)b)a|((b(b|a)|aa)a|(ab|aa)b)b)a))|a((((a(a)(b)|b(b)(a))b|((ab|aa))((b|a))a)b|((b(b)(a)|a(ab|aa))a|(a(b(b|a)|aa)|b((b|a)b|aa))b)a)b|(b((a(b)(b)|b((b|a)a|ab))b|((bb|ba)b|(b)(a)a)a)|a((a(b)(b)|b((b|a))((b|a)))b|((ab|aa))((b|a))a))a))))+((b(b((a((b((b|a)b|aa)|a(b)(a))a|((bb|ab)b|(b(b|a)|aa)a)b)|b((b(b)(a)|a(bb|ab))b|((bb|ab)b|(b(b|a)|aa)a)a))b|(b(a((b)(a))(a)|b((b)(a)a|(b)(a)b))|a((b(bb|ab)|a(b)(a))b|((ab|b(b|a))a|((b|a)a|ab)b)a))a)|a(b(((b(b(b|a)|aa)|a((b|a))((b|a)))b|(((b|a)b|aa)a|(b)(a)b)a)b|(a(((b|a)a|ab)b|((b|a))((b|a))a)|b((b)(b)b|(b)(a)a))a)|a(b((b|a))((a(ab|aa)|b(aa|bb)))|a((b(b)(a)|a(b)(b))b|(a(bb|ab)|b(a)(b))a))))|a(b(b((b((b)(b)b|(ab|aa)a)|a((bb|ab)b|(bb|ba)a))b|(b(a((b|a)b|aa)|b(bb|ba))|a(((b|a)a|ab)a|(ab|aa)b))a)|a(((b(b(b|a)|aa)|a(bb|ba))b|(((b|a)b|aa))((b|a))a)a|(a((b)(b)b|(b)(a)a)|b(b(bb|ba)|a(b)(b)))b))|a((b(((bb|ba))((b|a))a|((b|a))((bb|ab))b)|a(((a)(b)a|((b|a))((b|a))b)b|((bb|ab)a|((b|a)a|ab)b)a))a|(b(b((bb|ba))(b)|a(((b|a)b|aa))(a))|a((b((b|a))((b|a))|a(bb|ab))b|((ba|ab)a|(bb|ab)b)a))b))))+)"
 count = 0
 for m in msgs:
     if isMatch(p,m):
         count = count + 1
-print('part 2: ' + str(count))   # 437 too high, 386 too high
+print('part 2: ' + str(count))   # 437 too high, 386 too high, 391 (?)
     
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
