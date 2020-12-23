@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class part1 {
+public class part2 {
 
   public static void main(String[] args) {
     Clist l = new Clist();
@@ -85,6 +85,7 @@ public class part1 {
       
       move++;
     }
+
   }
 
 }
