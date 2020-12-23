@@ -24,7 +24,6 @@ for line in lines:
 
 def playgame(p1,p2):
     global game_num
-    global done
 
     p1_hist = []
     p2_hist = []
