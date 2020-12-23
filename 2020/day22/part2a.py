@@ -78,7 +78,7 @@ def playgame(p1,p2):
             else:
                 p2 = p2 + [c2,c1]
         
-        #print()     
+        print()     
         round = round + 1
 
 result = playgame(p1,p2)
