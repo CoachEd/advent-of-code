@@ -255,13 +255,17 @@ for line in Lines:
         msgs.append(s)
 
 # REMOVING matched from before
-#print(len(msgs)) # 488 original messages, 235 matched messages, 253 unmatched messages
+#print(len(msgs)) # 487 original messages, 235 matched messages, 253 unmatched messages
 ctr = 0
-arr2 = []
-for m in msgs:
-    if not m in omit:
-       arr2.append(m)
-msgs = arr2
+
+
+# remove part 1 strings?
+#arr2 = []
+#for m in msgs:
+#    if not m in omit:
+#       arr2.append(m)
+#msgs = arr2
+
 
 d=dict()
 for s in l:
@@ -277,8 +281,10 @@ for s in l:
 # 8: 42 | 42 8
 # 11: 42 31 | 42 11 31
 
-#d['8'] = '41'
+#d['8'] = '42'
 #d['11'] = '42 31'
+#d['8'] = '42 | c '
+#d['11'] = '42 31 | d '
 
 def isMatch(p,s):
     m = re.match(p,s)
@@ -317,26 +323,33 @@ def parse(rule):
 
 
 
-p = parse(d['31'])
-print(p)
-sys.exit()
+p = parse(d['0'])
+#print(p)
+#sys.exit()
+
+#for n in range(0,30):
+#    p=''
+#    count = 0
+#    for m in msgs:
+#        if isMatch(p,m):
+#            count = count + 1
+#            print(m)
 
 count = 0
 for m in msgs:
     if isMatch(p,m):
         count = count + 1
-        print(m)
-        
-print('part 2: ' + str(count + 235))   # count will be new matches
+        #print(m)       
+print('part 2: ' + str(count))   # count will be new matches
 
-# 488 original messages, 235 matched messages, 253 unmatched messages
-# 156 UNIQUE NEW STRINGS MATCHED: Total new = 235 + 156 = 391 WRONG
+# 487 original messages, 235 matched messages, 252 unmatched messages
 # 437 too high, 386 too high, 391 (?) (235 last time, so answer > 235 answer < 386)
 # 437 WRONG - TOO HIGH
 # 391 WRONG - TOO HIGH
 # 386 WRONG - TOO HIGH
 # 378 WRONG
-# 348 WRONG
+# 348 WRONG - WRONG!!
+# 318 WRONG
 # 308 WRONG
 # 294 WRONG
 # 249 WRONG - TOO LOW
