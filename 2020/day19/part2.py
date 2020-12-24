@@ -35,8 +35,6 @@ for s in l:
 #d['8'] = '42'  # 42 + 24 + 10 + 7
 #d['11'] = '42 42 42 42 42 31 31 31 31 31' # 17 + 9 + 4 + 
 
-# next rule number: 138
-
 def isMatch(p,s):
     m = re.match(p,s)
     if m == None:
