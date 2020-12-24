@@ -81,7 +81,6 @@ for m in msgs:
         count = count + 1
         #print(m)
         
-        
 print('part 2: ' + str(count))   
 # 437 too high, 386 too high, 391 (?) (235 last time, so answer > 235 answer < 386)
 # 249 too low
@@ -89,8 +88,6 @@ print('part 2: ' + str(count))
 # 308 WRONG
 # 378 WRONG
 # 348 WRONG
-
-
 
 end_secs = time.time()
 #print('--- ' + str(end_secs-start_secs) + ' secs ---')
