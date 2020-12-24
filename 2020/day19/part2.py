@@ -277,8 +277,8 @@ for s in l:
 # 8: 42 | 42 8
 # 11: 42 31 | 42 11 31
 
-d['8'] = '42 42 42 42 42 42 42'
-d['11'] = '42 31'
+#d['8'] = '41'
+#d['11'] = '42 31'
 
 def isMatch(p,s):
     m = re.match(p,s)
@@ -316,9 +316,10 @@ def parse(rule):
         return s + ')'
 
 
-p = parse(d['0'])
-#print(p)
-#sys.exit()
+
+p = parse(d['31'])
+print(p)
+sys.exit()
 
 count = 0
 for m in msgs:
