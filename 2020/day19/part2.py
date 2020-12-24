@@ -254,6 +254,7 @@ for line in Lines:
     else:
         msgs.append(s)
 
+# REMOVING matched from before
 #print(len(msgs)) # 488 original messages, 235 matched messages, 253 unmatched messages
 ctr = 0
 arr2 = []
@@ -262,7 +263,6 @@ for m in msgs:
        arr2.append(m)
 msgs = arr2
 
- 
 d=dict()
 for s in l:
     arr=s.split(':')
@@ -277,8 +277,8 @@ for s in l:
 # 8: 42 | 42 8
 # 11: 42 31 | 42 11 31
 
-#d['8'] = '42'  # 42 + 24 + 10 + 7
-#d['11'] = '42 42 42 42 42 31 31 31 31 31' # 17 + 9 + 4 + 
+d['8'] = '42 42 42 42 42 42 42'
+d['11'] = '42 31'
 
 def isMatch(p,s):
     m = re.match(p,s)
@@ -324,15 +324,22 @@ count = 0
 for m in msgs:
     if isMatch(p,m):
         count = count + 1
-        #print(m)
+        print(m)
         
-print('part 2: ' + str(count))   
+print('part 2: ' + str(count + 235))   # count will be new matches
+
+# 488 original messages, 235 matched messages, 253 unmatched messages
+# 156 UNIQUE NEW STRINGS MATCHED: Total new = 235 + 156 = 391 WRONG
 # 437 too high, 386 too high, 391 (?) (235 last time, so answer > 235 answer < 386)
-# 249 too low
-# 294 WRONG
-# 308 WRONG
+# 437 WRONG - TOO HIGH
+# 391 WRONG - TOO HIGH
+# 386 WRONG - TOO HIGH
 # 378 WRONG
 # 348 WRONG
+# 308 WRONG
+# 294 WRONG
+# 249 WRONG - TOO LOW
+# 235 WRONG - TOO LOW
 
 end_secs = time.time()
 #print('--- ' + str(end_secs-start_secs) + ' secs ---')
