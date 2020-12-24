@@ -5,16 +5,23 @@ public class part2 {
   public static void main(String[] args) {
     Clist l = new Clist();
     String s = "538914762";
+    int maxr=10000;
     for (int i=0; i < s.length(); i++) {
       l.add(Integer.parseInt(s.charAt(i)+""));
     }
     
+    for (int r=10; r <= maxr; r++) {
+      l.add(r); //TEST
+    }
+    
+    
+    
     Node curr = l.head;
-    int moves = 100;
+    int moves = 10000000;
     int move = 1;
     for (int i=0; i < moves; i++) {
-      System.out.println("-- move " + move + " --");
-      System.out.println("cups: " + l.toString());
+      //System.out.println("-- move " + move + " --");
+      //System.out.println("cups: " + l.toString());
       //pick up three
       ArrayList<Integer> three = new ArrayList<Integer>();
       Node new_curr = curr;
@@ -24,7 +31,7 @@ public class part2 {
       }
       new_curr = new_curr.next;
       curr.next = new_curr;
-      System.out.println("pick up: " + three.toString());
+      //System.out.println("pick up: " + three.toString());
       
       //loop through remaining cups and find min max
       ArrayList<Integer> cups = new ArrayList<Integer>();
@@ -51,7 +58,7 @@ public class part2 {
           break;
         }
       }
-      System.out.println("destination: " + dest_cup);
+      //System.out.println("destination: " + dest_cup);
       
       //place cups
       Node dest = l.find(dest_cup);
@@ -63,14 +70,16 @@ public class part2 {
       n2.next = n3;
       dest.next = n1;
       n3.next = nextn;
-      System.out.println();
+      //System.out.println();
       curr = curr.next;
       l.head = curr;
       
       if (move == moves) {
-        System.out.println("-- final --");
+        //System.out.println("-- final --");
         Node n = l.find(1);
         Node end = n;
+        Node neighbor1 = n.next;
+        Node neighbor2 = n.next.next;
         n = n.next;
         s = "";
         s = s + n.data;
@@ -79,13 +88,13 @@ public class part2 {
           s = s + curr3.data;
           curr3 = curr3.next;
         }
-        System.out.println(s);
+        //System.out.println(s);
+        System.out.println("maxr: " + maxr+ "     " + neighbor1.data + " , " + neighbor2.data);
         break;
       }
       
       move++;
     }
-
   }
 
 }
