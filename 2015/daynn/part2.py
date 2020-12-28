@@ -2,6 +2,7 @@ import sys
 import time
 
 start_secs = time.time()
+print()
 
 # read in input file
 l=[]
@@ -14,9 +15,6 @@ for line in lines:
 
 
 
-
-
-
-
+print()
 end_secs = time.time()
-print(str(end_secs-start_secs))
+print('--- ' + str(end_secs-start_secs) + ' secs ---')
