@@ -16,7 +16,8 @@ for line in lines:
     for i in range(1,len(temp)):
         temp[i] = int(temp[i])
     arr.append(temp)
-
+for e in arr:
+    print(e)
 n = 100
 max_score = 0
 for x in range(1,n+1):
