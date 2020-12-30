@@ -42,10 +42,12 @@ for x in range(1,n+1):
                     if scores[i-1] < 0:
                         scores[i-1] = 0
                 score =  scores[0] * scores[1] * scores[2] * scores[3]
-                if score > max_score and scores[4] == 500:
+                if score >= max_score and scores[4] == 500:
                     max_score = score
 
-print('part 2: ' + str(max_score)) # 11162880 too low
+print('part 2: ' + str(max_score)) 
+# part1: # 13882464
+#          11162880 too low
 
 print()
 end_secs = time.time()
