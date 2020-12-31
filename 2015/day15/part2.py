@@ -21,14 +21,8 @@ n = 100
 max_score = 0
 for x in range(1,n+1):
     for y in range(1,n+1):
-        if y == x:
-            continue
         for z in range(1,n+1):
-            if z == y or z == x:
-                continue
             for w in range(1,n+1):
-                if w == y or w == x or w == z:
-                    continue
                 if not ((x+y+z+w) == n):
                     continue
                 factors = [x,y,z,w]
@@ -48,7 +42,7 @@ for x in range(1,n+1):
 print('part 2: ' + str(max_score)) 
 # part1: # 13882464
 #          11162880 too low
-
+#          11171160
 print()
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
