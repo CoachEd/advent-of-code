@@ -15,7 +15,7 @@ def num_presents(housenum):
 n = 29000000
 house_num = -1
 
-for i in range(665280,665280+1):
+for i in range(500000,10,-1):
     presents = num_presents(i)
     if presents >= n:
         house_num = i
@@ -26,7 +26,6 @@ for i in range(665280,665280+1):
 print('part 1: ' + str(house_num))
 # too high: 800280
 # too high: 702240 
-# 665280 # YES!!
 print()
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
