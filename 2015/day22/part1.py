@@ -26,9 +26,9 @@ Recharge costs 229 mana. It starts an effect that lasts for 5 turns. At the star
 spells = [
     ['Magic Missile',53,0,4,0,0,0], # instant
     ['Drain',73,0,2,2,0,0],      # instant
-    ['Shield',113,6,0,0,0,7],    # one-time buff
-    ['Poison',173,6,3,0,0,0],    # per
-    ['Recharge',229,5,0,0,101,0] # per
+    ['Shield',113,6,0,0,0,7],    # effect one-time boost
+    ['Poison',173,6,3,0,0,0],    # effect repeating
+    ['Recharge',229,5,0,0,101,0] # effect repeating
 ]
 for s in spells:
     print(s)
