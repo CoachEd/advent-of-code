@@ -3,11 +3,14 @@ import time
 
 start_secs = time.time()
 
-num1=705600+2 # through process of elimination, i knew the answer was in the 700K range
+num1=705600+1 #737100 735840
+
+
 arr=[0 for n in range(1, num1) ]
 
+
 def factorize(num2):
-    #print('f')
+    print('factorize: ' + str(num2))
     global arr
     len1=len(arr)
     for i in range(1,len1):
@@ -23,11 +26,16 @@ def factorize(num2):
 def num_presents(housenum):
     global arr
     factorize(housenum)
+    #print('n')
     total=0
     for i in range(0,len(arr)):
         if housenum <= arr[i]*50:
             arr[i]=arr[i]*11
             total=total+arr[i]
+        #else:
+        #    arr[i]=0
+    #return sum(arr)
+    #print('n\n')
     return(total)
 
 n = 29000000
@@ -37,8 +45,9 @@ for i in range(num1,10,-1):
     presents = num_presents(i)
     if presents >= n:
         house_num = i
-        #print('house_num: ' + str(house_num)+ '  presents: ' + str(presents))
-        break
+        print('house_num: ' + str(house_num)+ '  presents: ' + str(presents))
+
+
 
 print('part 2: ' + str(house_num))
 
