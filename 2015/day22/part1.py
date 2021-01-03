@@ -46,9 +46,9 @@ pmana_bought = 0
 # test
 ppoints = 10
 pmana = 250
-bpoints = 13
+bpoints = 14
 bdamage = 8
-parr =[ 3, 0 ] # testing
+parr =[ 4, 2, 1, 3, 0 ] # testing
 
 
 def get_move():
@@ -75,19 +75,29 @@ while True:
     eff = spells[2]
     if eff[3] > 0:
         eff[3] = eff[3] - 1
-        parmor = eff[7]
+        print('Shield\'s timer is now ' + str(eff[3]) + '.')
+        if eff[3] == 0:
+            print('Shield wears off, decreasing armor by 7.')
+            parmor = 0
+        else:            
+            parmor = eff[7]
         
     # apply poison effect
     eff = spells[3]
     if eff[3] > 0:
-        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
         eff[3] = eff[3] - 1
+        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
+        if eff[3] == 0:
+            print('Poision wears off.')
         bpoints = bpoints - eff[4]
     
     # apply recharge effect
     eff = spells[4]
     if eff[3] > 0:
         eff[3] = eff[3] - 1
+        print('Recharge provides ' + str(eff[6]) + ' mana; its timer is now ' + str(eff[3]) + '.')        
+        if eff[3] == 0:
+            print('Recharge wears off.')        
         pmana = pmana + eff[6]
         pmana_bought = pmana_bought + eff[6]
 
@@ -139,28 +149,26 @@ while True:
         bpoints = bpoints - spell[4] # instant
     elif move == 1:
         # drain
+        print('Player casts Drain, dealing ' + str(spell[4])  + ' damage, and healing ' + str(spell[5]) +' hit points.')
         pmana = pmana - spell[1] # instant
         bpoints = bpoints - spell[4]
         ppoints = ppoints + spell[5]
     elif move == 2:
         # shield
+        print('Player casts ' + spell[0] + ', increasing armor by ' + str(spell[7]) + '.')
         pmana = pmana - spell[1]
         parmor = spell[7]
         spell[3] = spell[2] # instant start
-        spell[3] = spell[3] - 1
     elif move == 3:
         # poison
         print('Player casts ' + spell[0] +'.')
         pmana = pmana - spell[1]
         spell[3] = spell[2]
-        spell[3] = spell[3] - 1
     elif move == 4:
         # recharge
+        print('Player casts ' + spell[0] +'.')
         pmana = pmana - spell[1]
         spell[3] = spell[2]
-        spell[3] = spell[3] - 1
-        pmana = pmana + spell[6]
-        pmana_bought = pmana_bought + spell[6]
 
     # BOSS TURN
     # player effects
@@ -171,19 +179,29 @@ while True:
     eff = spells[2]
     if eff[3] > 0:
         eff[3] = eff[3] - 1
-        parmor = eff[7]
+        print('Shield\'s timer is now ' + str(eff[3]) + '.')
+        if eff[3] == 0:
+            print('Shield wears off, decreasing armor by 7.')        
+            parmor = 0
+        else:
+            parmor = eff[7]
         
     # apply poison effect
     eff = spells[3]
     if eff[3] > 0:
-        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
         eff[3] = eff[3] - 1
+        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
         bpoints = bpoints - eff[4]
+        if eff[3] == 0:
+            print('Poision wears off.')        
     
     # apply recharge effect
     eff = spells[4]
     if eff[3] > 0:
         eff[3] = eff[3] - 1
+        print('Recharge provides ' + str(eff[6]) + ' mana; its timer is now ' + str(eff[3]) + '.')   
+        if eff[3] == 0:
+            print('Recharge wears off.')        
         pmana = pmana + eff[6]
         pmana_bought = pmana_bought + eff[6]
     
