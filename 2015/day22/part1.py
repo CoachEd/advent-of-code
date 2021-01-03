@@ -2,6 +2,7 @@ import sys
 import time
 
 start_secs = time.time()
+
 print()
 
 # read in input file
@@ -22,27 +23,186 @@ Shield costs 113 mana. It starts an effect that lasts for 6 turns. While it is a
 Poison costs 173 mana. It starts an effect that lasts for 6 turns. At the start of each turn while it is active, it deals the boss 3 damage.
 Recharge costs 229 mana. It starts an effect that lasts for 5 turns. At the start of each turn while it is active, it gives you 101 new mana.
 """
-# Name, cost, duration, damage, healing, plus_mana, armor
+# Name, cost, duration, timer, damage, healing, plus_mana, armor, repeat effect
 spells = [
-    ['Magic Missile',53,0,4,0,0,0], # instant
-    ['Drain',73,0,2,2,0,0],      # instant
-    ['Shield',113,6,0,0,0,7],    # effect one-time boost
-    ['Poison',173,6,3,0,0,0],    # effect repeating
-    ['Recharge',229,5,0,0,101,0] # effect repeating
+    ['Magic Missile',53,0,0,4,0,0,0,False], # instant
+    ['Drain',73,0,0,2,2,0,0,False],      # instant
+    ['Shield',113,6,0,0,0,0,7,False],    # effect one-time boost
+    ['Poison',173,6,0,3,0,0,0,True],    # effect repeating
+    ['Recharge',229,5,0,0,0,101,0,True] # effect repeating
 ]
-for s in spells:
-    print(s)
+
 # Boss stats
 bpoints = d['Hit Points']
 bdamage = d['Damage']
 
 # Player stats
 pmana = 500
+ppoints = 50
+parmor = 0
+pmana_bought = 0
 
 
+# test
+ppoints = 10
+pmana = 250
+bpoints = 13
+bdamage = 8
+parr =[ 3, 0 ] # testing
 
 
+def get_move():
+    global spells
+    global bpoints
+    global bdamage
+    global ppoints
+    global pmana
+    global pmana_bought
+    global parmor
+    global parr # testing
+    
+    return parr.pop(0)
 
+# play game
+while True:
+    
+    # PLAYER TURN
+    print('-- Player turn --')
+    print('- Player has ' + str(ppoints) + ' hit points, ' +  str(parmor) + ' armor, ' + str(pmana) + ' mana')
+    print('- Boss has ' + str(bpoints) + ' hit points')
+    
+    # apply shield effect
+    eff = spells[2]
+    if eff[3] > 0:
+        eff[3] = eff[3] - 1
+        parmor = eff[7]
+        
+    # apply poison effect
+    eff = spells[3]
+    if eff[3] > 0:
+        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
+        eff[3] = eff[3] - 1
+        bpoints = bpoints - eff[4]
+    
+    # apply recharge effect
+    eff = spells[4]
+    if eff[3] > 0:
+        eff[3] = eff[3] - 1
+        pmana = pmana + eff[6]
+        pmana_bought = pmana_bought + eff[6]
+
+    if bpoints <= 0:
+        print('boss lost')
+        break
+    if ppoints <= 0:
+        print('player lost on hit points')
+        break
+    if pmana <= 0:
+        print('player lost on mana')
+        break
+
+    """
+    Name, 
+    cost, 
+    duration, 
+    timer, 
+    damage, 
+    healing,
+    plus_mana, 
+    armor, 
+    repeat effect
+    """
+
+    # process new move
+
+    move = get_move()
+    spell = spells[move]
+    
+    if spell[3] > 0:
+        print("can't cast effect if already in effect")
+        # lose turn
+        continue
+        
+    if pmana < spell[1]:
+        print("can't afford spell. lose turn!!")
+        # boss turn
+        battack = bdamage - parmor
+        if battack <= 0:
+            battack = 1
+        ppoints = ppoints - battack             
+        continue
+
+    if move == 0:
+        # magic missile
+        print('Player casts ' + spell[0] + ', dealing ' + str(spell[4]) + ' damage.')
+        pmana = pmana - spell[1]
+        bpoints = bpoints - spell[4] # instant
+    elif move == 1:
+        # drain
+        pmana = pmana - spell[1] # instant
+        bpoints = bpoints - spell[4]
+        ppoints = ppoints + spell[5]
+    elif move == 2:
+        # shield
+        pmana = pmana - spell[1]
+        parmor = spell[7]
+        spell[3] = spell[2] # instant start
+        spell[3] = spell[3] - 1
+    elif move == 3:
+        # poison
+        print('Player casts ' + spell[0] +'.')
+        pmana = pmana - spell[1]
+        spell[3] = spell[2]
+        spell[3] = spell[3] - 1
+    elif move == 4:
+        # recharge
+        pmana = pmana - spell[1]
+        spell[3] = spell[2]
+        spell[3] = spell[3] - 1
+        pmana = pmana + spell[6]
+        pmana_bought = pmana_bought + spell[6]
+
+    # BOSS TURN
+    # player effects
+    # apply shield effect
+    print('\n-- Boss turn --')
+    print('- Player has ' + str(ppoints) + ' hit points, ' +  str(parmor) + ' armor, ' + str(pmana) + ' mana')
+    print('- Boss has ' + str(bpoints) + ' hit points')        
+    eff = spells[2]
+    if eff[3] > 0:
+        eff[3] = eff[3] - 1
+        parmor = eff[7]
+        
+    # apply poison effect
+    eff = spells[3]
+    if eff[3] > 0:
+        print('Poison deals ' + str(eff[4]) +' damage; its timer is now ' + str(eff[3]) + '.')
+        eff[3] = eff[3] - 1
+        bpoints = bpoints - eff[4]
+    
+    # apply recharge effect
+    eff = spells[4]
+    if eff[3] > 0:
+        eff[3] = eff[3] - 1
+        pmana = pmana + eff[6]
+        pmana_bought = pmana_bought + eff[6]
+    
+    if bpoints <= 0:
+        print('boss lost')
+        break
+    if ppoints <= 0:
+        print('player lost on hit points')
+        break
+    if pmana <= 0:
+        print('player lost on mana')
+        break
+       
+    battack = bdamage - parmor
+    if battack <= 0:
+        battack = 1
+    ppoints = ppoints - battack
+    print('Boss attacks for ' + str(battack) +' damage.')
+    print()
 
 
 print()
