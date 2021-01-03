@@ -40,16 +40,7 @@ bdamage = d['Damage']
 pmana = 500
 ppoints = 50
 parmor = 0
-pmana_bought = 0
-
-
-# test
-ppoints = 10
-pmana = 250
-bpoints = 14
-bdamage = 8
-parr =[ 4, 2, 1, 3, 0 ] # testing
-
+pmana_spent = 0
 
 def get_move():
     global spells
@@ -57,11 +48,11 @@ def get_move():
     global bdamage
     global ppoints
     global pmana
-    global pmana_bought
+    global pmana_spent
     global parmor
-    global parr # testing
     
-    return parr.pop(0)
+    move = input("move? (  0-magic missile  1-drain  2-shield  3-poison  4-recharge  ) ")
+    return int(move)
 
 # play game
 while True:
@@ -99,7 +90,6 @@ while True:
         if eff[3] == 0:
             print('Recharge wears off.')        
         pmana = pmana + eff[6]
-        pmana_bought = pmana_bought + eff[6]
 
     if bpoints <= 0:
         print('boss lost')
@@ -147,27 +137,32 @@ while True:
         print('Player casts ' + spell[0] + ', dealing ' + str(spell[4]) + ' damage.')
         pmana = pmana - spell[1]
         bpoints = bpoints - spell[4] # instant
+        pmana_spent = pmana_spent + spell[1]
     elif move == 1:
         # drain
         print('Player casts Drain, dealing ' + str(spell[4])  + ' damage, and healing ' + str(spell[5]) +' hit points.')
         pmana = pmana - spell[1] # instant
+        pmana_spent = pmana_spent + spell[1]
         bpoints = bpoints - spell[4]
         ppoints = ppoints + spell[5]
     elif move == 2:
         # shield
         print('Player casts ' + spell[0] + ', increasing armor by ' + str(spell[7]) + '.')
         pmana = pmana - spell[1]
+        pmana_spent = pmana_spent + spell[1]
         parmor = spell[7]
         spell[3] = spell[2] # instant start
     elif move == 3:
         # poison
         print('Player casts ' + spell[0] +'.')
         pmana = pmana - spell[1]
+        pmana_spent = pmana_spent + spell[1]
         spell[3] = spell[2]
     elif move == 4:
         # recharge
         print('Player casts ' + spell[0] +'.')
         pmana = pmana - spell[1]
+        pmana_spent = pmana_spent + spell[1]
         spell[3] = spell[2]
 
     # BOSS TURN
@@ -203,7 +198,6 @@ while True:
         if eff[3] == 0:
             print('Recharge wears off.')        
         pmana = pmana + eff[6]
-        pmana_bought = pmana_bought + eff[6]
     
     if bpoints <= 0:
         print('boss lost')
@@ -222,6 +216,8 @@ while True:
     print('Boss attacks for ' + str(battack) +' damage.')
     print()
 
+print()
+print('part 1 mana spent: ' + str(pmana_spent))
 
 print()
 end_secs = time.time()
