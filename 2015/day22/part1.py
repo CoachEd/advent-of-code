@@ -42,7 +42,7 @@ ppoints = 50
 parmor = 0
 pmana_spent = 0
 
-def get_move():
+def get_move_interactive():
     global spells
     global bpoints
     global bdamage
@@ -53,6 +53,12 @@ def get_move():
     
     move = input("move? (  0-magic missile  1-drain  2-shield  3-poison  4-recharge  ) ")
     return int(move)
+
+
+answer = [3, 4, 2, 3, 4, 2, 3, 4, 2, 0, 3, 0] # from part1b.py
+def get_move():
+    global answer
+    return answer.pop(0)
 
 # play game
 while True:
@@ -117,11 +123,9 @@ while True:
 
     move = get_move()
     spell = spells[move]
-    
-    if spell[3] > 0:
+    while spell[3] > 0:
         print("can't cast effect if already in effect")
-        # lose turn
-        continue
+        spell = spells[move]
         
     if pmana < spell[1]:
         print("can't afford spell. lose turn!!")
