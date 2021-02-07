@@ -98,16 +98,45 @@ def play_game():
     ]
     
 
+    #test_moves = [3, 4, 2, 3, 4, 2, 3, 4, 2, 0, 3, 0]
+    test_moves = [2,4,3,     2,4,3, 2,4,3,   2, 4,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    
+    test_moves[0] = randrange(5) # YES!!! starting with 3 yielded 1824!!!
+    test_moves[1] = randrange(5)
+    test_moves[2] = randrange(5) # 0:1990 1:bad 3:1937
 
-    test_moves = [ 0 for n in range(1000000) ]    
-    test_moves[0] = 4 # 0: 1: 2: 3: 4: 
-    for i in range(1,len(test_moves)):
-        test_moves[i] = randrange(5)                                    
+    test_moves[3] = randrange(5)
+    test_moves[4] = randrange(5)
+    test_moves[5] = randrange(5)
+
+    test_moves[6] = randrange(5)
+    test_moves[7] = randrange(5)
+    test_moves[8] = randrange(5)
+
+    test_moves[9] = randrange(5)
+ 
+    test_moves[10] = randrange(5)
+    test_moves[11] = randrange(5)
+    test_moves[12] = randrange(5)
+    test_moves[13] = randrange(5)
+    test_moves[14] = randrange(5)
+    test_moves[15] = randrange(5)
+    test_moves[16] = randrange(5)
+    test_moves[17] = randrange(5)
+    test_moves[18] = randrange(5)
+    test_moves[19] = randrange(5)
+    test_moves[20] = randrange(5)
+    test_moves[21] = randrange(5)
+    test_moves[22] = randrange(5)
+    test_moves[23] = randrange(5)
+    test_moves[24] = randrange(5)
+    test_moves[25] = randrange(5)
+    test_moves[26] = randrange(5)
+    test_moves[27] = randrange(5)
+    test_moves[28] = randrange(5)
+    test_moves[29] = randrange(5)
+    test_moves[30] = randrange(5)
     temp_str = str(test_moves)
-
-
-
-
 
     # Boss stats
     bpoints = d['Hit Points']
@@ -130,6 +159,10 @@ def play_game():
 
 
         ppoints = ppoints - 1 #PART 2
+        if ppoints <= 0:
+            ##print('player lost on hit points')
+            break
+            
 
 
         eff = spells[2]
@@ -301,8 +334,7 @@ def play_game():
         ##print()
 
 
-#for i in range(0,5000000):
-for i in range(0,10000):
+for i in range(0,5000000):
     play_game()
 
 #print(str(min_moves))
