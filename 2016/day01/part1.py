@@ -12,8 +12,33 @@ for line in lines:
     l.append(line.strip())
 
 # TODO
-print(l)
-
+arr = l[0].replace(' ','').split(',')
+facing = 90 # N-90, E-180, S-270, W-0
+row = 0
+col = 0
+for d in arr:
+  direction = d[0]
+  distance = int(d[1:])
+  if direction == 'R':
+    facing = facing +  90
+  else:
+    facing = facing - 90
+  if facing < 0:
+    facing = 270
+  elif facing > 270:
+    facing = 0
+  if facing == 90:
+    row = row + distance
+  elif facing == 180:
+    col = col + distance
+  elif facing == 270:
+    row = row - distance
+  elif facing == 0:
+    col = col - distance
+  
+print('row: ' + str(row))
+print('col: ' + str(col))
+print('blocks: ' + str(row + col))
 
 print('')
 end_secs = time.time()
