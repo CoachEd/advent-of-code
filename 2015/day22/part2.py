@@ -87,6 +87,7 @@ def play_game():
     global min_moves
     global moves_played
     global d
+    global test_moves_copy
 
     # Name, cost, duration, timer, damage, healing, plus_mana, armor, repeat effect
     spells = [
@@ -99,11 +100,15 @@ def play_game():
     
 
     #test_moves = [3, 4, 2, 3, 4, 2, 3, 4, 2, 0, 3, 0]
-    test_moves = [2,4,3,     2,4,3, 2,4,3,   2, 4,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    
-    test_moves[0] = randrange(5) # YES!!! starting with 3 yielded 1824!!!
-    test_moves[1] = randrange(5)
-    test_moves[2] = randrange(5) # 0:1990 1:bad 3:1937
+
+    #[2, 4, 3, 2, 4, 3, 2, 4, 3, 2, 0, 3, 0, 4, 2, 2, 2, 2, 2, 0, 1, 0, 4, 0, 2, 2, 0, 4, 2, 3, 1]
+    #test_moves = [2,4,3,     2,4,3, 2,4,3,   2, 4,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] # 1937
+
+    #test_moves = [2,3,4,     2,4,3, 2,4,3,   2, 4,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    test_moves = [2, 4, 3, 2, 4, 3, 2, 4, 3, 2, 0, 3, 0]
+    #test_moves[0] = randrange(5) # YES!!! starting with 3 yielded 1824!!!
+    #test_moves[1] = randrange(5)
+    #test_moves[2] = randrange(5) # 0:1990 1:bad 3:1937
 
     test_moves[3] = randrange(5)
     test_moves[4] = randrange(5)
@@ -114,29 +119,13 @@ def play_game():
     test_moves[8] = randrange(5)
 
     test_moves[9] = randrange(5)
- 
     test_moves[10] = randrange(5)
     test_moves[11] = randrange(5)
     test_moves[12] = randrange(5)
-    test_moves[13] = randrange(5)
-    test_moves[14] = randrange(5)
-    test_moves[15] = randrange(5)
-    test_moves[16] = randrange(5)
-    test_moves[17] = randrange(5)
-    test_moves[18] = randrange(5)
-    test_moves[19] = randrange(5)
-    test_moves[20] = randrange(5)
-    test_moves[21] = randrange(5)
-    test_moves[22] = randrange(5)
-    test_moves[23] = randrange(5)
-    test_moves[24] = randrange(5)
-    test_moves[25] = randrange(5)
-    test_moves[26] = randrange(5)
-    test_moves[27] = randrange(5)
-    test_moves[28] = randrange(5)
-    test_moves[29] = randrange(5)
-    test_moves[30] = randrange(5)
+
     temp_str = str(test_moves)
+
+    test_moves_copy = list(test_moves)
 
     # Boss stats
     bpoints = d['Hit Points']
@@ -196,7 +185,8 @@ def play_game():
             pmana = pmana + eff[6]
 
         if bpoints <= 0:
-            ##print('player WON. mana spent: ' + str(pmana_spent))
+            print('player WON. mana spent: ' + str(pmana_spent))
+            print(test_moves_copy)
             if pmana_spent < min_mana:
                 min_mana = pmana_spent
                 min_str = temp_str
@@ -225,6 +215,8 @@ def play_game():
         # process new move
 
         #move = get_move()
+        if len(test_moves) == 0:
+          break
         move = test_moves.pop(0)
         temp_moves_played = temp_moves_played + 1
         
@@ -236,10 +228,10 @@ def play_game():
         if pmana < spell[1]:
             ##print("can't afford spell. lose turn!!")
             # boss turn
-            battack = bdamage - parmor
-            if battack <= 0:
-                battack = 1
-            ppoints = ppoints - battack    
+            #battack = bdamage - parmor
+            #if battack <= 0:
+            #    battack = 1
+            #ppoints = ppoints - battack    
             break
 
         if move == 0:
@@ -312,7 +304,8 @@ def play_game():
             pmana = pmana + eff[6]
         
         if bpoints <= 0:
-            ##print('player WON. mana spent: ' + str(pmana_spent))
+            print('player WON. mana spent: ' + str(pmana_spent))
+            print(test_moves_copy)
             if pmana_spent < min_mana:
                 min_mana = pmana_spent 
                 min_str = temp_str    
@@ -334,13 +327,14 @@ def play_game():
         ##print()
 
 
-for i in range(0,5000000):
+for i in range(0,10000000):
     play_game()
 
 #print(str(min_moves))
 print(min_str)
 print(moves_played)
 print('part 1: ' + str(min_mana)) # 1824 CORRECT!!
+
 
 ##print()
 ##print('part 1 mana spent: ' + str(pmana_spent))
