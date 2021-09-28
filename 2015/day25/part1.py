@@ -6,19 +6,18 @@ print('')
 
 # To continue, please consult the code grid in the manual.
 # Enter the code at row 3010, column 3019.
-rows = 6 + 1
-cols = 6 + 1
+maxlen = 8000
+rows = maxlen + 1
+cols = maxlen + 1
 m = [[0 for i in range(cols)] for j in range(rows)]
 
 codes = []
-first_code = 20151125
-codes.append(first_code)
-m[1][1] = first_code
+
 
 r = 1
 c = 1
-mr = 6
-mc = 6
+mr = rows
+mc = cols
 top_r = 1
 top_c = 1
 code_num = 0
@@ -26,12 +25,40 @@ while True:
   for i in range(top_r, top_r - 1, -1):
     temp_r = top_r
     for j in range(1, top_r + 1):
+      r1 = temp_r
+      c1 = j
+      #print('code ' + str(code_num) + ': ' + str(temp_r) + ',' + str(j))  # index of codes in order
+
+      val = 0
+      #print(str(r1) + ',' + str(c1))
+      if code_num == 0:
+        val = 20151125
+      else:
+        # ted by taking the previous one, multiplying it by 252533, 
+        # and then keeping the remainder from dividing that value by 33554393.
+        val = (codes[code_num - 1] * 252533) % 33554393
+      
+      if r1 < rows and c1 < cols:
+        m[r1][c1] = val
+      codes.append(val)
+
+      if r1 == 3010 and c1 == 3019:
+        print(val)
+        break
       code_num = code_num + 1
-      print('code ' + str(code_num) + ': ' + str(temp_r) + ',' + str(j))  # index of codes in order
       temp_r = temp_r - 1
   top_r = top_r + 1
   if top_r > mr:
     break
+
+"""
+str1 = ''
+for r in m:
+  for c in r:
+    str1 = str1 + str(c) + ' '
+  str1 = str1 + '\n'
+print(str1)
+"""
 
 # e.g.,
 """
