@@ -18,7 +18,11 @@ row = 0
 col = 0
 w, h = 500, 500
 visited = dict()
+visited['0,0'] = 0 # starting point
 for d in arr:
+  found = False
+  r1 = row
+  c1 = col
   direction = d[0]
   distance = int(d[1:])
   if direction == 'R':
@@ -31,22 +35,45 @@ for d in arr:
     facing = 0
   if facing == 90:
     row = row + distance
+    for y in range(r1+1, row+1):
+      keystr = str(y) + ',' + str(col)
+      if keystr in visited:
+        print('FOUND: ' + keystr + ' blocks: ' + str(abs(y) + abs(col)) )
+        found = True
+        break
+      visited[keystr] = 0
   elif facing == 180:
     col = col + distance
+    for x in range(c1+1, col+1):
+      keystr = str(row) + ',' + str(x)
+      if keystr in visited:
+        print('FOUND: ' + keystr + ' blocks: ' + str(abs(row) + abs(x)) )
+        found = True
+        break
+      visited[keystr] = 0    
   elif facing == 270:
     row = row - distance
+    for y in range(r1-1, row-1, -1):
+      keystr = str(y) + ',' + str(col)
+      if keystr in visited:
+        print('FOUND: ' + keystr + ' blocks: ' + str(abs(y) + abs(col)) )
+        found = True
+        break
+      visited[keystr] = 0    
   elif facing == 0:
     col = col - distance
-  
-  keystr = str(row)+','+str(col)
-  if keystr in visited.keys():
-    print('FOUND')
+    for x in range(c1-1, col-1, -1):
+      keystr = str(row) + ',' + str(x)
+      if keystr in visited:
+        print('FOUND: ' + keystr + ' blocks: ' + str(abs(row) + abs(x)) )
+        found = True
+        break
+      visited[keystr] = 0      
+  if found:
     break
-  visited[keystr] = keystr
 
-print('row: ' + str(row))
-print('col: ' + str(col))
-print('blocks: ' + str(row + col))
+# WRONG: 6, 3
+
 
 print('')
 end_secs = time.time()
