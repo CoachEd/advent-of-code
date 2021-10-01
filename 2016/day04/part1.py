@@ -48,6 +48,9 @@ for s in l:
       if d[c] > prev_count:
         valid = False  # later checksum count cannot be greater than earlier checksum count
         break
+      elif d[c] == prev_count and ord(prev_c) > ord(c):
+        valid = False  # tie, but later checksum car comes before earlier char alphabetically
+        break
       prev_c = c
       prev_count = d[c]
     if i > last_pos:
@@ -55,17 +58,11 @@ for s in l:
       last_count = d[c]
   if not valid:
     continue
- 
-  # TEST: Ties?
 
-
-
-
-  # OUTPUT result
-  print('valid: ' + nm)
   # made it here, then valid!
   total = total + sc
 
+# OUTPUT result
 print(total)  # WRONG: 50583 (too low), 280724 (too high)
 
 
