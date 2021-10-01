@@ -11,7 +11,7 @@ l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
-    l.append(line.strip())
+  l.append(line.strip())
 
 print(l)
 
