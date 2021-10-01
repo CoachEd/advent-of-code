@@ -1,4 +1,6 @@
-import sys
+"""
+AoC
+"""
 import time
 
 start_secs = time.time()
@@ -6,12 +8,11 @@ print('')
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r")
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
-for line in lines: 
+for line in lines:
     l.append(line.strip())
 
-# TODO
 print(l)
 
 
