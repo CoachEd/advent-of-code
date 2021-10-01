@@ -21,7 +21,6 @@ for i in range(0, sys.maxsize):
     COUNT = COUNT + 1
     if COUNT == 8:
       break
-    continue
 
 print(PASSWORD)
 
