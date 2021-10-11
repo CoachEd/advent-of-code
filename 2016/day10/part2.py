@@ -74,8 +74,6 @@ while not done:
           low[i] = -1
           swapflag = True
         if swapflag and low[lowdest[1]] != -1 and high[lowdest[1]] != -1:
-          if (low[lowdest[1]] == 17 and high[lowdest[1]] == 61) or (low[lowdest[1]] == 61 and high[lowdest[1]] == 17):
-            print(lowdest[1])
           if low[lowdest[1]] > high[lowdest[1]]:
             temp = low[lowdest[1]]
             low[lowdest[1]] = high[lowdest[1]]
@@ -98,8 +96,6 @@ while not done:
           high[i] = -1
           swapflag = True
         if swapflag and low[highdest[1]] != -1 and high[highdest[1]] != -1:
-          if (low[highdest[1]] == 17 and high[highdest[1]] == 61) or (low[highdest[1]] == 61 and high[highdest[1]] == 17):
-            print(highdest[1])
           if low[highdest[1]] > high[highdest[1]]:
             temp = low[highdest[1]]
             low[highdest[1]] = high[highdest[1]]
