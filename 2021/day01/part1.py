@@ -13,7 +13,15 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-print(l)
+prev = int(l[0])
+incr = 0
+decr = 0
+for i in range(1,len(l)):
+  if int(l[i]) > prev:
+    incr += 1
+  prev = int(l[i])
+print(incr)
+  
 
 
 print('')
