@@ -1,3 +1,4 @@
+# part1.py
 """
 AoC
 """
@@ -13,7 +14,20 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-print(l)
+depth = 0
+horiz = 0
+for i in range(0,len(l)):
+  arr = l[i].split(' ')
+  cmd = arr[0]
+  x = int(arr[1])
+  if cmd == 'forward':
+    horiz += x
+  elif cmd == 'down':
+    depth += x
+  else:
+    depth -= x
+
+print(depth * horiz)
 
 
 print('')
