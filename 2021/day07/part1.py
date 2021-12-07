@@ -2,6 +2,8 @@
 AoC
 """
 import time
+import sys
+from copy import copy, deepcopy
 
 start_secs = time.time()
 print('')
@@ -13,8 +15,21 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-print(l)
+arr = l[0].split(',')
+set1 = set(l[0].split(','))
 
+minpos = -1
+minfuel = sys.maxsize
+for s in set1:
+  fuel = 0
+  pos = int(s)
+  for n in arr:
+    fuel += abs(int(n) - pos)
+  if fuel < minfuel:
+    minfuel = fuel
+    minpos = pos
+
+print(minfuel)
 
 print('')
 end_secs = time.time()
