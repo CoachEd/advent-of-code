@@ -16,13 +16,15 @@ for line in lines:
   l.append(line.strip())
 
 arr = l[0].split(',')
-set1 = set(l[0].split(','))
+arr2 = arr.copy()
+arr2.sort()
+sm = int(arr2[0])
+bg = int(arr2[-1])
 
 minpos = -1
 minfuel = sys.maxsize
-for s in set1:
+for pos in range(sm, bg+1):
   fuel = 0
-  pos = int(s)
   for n in arr:
     fuel += abs(int(n) - pos)
   if fuel < minfuel:
