@@ -24,23 +24,18 @@ for i in range(2,len(l)):
 
 #print(s)
 
-steps = 4
+steps = 40
 print(s)
 for step in range( steps ):
-  if step == 3:
-    print('before: ' + s)
+  print(step)
   for key in d:
-    if step == 3:
-      print(key + '->' + d[key])
-    s = s.replace(key, key[0] + d[key].lower() + key[1])
-    if step == 3:
-      print(s)
-      print('')
+    while True:
+      len1 = len(s)
+      s = s.replace(key, key[0] + d[key].lower() + key[1])
+      len2 = len(s)
+      if len1 == len2:
+        break   
   s = s.upper()
-  if step == 3:
-    print('after  : ' + s )
-    print('step: ' + str(step+1) + s)
-
 d = {}
 for c in s:
   if not c in d:
