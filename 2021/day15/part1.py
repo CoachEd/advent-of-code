@@ -62,8 +62,6 @@ for y in range(len(l)):
     arrtemp.append(int(l[y][x]))
   arr.append(arrtemp)
 
-
-
 rows = len(l)
 cols = len(l[0])
 nodes = () # tuple

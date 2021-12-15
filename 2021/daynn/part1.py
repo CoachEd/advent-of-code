@@ -2,6 +2,8 @@
 AoC
 """
 import time
+import sys
+from copy import copy, deepcopy
 
 start_secs = time.time()
 print('')
