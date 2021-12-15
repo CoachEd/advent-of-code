@@ -25,7 +25,8 @@ for i in range(2,len(l)):
   d[ a[0] ] = a[1]
 
 #print(s)
-for step in range(  10 ):
+steps = 10
+for step in range(  steps ):
   s1 = []
   for c in s:
     s1 += ([c] + [''])
