@@ -39,8 +39,6 @@ for step in range(  steps ):
   s = '%s' % ''.join(s1)
   #print('step ' + str(step+1)+': ' + str(len(s)))
   #print(s)
-  
-  
 
 d = {}
 for c in s:
@@ -55,6 +53,10 @@ for key in d:
     mx = d[key]
   if d[key] < mn:
     mn = d[key]
+
+print('')
+print(s)
+print('')    
 print(str(mx-mn))
 
 end_secs = time.time()
