@@ -103,6 +103,7 @@ while len(s) != 0:
     (value, s) = litval(s)
     print('value: ' + str(value) + '  s: ' + s)
   else:
+    # operator
     # TODO
     sys.exit()
   
