@@ -8,6 +8,7 @@ import time
 import sys
 from copy import copy, deepcopy
 d = {}
+counts = {}
 
 start_secs = time.time()
 print('')
@@ -24,39 +25,58 @@ for i in range(2,len(l)):
   a = l[i].split(' -> ')
   d[ a[0] ] = a[1]
 
-#print(s)
+# get initial counts
+for c in s:
+  if not c in counts:
+    counts[c] = 0
+  counts[c] += 1
+
+# add initial edges
+edges = {}
+for i in range(0,len(s)-1):
+  edge = s[i] + s[i+1]
+  if not edge in edges:
+    edges[edge] = 0
+  edges[edge] += 1
+
+# steps - apply each rule to all edges
 steps = 10
 for step in range(  steps ):
-  s1 = []
-  for c in s:
-    s1 += ([c] + [''])
-  
-  for i in range(0,len(s1)-3,2):
-    ss = s1[i] + s1[i+2]
-    if ss in d:
-      c = d[ss]
-      s1[i+1] = c
-  s = '%s' % ''.join(s1)
-  #print('step ' + str(step+1)+': ' + str(len(s)))
-  #print(s)
+  edges2 = {}
+  for e in edges:
+    if e in d:
+      # inserts
+      c0 = e[0]
+      c1 = e[1]
+      insrt = d[e]
+      num = edges[e]
+      e0 = c0 + insrt
+      e1 = insrt + c1    
+      if not e0 in edges2:
+        edges2[e0] = 0
+      if not e1 in edges2:
+        edges2[e1] = 0
+      edges2[e0] += num
+      edges2[e1] += num
+      if not insrt in counts:
+        counts[insrt] = 0
+      counts[insrt] = counts[insrt] + num
+    else:
+      # carry over
+      if not e in edges2:
+        edges2[e] = 0
+      edges2[e] += edges[e]
+  edges = edges2.copy()
 
-d = {}
-for c in s:
-  if not c in d:
-    d[c]=0
-  d[c] += 1
-
+# get answer
 mx = 0
 mn = sys.maxsize
-for key in d:
-  if d[key] > mx:
-    mx = d[key]
-  if d[key] < mn:
-    mn = d[key]
+for key in counts:
+  if counts[key] > mx:
+    mx = counts[key]
+  if counts[key] < mn:
+    mn = counts[key]
 
-print('')
-print(s)
-print('')    
 print(str(mx-mn))
 
 end_secs = time.time()

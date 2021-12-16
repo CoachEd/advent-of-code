@@ -7,22 +7,8 @@ AoC
 import time
 import sys
 from copy import copy, deepcopy
-
-def printll(p):
-  s = ''
-  while p != None:
-    s += p.dataval
-    p = p.nextval
-  print(s)
-
-class Node:
-   def __init__(self, dataval=None):
-      self.dataval = dataval
-      self.nextval = None
-
-class SLinkedList:
-   def __init__(self):
-      self.headval = None
+d = {}
+counts = {}
 
 start_secs = time.time()
 print('')
@@ -35,57 +21,63 @@ for line in lines:
   l.append(line.strip())
 
 s = l[0]
-d = {}
 for i in range(2,len(l)):
   a = l[i].split(' -> ')
   d[ a[0] ] = a[1]
 
+# get initial counts
+for c in s:
+  if not c in counts:
+    counts[c] = 0
+  counts[c] += 1
 
-# add s to linked list
-list1 = SLinkedList()
-list1.headval = Node(s[0])
-p = list1.headval
-for i in range(1,len(s)):
-  e = Node(s[i])
-  p.nextval = e
-  p = p.nextval
+# add initial edges
+edges = {}
+for i in range(0,len(s)-1):
+  edge = s[i] + s[i+1]
+  if not edge in edges:
+    edges[edge] = 0
+  edges[edge] += 1
 
-for i in range(10):
-  p = list1.headval
-  while p != None and p.nextval != None:
-    c1 = p.dataval
-    c2 = p.nextval.dataval
-    key = c1 + c2
-    if key in d:
-      insrt = d[key]
-      e = Node(insrt)
-      e.nextval = p.nextval
-      p.nextval = e
-      p = p.nextval
-    p = p.nextval
-  #printll(list1.headval)  
+# steps - apply each rule to all edges
+steps = 40
+for step in range(  steps ):
+  edges2 = {}
+  for e in edges:
+    if e in d:
+      # inserts
+      c0 = e[0]
+      c1 = e[1]
+      insrt = d[e]
+      num = edges[e]
+      e0 = c0 + insrt
+      e1 = insrt + c1    
+      if not e0 in edges2:
+        edges2[e0] = 0
+      if not e1 in edges2:
+        edges2[e1] = 0
+      edges2[e0] += num
+      edges2[e1] += num
+      if not insrt in counts:
+        counts[insrt] = 0
+      counts[insrt] = counts[insrt] + num
+    else:
+      # carry over
+      if not e in edges2:
+        edges2[e] = 0
+      edges2[e] += edges[e]
+  edges = edges2.copy()
 
-
-p = list1.headval
-d = {}
-while p != None:
-  c = p.dataval
-  if not c in d:
-    d[c]=0
-  d[c] += 1
-  p = p.nextval
-
+# get answer
 mx = 0
 mn = sys.maxsize
-for key in d:
-  if d[key] > mx:
-    mx = d[key]
-  if d[key] < mn:
-    mn = d[key]
+for key in counts:
+  if counts[key] > mx:
+    mx = counts[key]
+  if counts[key] < mn:
+    mn = counts[key]
+
 print(str(mx-mn))
-
-#2740 too low
-
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
