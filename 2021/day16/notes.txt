@@ -1,0 +1,11 @@
+
+
+
+8A004A801A8002F478 represents an operator packet (version 4)
+which contains an operator packet (version 1)
+which contains an operator packet (version 5) 
+which contains a literal value (version 6); this packet has a version sum of 16.
+
+
+100 010 1 00000000001 001 010 1 00000000001 101 010 0 000000000001011 110 100 01111 000
+VVV TTT I LLLLLLLLLLL VVV TTT I LLLLLLLLLLL VVV TTT I LLLLLLLLLLLLLLL VVV TTT AAAAA 
