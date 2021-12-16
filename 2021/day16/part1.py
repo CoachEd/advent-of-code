@@ -46,8 +46,9 @@ def operator(b):
 
 def litval(b):
   global version_number_sum
+  if len(b) == 0:
+    return ( 0, '' )
   i = 0
-  len1 = 0
   packet_version = int(b[i:i+3],2)
   version_number_sum += packet_version
   packet_type_id = int(b[i+3:i+6],2)
@@ -61,10 +62,9 @@ def litval(b):
     group = b[i+1:i+5]  # 4 bit group
     bstr2 += group
     i = i + 5
-    len1 += 5
-  len1 += 6 + 3 # header and ignore
+  i += 3 # ignore last bits
   value = int(bstr2,2)
-  return ( value, len1 )
+  return ( value, b[i:] )
 
 def sum_version_numbers(b):
   i = 0
@@ -93,11 +93,29 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+# main
 s = hex2bin(l[0])
-print(s)
-sys.exit()
+while len(s) != 0:
+  packet_version = int(s[0:3],2)
+  packet_type_id = int(s[3:6],2)
+  if packet_type_id == 4:
+    # literval value
+    (value, s) = litval(s)
+    print('value: ' + str(value) + '  s: ' + s)
+  else:
+    # TODO
+    sys.exit()
+  
+
+
+
+
+
+
+"""
 sum_version_numbers(s)
 print(version_number_sum)
+"""
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
