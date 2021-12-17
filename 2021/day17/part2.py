@@ -39,6 +39,8 @@ def target_hit(x,y):
   (sx,sy) = 0,0 # start pos
   #print(str(sx) + ',' + str(sy) + ',' + str(x))
   maxsy = -1
+  prev_x = 0
+  prev_y = 0
 
   drag = 0
   if x > 0:
@@ -50,7 +52,6 @@ def target_hit(x,y):
     #print(str(sx) + ',' + str(sy) + ',' + str(x))
     sx = sx + x
     sy = sy + y
-
 
     # apply drag
     # Due to drag, the probe's x velocity changes by 1 toward the value 0;
@@ -65,12 +66,17 @@ def target_hit(x,y):
     if sy > maxsy:
       maxsy = sy
     
+    if (sx - prev_x) != 0:
+      slope = (sy - prev_y) / (sx - prev_x)
     if within_target_area(sy,sx):
       #print(str(sx) + ',' + str(sy) + ',' + str(x))
       return (True, maxsy)
     
     if sy < miny:
       return (False, maxsy)
+
+    prev_y = sy
+    prev_x = sx
     
     """
     if sx > maxx:
@@ -94,20 +100,28 @@ print(height)
 """
 count = 0
 max_height = -99
+d = {}
 for x in range(0,500):
-  for y in range(-500,500):
+  for y in range(-50,500):
     (hit, height) = target_hit(x,y)
     if hit:
       count += 1
+      d [ str(x)+','+str(y) ] = 0
+      """
       if height > max_height:
         max_height = height
         the_y = y
         the_x = x
+      """
 
-print(count)
+print(len(d))
 
-# 802 too low
 # 4616 too high
+# 1998 wrong
+# 1964 too low
+# 802 too low
+# 4031 wrong
+
 
 """
 target area: x=20..30, y=-10..-5
