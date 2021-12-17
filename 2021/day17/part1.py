@@ -35,34 +35,84 @@ def within_target_area(y,x):
     return True
   return False
 
-(sx,sy) = 0,0 # start pos
-(x,y) = 7,2 # initial velocity
+def target_hit(x,y):
+  (sx,sy) = 0,0 # start pos
+  maxsy = -1
 
-#print(str(sy) + ',' + str(sx))
-while True:
-  sx = sx + x
-  sy = sy + y
+  drag = 0
   if x > 0:
-    x = x - 1
-  elif x < 0:
-    x = x + 1
-  y = y - 1
-  #print(str(sy) + ',' + str(sx))
-  if within_target_area(sy,sx):
-    print('hit: y,x: ' + str(sy) + ',' + str(sx))
-    break
-  elif sy < miny:
-    print('miss')
-    break
-  elif sx > maxx:
-    print('miss')
-    break
-  elif sx < minx and sy < miny:
-    print('miss')
-    break
-  
-  
+    drag = -1
+  else:
+    drag = 1
+
+  while True:
+    print(str(sx) + ',' + str(sy) + ',' + str(x))
+    sx = sx + x
+    sy = sy + y
+
+
+    # apply drag
+    # Due to drag, the probe's x velocity changes by 1 toward the value 0;
+    # that is, it decreases by 1 if it is greater than 0, increases by 1 if it is less than 0,
+    # or does not change if it is already 0.
+    if x != 0:
+      x = x + drag
+    
+    # apply gravity
+    y = y - 1
+
+    if sy > maxsy:
+      maxsy = sy
+    
+    if within_target_area(sy,sx):
+      return (True, maxsy)
+    
+    if sy < miny:
+      return (False, maxsy)
+    
+    """
+    if sx > maxx:
+      return (False, maxsy)
+    
+    if sx < minx and sy < miny:
+      return (False, maxsy)
+    """
+
+
+# TEST
+target_hit(6,9)
+sys.exit()
+
+
 """
+(hit, height) = target_hit(6,9)
+print(hit)
+print(height)
+"""
+max_height = -99
+the_x = -99
+the_y = -99
+max_x = 500
+max_y = 500
+for x in range(0,max_x):
+  for y in range(0,max_y):
+    (hit, height) = target_hit(x,y)
+    if hit and height > max_height:
+      max_height = height
+      the_y = y
+      the_x = x
+
+print(str(the_x) + ',' + str(the_y) + ' : ' + str(max_height))
+print(max_height)
+
+# 32385 too high
+
+"""
+target area: x=20..30, y=-10..-5
+
+target area: x=32..65, y=-255..-177
+
+
 .............#....#............
 .......#..............#........
 ...............................
