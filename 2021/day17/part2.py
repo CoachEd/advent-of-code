@@ -107,6 +107,7 @@ for x in range(0,500):
 print(count)
 
 # 802 too low
+# 4616 too high
 
 """
 target area: x=20..30, y=-10..-5
