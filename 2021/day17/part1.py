@@ -37,6 +37,7 @@ def within_target_area(y,x):
 
 def target_hit(x,y):
   (sx,sy) = 0,0 # start pos
+  #print(str(sx) + ',' + str(sy) + ',' + str(x))
   maxsy = -1
 
   drag = 0
@@ -46,7 +47,7 @@ def target_hit(x,y):
     drag = 1
 
   while True:
-    print(str(sx) + ',' + str(sy) + ',' + str(x))
+    #print(str(sx) + ',' + str(sy) + ',' + str(x))
     sx = sx + x
     sy = sy + y
 
@@ -65,6 +66,7 @@ def target_hit(x,y):
       maxsy = sy
     
     if within_target_area(sy,sx):
+      #print(str(sx) + ',' + str(sy) + ',' + str(x))
       return (True, maxsy)
     
     if sy < miny:
@@ -80,8 +82,9 @@ def target_hit(x,y):
 
 
 # TEST
-target_hit(6,9)
-sys.exit()
+#target_hit(6,9) # BAD
+#target_hit(7,2) # GOOD
+#sys.exit()
 
 
 """
@@ -90,12 +93,10 @@ print(hit)
 print(height)
 """
 max_height = -99
-the_x = -99
-the_y = -99
-max_x = 500
-max_y = 500
-for x in range(0,max_x):
-  for y in range(0,max_y):
+max_x = 1000
+max_y = 1000
+for x in range(0,10):
+  for y in range(0,230):
     (hit, height) = target_hit(x,y)
     if hit and height > max_height:
       max_height = height
