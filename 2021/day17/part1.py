@@ -46,8 +46,9 @@ def target_hit(x,y):
   else:
     drag = 1
 
+  #print('sx,sy,x,y')
   while True:
-    #print(str(sx) + ',' + str(sy) + ',' + str(x))
+    #print(str(sx) + ',' + str(sy) + ',' + str(x) + ',' + str(y))
     sx = sx + x
     sy = sy + y
 
@@ -82,8 +83,7 @@ def target_hit(x,y):
 
 
 # TEST
-#target_hit(6,9) # BAD
-#target_hit(7,2) # GOOD
+#target_hit(8,229) 
 #sys.exit()
 
 
@@ -93,8 +93,6 @@ print(hit)
 print(height)
 """
 max_height = -99
-max_x = 1000
-max_y = 1000
 for x in range(0,10):
   for y in range(0,230):
     (hit, height) = target_hit(x,y)
