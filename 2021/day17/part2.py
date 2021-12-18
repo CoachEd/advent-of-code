@@ -65,9 +65,7 @@ def target_hit(x,y):
 
     if sy > maxsy:
       maxsy = sy
-    
-    if (sx - prev_x) != 0:
-      slope = (sy - prev_y) / (sx - prev_x)
+
     if within_target_area(sy,sx):
       #print(str(sx) + ',' + str(sy) + ',' + str(x))
       return (True, maxsy)
@@ -102,7 +100,7 @@ count = 0
 max_height = -99
 d = {}
 for x in range(0,500):
-  for y in range(-50,500):
+  for y in range(-500,1000):
     (hit, height) = target_hit(x,y)
     if hit:
       count += 1
