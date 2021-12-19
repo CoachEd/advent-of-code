@@ -166,21 +166,9 @@ for s in l:
     stree = get_list(stree_s)
 
 print(stree_s)
-"""
-level_four_elems(stree,0)
-print('')
-all_nums_in_order(stree)
-"""
 
-"""
-print('')
-s1 = '[[[[4,3],4],4],[7,[[8,4],9]]]'
-s2 = '[1,1]'
-s = '['+s1+','+s2+']'
 
-s = reduce_sn(s)
-print(s)
-"""
+
 
 #print( get_left_num('[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]',10) ) # from [7,3]
 #print( get_right_num('[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]',14) ) # from [7,3]
