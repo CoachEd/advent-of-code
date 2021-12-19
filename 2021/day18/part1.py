@@ -7,6 +7,7 @@ import sys
 from copy import copy, deepcopy
 
 start_secs = time.time()
+print('')
 
 def get_left_num(s,i0):
   start_pos = -1
@@ -167,7 +168,7 @@ for s in l:
 
 print(stree_s)
 
-
+# magnitude?
 
 
 #print( get_left_num('[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]',10) ) # from [7,3]
