@@ -117,6 +117,14 @@ def all_nums_in_order(arr):
     all_nums_in_order(arr[1])
   else:
     print(arr)
+    
+def get_magnitude(arr):
+  # The magnitude of a pair is 3 times the magnitude of its left element 
+  # plus 2 times the magnitude of its right element. 
+  # The magnitude of a regular number is just that number.
+  if not isinstance(arr, list):
+    return arr 
+  return get_magnitude(arr[0]) * 3 + get_magnitude(arr[1]) * 2  
 
 def level_four_elems(arr, i):
   if i == 4:
@@ -168,6 +176,8 @@ for s in l:
 
 print(stree_s)
 
+arr = get_list(stree_s)
+print( get_magnitude(arr) )
 # magnitude?
 
 
