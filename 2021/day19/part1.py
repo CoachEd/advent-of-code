@@ -28,8 +28,7 @@ for line in lines:
   points.append(arr)
 d.append(points)
   
-
-  
+# d is an array of scanners data; each scanner's data is an array of point x,y,z
   
   
 
