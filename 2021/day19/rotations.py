@@ -42,8 +42,6 @@ polycube = array(
     [0, 0, 0],
     [0, 0, 0]]])
 
-rotations = rotations24(polycube)
-
 for x in rotations24(polycube):
   for y in x:
     for z in y:
