@@ -103,6 +103,9 @@ for i in range(reps):
 print( count_lights2(m) )
 
 # 5255 too high
+# 5228 too high
+# 5157 incorrect
+# 5039 incorrect
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
