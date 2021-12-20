@@ -32,18 +32,16 @@ def get_bounds(m):
           min_col = x
   return (min_row-1,min_col-1,max_row+1,max_col+1)
 
-
 def print_m(m):
+  (min_row, min_col, max_row, max_col) = get_bounds(m)
   s = ''
-  for r in m:
-    for c in r:
-      s += c
+  for y in range(min_row,max_row+1):
+    for x in range(min_col,max_col+1):
+      s += m[y][x]
     s += '\n'
   print(s)
-  
-  
+
 start_secs = time.time()
-print('')
 
 # read in input file
 l=[]
@@ -92,6 +90,5 @@ print( count_lights(m) )
 
 # 5255 too high
 
-print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
