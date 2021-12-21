@@ -6,6 +6,30 @@ import sys
 from copy import copy, deepcopy
 import math
 
+def remove_ring(m):
+  for y in range(len(m)):
+    for x in range(len(m[y])):
+      if y == 1 or y == len(m)-2 or x == 1 or x == len(m[y])-2:
+        m[y][x] = '.'
+
+def get_bounds(m):
+  minx = sys.maxsize
+  miny = sys.maxsize
+  maxx = -1
+  maxy = -1
+  for y in range(len(m)):
+    for x in range(len(m[y])):
+      if m[y][x] == '#':
+        if y < miny:
+          miny = y
+        if x < minx:
+          minx = x
+        if y > maxy:
+          maxy = y
+        if x > maxx:
+          maxx = x
+  return (minx,miny,maxx,maxy)
+
 def count_lights(m):
   n = 0
   for y in range(len(m)):
@@ -24,7 +48,8 @@ def print_m(m):
   print(s)
 
 def pad_sides(m):
-  # ensure width 2 padding of all sides
+  # padding length 2 on all sides
+  padding = 5
   min_y = sys.maxsize
   max_y = -1
   min_x = sys.maxsize
@@ -50,7 +75,6 @@ def pad_sides(m):
       x0 += 1
     y0 += 1
       
-  padding = 2
   for row in m2:
     for i in range(padding):
       row.insert(0,'.')
@@ -100,10 +124,22 @@ for i in range(reps):
       m1[y][x] = alg[n]
   m = deepcopy(m1)
 
-  # pad to 2
-  m = pad_sides(m)
 
-print_m(m)
+  if i % 2 != 0:
+    print_m(m)
+    # remove ring 7 off top and bottom, 6 off right and left
+    for i in range(7):
+      del m[0]
+      del m[-1]
+    for row in m:
+      for i in range(6):
+        del row[0]
+        del row[-1]
+  
+  # pad
+  m = pad_sides(m)
+  print_m(m)
+
 print( count_lights(m) )
 # sample input
 # print( count_lights(m,0,0) )
@@ -114,6 +150,13 @@ print( count_lights(m) )
 # 241683 too high
 # 19999 too high
 # 19486 wrong
+# pad 1: 4780
+# pad 2: 19486
+# pad 3: 42398
+# pad 4: 68555
+# pad 5: 109538
+# pad 6: 
+# wrong: 16739
 
 # TODO: 752 x 752
 # TODO: try setting color 000000000 to ' ' to skip it? add logic to skip it?
