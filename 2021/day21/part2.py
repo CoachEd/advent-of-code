@@ -11,35 +11,46 @@ print('')
 board_len = 10
 board = [ (n+1) for n in range(board_len)]
 
-
+winners = [0,0]
 def quantum_roll(player_turn,pstart,pscores):
+  global winners
   global board
   if pscores[0] >= 21:
-    return (1,1) # player 1 wins
+    winners[0] += 1
+    return
   if pscores[1] >= 21:
-    return (2,1) # player 2 wins
+    winners[1] += 1
+    return
 
-  ### TODO
-  """
-  (spot,pstart) = move_forward(player_turn,1,pstart)
+  pstart1 = pstart.copy()
+  pstart2 = pstart.copy()
+  pstart3 = pstart.copy()
 
+  pscores1 = pscores.copy()
+  pscores2 = pscores.copy()
+  pscores3 = pscores.copy()
 
-  pscores[player_turn-1] += spot
+  (spot,pstart1) = move_forward(player_turn,1,pstart1)
+  pscores1[player_turn-1] += 1
 
+  (spot,pstart2) = move_forward(player_turn,2,pstart2)
+  pscores2[player_turn-1] += 2
 
-  (spot,pstart) = move_forward(player_turn,2,pstart)
-  pscores[player_turn-1] += spot
-
-  (spot,pstart) = move_forward(player_turn,3,pstart)
-  pscores[player_turn-1] += spot    
+  (spot,pstart3) = move_forward(player_turn,3,pstart3)
+  pscores3[player_turn-1] += 3    
 
   next_player = -1
   if player_turn == 1:
     next_player = 2
   else:
     next_player = 1
-  """
   
+  quantum_roll(player_turn,pstart1,pscores1)
+  quantum_roll(player_turn,pstart2,pscores2)
+  quantum_roll(player_turn,pstart3,pscores3)
+
+
+
 
 
 di = 0
@@ -75,6 +86,12 @@ for s in l:
   pstart.append(int(arr[1])-1)
 pscores = [0,0]
 
+quantum_roll(1,pstart,pscores)
+
+
+print(winners)
+
+"""
 player = 1
 rolls = 0
 while True:
@@ -100,6 +117,7 @@ if pscores[0] < pscores[1]:
   print(rolls * pscores[0])
 else:
   print(rolls * pscores[1])
+"""
 
 
 
