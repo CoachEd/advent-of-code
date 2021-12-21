@@ -6,11 +6,16 @@ import sys
 from copy import copy, deepcopy
 import math
 
-def count_lights(m,offset_y,offset_x):
+def valid(y,x,m):
+  if y < 0 or x < 0 or y >= len(m) or x >= len(m[0]):
+    return False
+  return True
+
+
+def count_lights(m):
   n = 0
-  (min_row,min_col,max_row,max_col) = get_bounds(m)
-  for y in range(min_row+offset_y,max_row-offset_y):
-    for x in range(min_col+offset_x,max_col-offset_x):
+  for y in range(len(m)):
+    for x in range(len(m[y])):
       c = m[y][x]
       if c == '#':
         n += 1
@@ -35,11 +40,10 @@ def get_bounds(m):
   return (min_row-1,min_col-1,max_row+1,max_col+1)
 
 def print_m(m):
-  (min_row, min_col, max_row, max_col) = get_bounds(m)
   s = ''
-  for y in range(min_row,max_row+1):
-    for x in range(min_col,max_col+1):
-      s += m[y][x]
+  for row in m:
+    for c in row:
+      s += c
     s += '\n'
   print(s)
 
@@ -47,7 +51,7 @@ start_secs = time.time()
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp_sample.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -56,46 +60,69 @@ alg = l[0]
 del l[0]
 del l[0]
 
-rmult = 40
-cmult = 40
-num_rows = len(l) * rmult
-num_cols = len(l[0]) * cmult
+
+#num_rows = 100
+#num_cols = 100
+num_rows = 5
+num_cols = 5
+
 
 m = [ [ '.' for r in range(num_rows) ] for c in range(num_cols) ]
-midy = math.floor(num_rows / 2) - math.floor(len(l)/2)
-midx = math.floor(num_cols / 2) - math.floor(len(l[0])/2)
+for y in range(len(m)):
+  for x in range(len(m[y])):
+    m[y][x] = l[y][x]
 
-y = midy
-for r in l:
-  x = midx
-  for c in r:
-    m[y][x] = c
-    x += 1
-  y += 1
+
+# make m 2 bigger on each edge
+offset = 2
+ROWS = num_rows+offset*2
+COLS = num_cols+offset*2
+m2 = [ [ '.' for r in range(ROWS) ] for c in range(COLS) ]
+for y in range(len(m)):
+  for x in range(len(m[y])):
+    m2[y+offset][x+offset]=m[y][x]
 
 # main
 reps = 50
+print_m(m2)
 for i in range(reps):
-  m1 = deepcopy(m)
-  (min_row,min_col,max_row,max_col) = get_bounds(m)
-  for y in range(min_row-6,max_row+6):
-    for x in range(min_col-6,max_col+6):
-      s =  m[y-1][x-1] + m[y-1][x] +  m[y-1][x+1]
-      s += m[y][x-1]   + m[y][x]   + m[y][x+1]
-      s += m[y+1][x-1] + m[y+1][x] + m[y+1][x+1]
+  m1 = deepcopy(m2)
+  for y in range(len(m2)):
+    for x in range(len(m2[y])):
+      
+      # skip first and last rows, first and last columns
+      if y == 0 or x == 0 or y == len(m2)-1 or x == len(m2[0])-1:
+        continue
+
+      s =  m2[y-1][x-1] + m2[y-1][x] +  m2[y-1][x+1]
+      s += m2[y][x-1]   + m2[y][x]   + m2[y][x+1]
+      s += m2[y+1][x-1] + m2[y+1][x] + m2[y+1][x+1]
       n = int(s.replace('.','0').replace('#','1'),2)
       m1[y][x] = alg[n]
-  m = deepcopy(m1)
+  m2 = deepcopy(m1)
   
-print_m(m)
-
+  ROWS = ROWS + 2
+  COLS = COLS + 2
+  offset = 1
+  m3 = [ [ '.' for r in range(ROWS) ] for c in range(COLS) ]
+  for y in range(len(m2)):
+    for x in range(len(m2[y])):
+      m3[y+offset][x+offset]=m2[y][x]
+  m2 = deepcopy(m3)
+  
+  
+  print_m(m2)
+  
+print_m(m2)
+print( count_lights(m2) )
 # sample input
 # print( count_lights(m,0,0) )
 
 # actual input: do not count frame around output...
-print( count_lights(m,9,9) )
+#print( count_lights(m,9,9) )
 
 # 241683 too high
+# 19999 too high
 
 # TODO: 752 x 752
 # TODO: try setting color 000000000 to ' ' to skip it? add logic to skip it?
