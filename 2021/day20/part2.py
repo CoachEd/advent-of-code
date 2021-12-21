@@ -13,14 +13,15 @@ def get_bounds(m):
   maxy = -1
   for y in range(len(m)):
     for x in range(len(m[y])):
-      if y < miny:
-        miny = y
-      if x < minx:
-        minx = x
-      if y > maxy:
-        maxy = y
-      if x > maxx:
-        maxx = x
+      if m[y][x] == '#':
+        if y < miny:
+          miny = y
+        if x < minx:
+          minx = x
+        if y > maxy:
+          maxy = y
+        if x > maxx:
+          maxx = x
   return (minx,miny,maxx,maxy)
 
 def count_lights(m):
@@ -41,7 +42,8 @@ def print_m(m):
   print(s)
 
 def pad_sides(m):
-  # ensure width 2 padding of all sides
+  # padding length 2 on all sides
+  padding = 4
   min_y = sys.maxsize
   max_y = -1
   min_x = sys.maxsize
@@ -67,7 +69,6 @@ def pad_sides(m):
       x0 += 1
     y0 += 1
       
-  padding = 5
   for row in m2:
     for i in range(padding):
       row.insert(0,'.')
@@ -101,11 +102,7 @@ m = pad_sides(m)
 
 # main
 reps = 2
-minx = 0
-miny = 0
-maxx = 0
-maxy = 0
-#print_m(m)
+print_m(m)
 for i in range(reps):
   m1 = deepcopy(m)
   for y in range(len(m1)):
@@ -117,19 +114,15 @@ for i in range(reps):
       s =  m[y-1][x-1] + m[y-1][x] +  m[y-1][x+1]
       s += m[y][x-1]   + m[y][x]   + m[y][x+1]
       s += m[y+1][x-1] + m[y+1][x] + m[y+1][x+1]
-      
-      #if (y < miny or x < minx or y > maxy or x > maxx) and s == '.........':
-      #  continue
-
       n = int(s.replace('.','0').replace('#','1'),2)
       m1[y][x] = alg[n]
   m = deepcopy(m1)
-
+  #print_m(m)
+  
   # pad
   m = pad_sides(m)
-  (minx,miny,maxx,maxy) = get_bounds(m)
+  print_m(m)
 
-print_m(m)
 print( count_lights(m) )
 # sample input
 # print( count_lights(m,0,0) )
