@@ -6,42 +6,61 @@ import sys
 from copy import copy, deepcopy
 import math
 
-def count_lights(m,offset_y,offset_x):
+def count_lights(m):
   n = 0
-  (min_row,min_col,max_row,max_col) = get_bounds(m)
-  for y in range(min_row+offset_y,max_row-offset_y):
-    for x in range(min_col+offset_x,max_col-offset_x):
+  for y in range(len(m)):
+    for x in range(len(m[y])):
       c = m[y][x]
       if c == '#':
         n += 1
   return n
 
-def get_bounds(m):
-  max_row = -1
-  max_col = -1
-  min_row = sys.maxsize
-  min_col = sys.maxsize
+def print_m(m):
+  s = ''
+  for row in m:
+    for c in row:
+      s += c
+    s += '\n'
+  print(s)
+
+def pad_sides(m):
+  # ensure width 2 padding of all sides
+  min_y = sys.maxsize
+  max_y = -1
+  min_x = sys.maxsize
+  max_x = -1
   for y in range(len(m)):
     for x in range(len(m[y])):
       if m[y][x] == '#':
-        if y > max_row:
-          max_row = y
-        if x > max_col:
-          max_col = x
-        if y < min_row:
-          min_row = y
-        if x < min_col:
-          min_col = x
-  return (min_row-1,min_col-1,max_row+1,max_col+1)
+        if y < min_y:
+          min_y = y
+        if x < min_x:
+          min_x = x
+        if x > max_x:
+          max_x = x
+        if y > max_y:
+          max_y = y
 
-def print_m(m):
-  (min_row, min_col, max_row, max_col) = get_bounds(m)
-  s = ''
-  for y in range(min_row,max_row+1):
-    for x in range(min_col,max_col+1):
-      s += m[y][x]
-    s += '\n'
-  print(s)
+  m2 = [ ['.' for x in range(max_x-min_x+1)] for y in range(max_y-min_y+1) ]
+  y0 = 0
+  for y in range(min_y,max_y+1):
+    x0 = 0
+    for x in range(min_x,max_x+1):
+      m2[y0][x0] = m[y][x]
+      x0 += 1
+    y0 += 1
+      
+  padding = 2
+  for row in m2:
+    for i in range(padding):
+      row.insert(0,'.')
+      row.append('.')
+  mrow = ['.' for x in range(len(m2[0])) ]
+  for i in range(padding):
+    m2.insert(0,mrow.copy())
+    m2.append(mrow.copy())
+  
+  return m2
 
 start_secs = time.time()
 
@@ -56,47 +75,48 @@ alg = l[0]
 del l[0]
 del l[0]
 
-rmult = 4
-cmult = 4
-num_rows = len(l) * rmult
-num_cols = len(l[0]) * cmult
+m = [ [ '.' for r in range(len(l)) ] for c in range(len(l[0])) ]
+for y in range(len(l)):
+  for x in range(len(l[y])):
+    m[y][x] = l[y][x]
 
-m = [ [ '.' for r in range(num_rows) ] for c in range(num_cols) ]
-midy = math.floor(num_rows / 2) - math.floor(len(l)/2)
-midx = math.floor(num_cols / 2) - math.floor(len(l[0])/2)
-
-y = midy
-for r in l:
-  x = midx
-  for c in r:
-    m[y][x] = c
-    x += 1
-  y += 1
+m = pad_sides(m)
 
 # main
 reps = 2
+#print_m(m)
 for i in range(reps):
   m1 = deepcopy(m)
-  (min_row,min_col,max_row,max_col) = get_bounds(m)
-  for y in range(min_row-6,max_row+6):
-    for x in range(min_col-6,max_col+6):
+  for y in range(len(m1)):
+    for x in range(len(m1[y])):
+      # skip first and last rows, first and last columns
+      if y == 0 or x == 0 or y == len(m1)-1 or x == len(m1[0])-1:
+        continue
+
       s =  m[y-1][x-1] + m[y-1][x] +  m[y-1][x+1]
       s += m[y][x-1]   + m[y][x]   + m[y][x+1]
       s += m[y+1][x-1] + m[y+1][x] + m[y+1][x+1]
       n = int(s.replace('.','0').replace('#','1'),2)
       m1[y][x] = alg[n]
   m = deepcopy(m1)
-  
+
+  # pad to 2
+  m = pad_sides(m)
+
 print_m(m)
+print( count_lights(m) )
+# sample input
+# print( count_lights(m,0,0) )
 
-# do not count frame around output...
-print( count_lights(m,9,9) )
+# actual input: do not count frame around output...
+#print( count_lights(m,9,9) )
 
-# 5255 too high
-# 5228 too high
-# 5225 - CORRECT!!!s
-# 5157 incorrect
-# 5039 incorrect
+# 241683 too high
+# 19999 too high
+# 19486 wrong
+
+# TODO: 752 x 752
+# TODO: try setting color 000000000 to ' ' to skip it? add logic to skip it?
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
