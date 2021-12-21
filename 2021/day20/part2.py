@@ -50,16 +50,15 @@ def pad_sides(m):
       x0 += 1
     y0 += 1
       
+  padding = 2
   for row in m2:
-    row.insert(0,'.')
-    row.insert(0,'.')
-    row.append('.')
-    row.append('.')
+    for i in range(padding):
+      row.insert(0,'.')
+      row.append('.')
   mrow = ['.' for x in range(len(m2[0])) ]
-  m2.insert(0,mrow.copy())
-  m2.insert(0,mrow.copy())
-  m2.append(mrow.copy())
-  m2.append(mrow.copy())
+  for i in range(padding):
+    m2.insert(0,mrow.copy())
+    m2.append(mrow.copy())
   
   return m2
 
