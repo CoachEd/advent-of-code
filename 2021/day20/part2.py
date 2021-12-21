@@ -161,5 +161,7 @@ print( count_lights(m) )
 # TODO: 752 x 752
 # TODO: try setting color 000000000 to ' ' to skip it? add logic to skip it?
 
+# RESULT : had to deal with banding on the outside. remove banding on every other iteration (1, 3, 5) ; You can see banding on 2 reps (part1)
+
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
