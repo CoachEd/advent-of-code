@@ -11,6 +11,37 @@ print('')
 board_len = 10
 board = [ (n+1) for n in range(board_len)]
 
+
+def quantum_roll(player_turn,pstart,pscores):
+  global board
+  if pscores[0] >= 21:
+    return (1,1) # player 1 wins
+  if pscores[1] >= 21:
+    return (2,1) # player 2 wins
+
+  ### TODO
+  """
+  (spot,pstart) = move_forward(player_turn,1,pstart)
+
+
+  pscores[player_turn-1] += spot
+
+
+  (spot,pstart) = move_forward(player_turn,2,pstart)
+  pscores[player_turn-1] += spot
+
+  (spot,pstart) = move_forward(player_turn,3,pstart)
+  pscores[player_turn-1] += spot    
+
+  next_player = -1
+  if player_turn == 1:
+    next_player = 2
+  else:
+    next_player = 1
+  """
+  
+
+
 di = 0
 dice = [ x for x in range(1,101) ]
 def roll():
@@ -22,15 +53,14 @@ def roll():
     di = 0
   return n
 
-def move_forward(p,n):
-  global pstart
+def move_forward(p,n,pstart):
   global board_len
   global board
 
   curr_pos = pstart[p-1]
   end_pos = (curr_pos + n) % 10
   pstart[p-1] = end_pos
-  return end_pos
+  return (end_pos,pstart)
 
 # read in input file
 l=[]
