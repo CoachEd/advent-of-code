@@ -60,7 +60,6 @@ def pad_sides(m):
   m2.insert(0,mrow.copy())
   m2.append(mrow.copy())
   m2.append(mrow.copy())
-  print_m(m2)
   
   return m2
 
@@ -68,7 +67,7 @@ start_secs = time.time()
 
 # read in input file
 l=[]
-my_file = open("inp_sample.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -86,7 +85,7 @@ m = pad_sides(m)
 
 # main
 reps = 2
-#print_m(m)
+print_m(m)
 for i in range(reps):
   m1 = deepcopy(m)
   for y in range(len(m1)):
