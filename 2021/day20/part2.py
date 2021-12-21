@@ -6,6 +6,12 @@ import sys
 from copy import copy, deepcopy
 import math
 
+def remove_ring(m):
+  for y in range(len(m)):
+    for x in range(len(m[y])):
+      if y == 1 or y == len(m)-2 or x == 1 or x == len(m[y])-2:
+        m[y][x] = '.'
+
 def get_bounds(m):
   minx = sys.maxsize
   miny = sys.maxsize
@@ -43,7 +49,7 @@ def print_m(m):
 
 def pad_sides(m):
   # padding length 2 on all sides
-  padding = 4
+  padding = 5
   min_y = sys.maxsize
   max_y = -1
   min_x = sys.maxsize
@@ -101,8 +107,8 @@ for y in range(len(l)):
 m = pad_sides(m)
 
 # main
-reps = 2
-print_m(m)
+reps = 50
+#print_m(m)
 for i in range(reps):
   m1 = deepcopy(m)
   for y in range(len(m1)):
@@ -117,12 +123,23 @@ for i in range(reps):
       n = int(s.replace('.','0').replace('#','1'),2)
       m1[y][x] = alg[n]
   m = deepcopy(m1)
-  #print_m(m)
+
+
+  if i % 2 != 0:
+    # remove ring 7 off top and bottom, 6 off right and left
+    for i in range(7):
+      del m[0]
+      del m[-1]
+    for row in m:
+      for i in range(6):
+        del row[0]
+        del row[-1]
   
   # pad
   m = pad_sides(m)
-  print_m(m)
+  #print_m(m)
 
+print_m(m)
 print( count_lights(m) )
 # sample input
 # print( count_lights(m,0,0) )
