@@ -8,6 +8,8 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
+wins = [0,0]
+
 board_len = 10
 board = [ (n+1) for n in range(board_len)]
 
@@ -31,24 +33,54 @@ def move_forward(p,n,pstart):
   pstart[p-1] = end_pos
   return end_pos
 
-def play_game(pstart,pscores):
-  player = 1
-  rolls = 0
-  while True:
-    r1 = roll()  # TODO: this should open parallel universe with roll 1
-    r2 = roll()  # TODO: this should open parallel universe with roll 1
-    r3 = roll()  # TODO: this should open parallel universe with roll 1
-    r = r1 + r2 + r3
-    rolls += 3
+def play_game(player,dice,pstart,pscores):
+  global wins
+  if pscores[0] >= 21:
+    wins[0] += 1
+    return
+  if pscores[1] >= 21:
+    wins[1] += 1
+    return
+  
+  if not -1 in dice:
+    r = dice[0] + dice[1] + dice[2]
     spot = move_forward(player,r,pstart)
     pscores[player-1] += board[spot]
-    if player == 2:
-      player = 1
+    if pscores[player-1] >= 21:
+      wins[player-1] += 1
+      return
+    dice[0] = -1
+    dice[1] = -1
+    dice[2] = -1
+    # next turn
+    if player == 1:
+      player = 2
     else:
-      player = 2  
-    if pscores[0] >= 1000 or pscores[1] >= 1000:
-      break
-  return (pscores, rolls)
+      player = 1
+    play_game(player,dice,pstart.copy(),pscores.copy())
+  else:
+    # roll 1, 2, 3
+    dice1 = dice.copy()
+    dice2 = dice.copy()
+    dice3 = dice.copy()
+    if dice[0] == -1:
+      dice1[0] = 1
+      dice2[0] = 2
+      dice3[0] = 3
+    elif dice[1] == -1:
+      dice1[1] = 1
+      dice2[1] = 2
+      dice3[1] = 3
+    elif dice[2] == -1:
+      dice1[2] = 1
+      dice2[2] = 2
+      dice3[2] = 3      
+
+    play_game(player,dice1,pstart.copy(),pscores.copy())
+    play_game(player,dice2,pstart.copy(),pscores.copy())
+    play_game(player,dice3,pstart.copy(),pscores.copy())
+  return
+
 
 # read in input file
 l=[]
@@ -63,21 +95,9 @@ for s in l:
   pstart.append(int(arr[1])-1)
 pscores = [0,0]
 
-(pscores, rolls) = play_game(pstart,pscores)
+play_game(1,[-1,-1,-1],pstart,pscores)
 
-# result
-if pscores[0] < pscores[1]:
-  print(rolls * pscores[0])
-else:
-  print(rolls * pscores[1])
-
-
-
-  
-
-
-
-
+print(wins)
 
 print('')
 end_secs = time.time()
