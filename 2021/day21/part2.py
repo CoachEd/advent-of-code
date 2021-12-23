@@ -22,15 +22,58 @@ def roll():
     di = 0
   return n
 
-def move_forward(p,n):
-  global pstart
+def move_forward(p,n,positions):
   global board_len
   global board
+  return (positions[p-1] + n) % 10
 
-  curr_pos = pstart[p-1]
-  end_pos = (curr_pos + n) % 10
-  pstart[p-1] = end_pos
-  return end_pos
+wins = [0,0]
+def play_game(player_turn,rolls,positions,scores):
+
+  # execute turn if we can
+  if rolls[0] != -1 and rolls[1] != -1 and rolls[2] != -1:
+    roll = rolls[0] + rolls[1] + rolls[2]
+    spot = move_forward(player_turn,roll,positions)
+    scores[player_turn-1] += board[spot]
+    if player_turn == 1:
+      player_turn = 2
+    else:
+      player_turn = 1
+    rolls[0] = -1
+    rolls[1] = -1
+    rolls[2] = -1
+  
+  # winner?
+  if scores[0] >= 21:
+    wins[0] += 1
+    return
+  elif scores[1] >= 21:
+    wins[1] += 1
+    return
+
+  # split universe
+  if rolls[0] == -1:
+    rolls[0] = 1
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[0] = 2
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[0] = 3
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+  elif rolls[1] == -1:
+    rolls[1] = 1
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[1] = 2
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[1] = 3
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+  else:
+    rolls[2] = 1
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[2] = 2
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+    rolls[2] = 3
+    play_game(player_turn,rolls.copy(),positions.copy(),scores.copy())  
+
 
 # read in input file
 l=[]
@@ -44,38 +87,9 @@ for s in l:
   arr = s.split(':')
   pstart.append(int(arr[1])-1)
 
-pscores = [0,0]
-player = 1
-rolls = 0
-temp_rolls = 0
-r = 0
-while True:
-  r += roll()
-  temp_rolls += 1
-  if temp_rolls < 3:
-    continue
-  
-  temp_rolls = 0
-  rolls += 3
+play_game(1,[-1,-1,-1],[4,8],[0,0])  
 
-  spot = move_forward(player,r)
-  pscores[player-1] += board[spot]
-  if player == 2:
-    player = 1
-  else:
-    player = 2 
-  r = 0
-  if pscores[0] >= 1000 or pscores[1] >= 1000:
-    break
-
-# result
-if pscores[0] < pscores[1]:
-  print(rolls * pscores[0])
-else:
-  print(rolls * pscores[1])
-
-
-
+print(wins)
   
 
 
