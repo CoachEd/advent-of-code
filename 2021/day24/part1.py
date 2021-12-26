@@ -12,7 +12,7 @@ print('')
 
 # read in input file
 l=[]
-my_file = open("inp2.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -74,9 +74,21 @@ def execute_commands(inp):
     return True
   else:
     return False
-    
-print( execute_commands([1,3]) )
-print(d)
+
+#arr = [ [int(y) for y in str(x) ] for x in range(11111111111111,99999999999999+1) ]
+arr = [ [int(y) for y in str(x) ] for x in range(11,99+1) ]
+print(arr)
+sys.exit()
+for i in range(11111111111111,99999999999999+1):
+  s = str(i)
+  arr[i] = [ int(x) for x in s ]
+
+for i in len(arr):
+  result = execute_commands(arr[i])
+  if (result):
+    print(i)
+  else:
+    print('fail: ' + str(arr[i]))
     
   
 
