@@ -6,31 +6,17 @@ import sys
 from copy import copy, deepcopy
 from numpy import rot90, array
 
-def rotations24(polycube):
-    """List all 24 rotations of the given 3d array"""
-    def rotations4(polycube, axes):
-        """List the four rotations of the given 3d array in the plane spanned by the given axes."""
-        for i in range(4):
-             yield rot90(polycube, i, axes)
-
-    # imagine shape is pointing in axis 0 (up)
-
-    # 4 rotations about axis 0
-    yield from rotations4(polycube, (1,2))
-
-    # rotate 180 about axis 1, now shape is pointing down in axis 0
-    # 4 rotations about axis 0
-    yield from rotations4(rot90(polycube, 2, axes=(0,2)), (1,2))
-
-    # rotate 90 or 270 about axis 1, now shape is pointing in axis 2
-    # 8 rotations about axis 2
-    yield from rotations4(rot90(polycube, axes=(0,2)), (0,1))
-    yield from rotations4(rot90(polycube, -1, axes=(0,2)), (0,1))
-
-    # rotate about axis 2, now shape is pointing in axis 1
-    # 8 rotations about axis 1
-    yield from rotations4(rot90(polycube, axes=(0,1)), (0,2))
-    yield from rotations4(rot90(polycube, -1, axes=(0,1)), (0,2))
+def roll(v): return (v[0],v[2],-v[1])
+def turn(v): return (-v[1],v[0],v[2])
+def sequence (v):
+    for cycle in range(2):
+        for step in range(3):  # Yield RTTT 3 times
+            v = roll(v)
+            yield(v)           #    Yield R
+            for i in range(3): #    Yield TTT
+                v = turn(v)
+                yield(v)
+        v = roll(turn(roll(v)))  # Do RTR
 
 start_secs = time.time()
 print('')
@@ -56,7 +42,28 @@ for line in lines:
 d.append(points)
   
 # d is an array of scanners data; each scanner's data is an array of point x,y,z
-print(d)
+d2 = []
+for n in range(len(d)):
+  temparr = []
+  for i in range(len(d[n])):
+    point = d[n][i]
+    x = set()
+    p = sequence(( point[0],point[1],point[2] ))
+    for i in p:
+      x.add(i)
+    temparr.append(x)
+  d2.append(temparr)
+
+for i in range(len(d2)):
+  for j in range(i+1,len(d2)-1):
+    sc1 = d2[i]
+    sc2 = d2[j]
+    for A in sc1:
+      for B in sc2:
+        if len(A.intersection(B)) > 0:
+          print('scanner ' + str(i) + ',scanner ' + str(j) + '  matched')
+    
+
 
 
 print('')
