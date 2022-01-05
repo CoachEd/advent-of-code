@@ -179,12 +179,16 @@ def get_move():
     # move down rules
     
     # who can safely move down
+
+    # if my match is immediately below, 
+
+
     arr_unmatched_below = get_unmatched(f[E-1])
     candidates = get_items_only(arr)
     if len(arr_unmatched_below) > 0:
       # all unmatched have to be the same device type
       c = arr_unmatched_below[0][1]
-      
+
 
 
   return ('','','')
