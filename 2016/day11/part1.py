@@ -9,7 +9,7 @@ mindex = {}
 f = {}
 E = 1 # current floor
 
-""" real data
+
 mindex['MG'] = 0
 mindex['MM'] = 1
 mindex['RG'] = 2
@@ -25,9 +25,9 @@ f[4] = ['  ','  ','  ','  ','  ','  ','  ','  ','  ','  ']
 f[3] = ['MG','MM','RG','RM','  ','  ','  ','  ','  ','  ']
 f[2] = ['  ','  ','  ','  ','PM','  ','SM','  ','  ','  ']
 f[1] = ['  ','  ','  ','  ','  ','PG','  ','SG','TG','TM']
-"""
 
-""" test data """
+
+""" test data
 # start test data
 mindex['HG'] = 0
 mindex['HM'] = 1
@@ -39,6 +39,7 @@ f[3] = ['  ','  ','LG','  ']
 f[2] = ['HG','  ','  ','  ']
 f[1] = ['  ','HM','  ','LM']
 # end test data
+"""
 
 def get_match(s):
   c1 = s[0]
@@ -55,10 +56,6 @@ def move_item(nm1, nm2, direction):
   if direction == 'down' and E > 1:
     if nm1 != '':
       arr = f[E]
-      print('nm1: ' + nm1)
-      print('nm2: ' + nm2)
-      print('direction: ' + direction)
-      print(str(arr))
       if arr[ mindex[nm1] ] == nm1:
         arr[ mindex[nm1] ] = '  '
         arr = f[E-1]
@@ -128,6 +125,24 @@ def get_matched(arr):
       return (h,h2)
   return ('','')
 
+def is_safe(s,arr):
+  # is it safe to but s on floor?
+  c1 = s[1]
+  c2 = 'G'
+  if c1 == 'G':
+    c2 = 'M'
+  arr2 = get_unmatched_items_type(arr,c2)
+  if len(arr2) > 0:
+    return False
+  return True
+
+def count_items(arr):
+  count = 0
+  for s in arr:
+    if s == '  ':
+      continue
+    count += 1
+  return count
 
 def get_unmatched(arr):
   # which ones are unmatched on the floor
@@ -150,47 +165,138 @@ def get_move():
   global f
   global mindex
 
-  arr = f[E]  # current floor
-
-  # move params
-  m1 = ''
-  m2 = ''
-  direction = ''
-
-  arr_unmatched = get_unmatched(arr)
-
-  # algorithm
-
-  if E < 4:
-    # move up rules
-
-    # if you have a match on the current floor, just move it to the top - safe
-    (m1,m2) = get_matched(arr)
-    if len(m1) > 0:
-      return (m1,m2,'up')
+  if E == 1:
+    # first floor
     
-    # if one on this floor has a match above, move that single one up
-    for h in arr_unmatched:
+    # Rule: if we have a match on this floor, move them up
+    (h1,h2) = get_matched(f[E])
+    if h1 != '':
+      return (h1,h2,'up')
+    
+    # Rule: if an unmatched item has a match above, move that one up
+    unmatched = get_unmatched(f[E])
+    unmatched_above = get_unmatched(f[E+1])
+    for h1 in unmatched:
+      h2 = get_match(h1)
+      if h2 in unmatched_above:
+        return (h1,h2,'up')
+
+    # Rule: if we have two like, unmatched items, move them up if safe to    
+    unmatched_ms = get_unmatched_items_type(f[E],'M')
+    for i in range(len(unmatched_ms)-1):
+      for j in range(i+1,len(unmatched_ms)):
+        if is_safe(unmatched_ms[i],f[E+1]) and is_safe(unmatched_ms[j],f[E+1]):
+          return (unmatched_ms[i],unmatched_ms[j],'up')
+    unmatched_gs = get_unmatched_items_type(f[E],'G')
+    for i in range(len(unmatched_gs)-1):
+      for j in range(i+1,len(unmatched_gs)):
+        if is_safe(unmatched_gs[i],f[E+1]) and is_safe(unmatched_gs[j],f[E+1]):
+          return (unmatched_gs[i],unmatched_gs[j],'up')
+
+  elif E == 4:
+    # fourth floor
+    
+    # rule: if an unmatched has a match below
+    unmatched = get_unmatched(f[E])
+    unmatched_below = get_unmatched(f[E-1])
+    for h in unmatched:
       h2 = get_match(h)
-      if h2 in f[E+1]:
-        return (h,'','up')
+      if h2 in unmatched_below:
+        return (h,'','down')
 
-  if E > 1:
-    # move down rules
+    # rule: pick one that's safe to move down
+    unmatched_below = get_unmatched(f[E-1])
+    for h in f[E]:
+      if h == '  ':
+        continue
+      if is_safe(h,unmatched_below):
+        return (h,'','down')
+
+  elif E == 3:
+    # third floor
+
+    # rule: can I send an unmatched one down to get its match below?
+    unmatched = get_unmatched(f[E])
+    unmatched_floor2 = get_unmatched(f[E-1])
+    unmatched_floor1 = get_unmatched(f[E-2])
+    for h in unmatched:
+      h2 = get_match(h)
+      if h2 in unmatched_floor1 or h2 in unmatched_floor2:
+        return (h,'','down')
+
+    # Rule: if we have a match on this floor, move them up
+    (h1,h2) = get_matched(f[E])
+    if h1 != '':
+      return (h1,h2,'up')
     
-    # who can safely move down
+    # rule: if alone on floor and some below, move down
+    if len(unmatched) == 1 and (count_items(f[E-1]) > 0 or count_items(f[E-2]) > 0):
+      return (unmatched[0],'','down')
 
-    # if my match is immediately below, 
+    # Rule: if an unmatched item has a match above, move that one up
+    unmatched = get_unmatched(f[E])
+    unmatched_above = get_unmatched(f[E+1])
+    for h1 in unmatched:
+      h2 = get_match(h1)
+      if h2 in unmatched_above:
+        return (h1,h2,'up')
+
+    # Rule: if we have two like, unmatched items, move them up if safe to    
+    unmatched_ms = get_unmatched_items_type(f[E],'M')
+    for i in range(len(unmatched_ms)-1):
+      for j in range(i+1,len(unmatched_ms)):
+        if is_safe(unmatched_ms[i],f[E+1]) and is_safe(unmatched_ms[j],f[E+1]):
+          return (unmatched_ms[i],unmatched_ms[j],'up')
+    unmatched_gs = get_unmatched_items_type(f[E],'G')
+    for i in range(len(unmatched_gs)-1):
+      for j in range(i+1,len(unmatched_gs)):
+        if is_safe(unmatched_gs[i],f[E+1]) and is_safe(unmatched_gs[j],f[E+1]):
+          return (unmatched_gs[i],unmatched_gs[j],'up')    
+
+  elif E == 2:
+    # second floor
+    # rule: can I send an unmatched one down to get its match below?
+    unmatched = get_unmatched(f[E])
+    unmatched_floor1 = get_unmatched(f[E-1])
+    for h in unmatched:
+      h2 = get_match(h)
+      if h2 in unmatched_floor1:
+        return (h,'','down')
+
+    # rule: try to move up TODO
+    # Rule: if we have a match on this floor, move them up
+    (h1,h2) = get_matched(f[E])
+    if h1 != '':
+      return (h1,h2,'up')
+    
+    # rule: if alone on floor and some below, move down
+    if len(unmatched) == 1 and count_items(f[E-1]) > 0:
+      return (unmatched[0],'','down')
+
+    # Rule: if an unmatched item has a match above, move that one up
+    unmatched = get_unmatched(f[E])
+    unmatched_above = get_unmatched(f[E+1])
+    for h1 in unmatched:
+      h2 = get_match(h1)
+      if h2 in unmatched_above:
+        return (h1,h2,'up')
+
+    # Rule: if we have two like, unmatched items, move them up if safe to    
+    unmatched_ms = get_unmatched_items_type(f[E],'M')
+    for i in range(len(unmatched_ms)-1):
+      for j in range(i+1,len(unmatched_ms)):
+        if is_safe(unmatched_ms[i],f[E+1]) and is_safe(unmatched_ms[j],f[E+1]):
+          return (unmatched_ms[i],unmatched_ms[j],'up')
+    unmatched_gs = get_unmatched_items_type(f[E],'G')
+    for i in range(len(unmatched_gs)-1):
+      for j in range(i+1,len(unmatched_gs)):
+        if is_safe(unmatched_gs[i],f[E+1]) and is_safe(unmatched_gs[j],f[E+1]):
+          return (unmatched_gs[i],unmatched_gs[j],'up')
 
 
-    arr_unmatched_below = get_unmatched(f[E-1])
-    candidates = get_items_only(arr)
-    if len(arr_unmatched_below) > 0:
-      # all unmatched have to be the same device type
-      c = arr_unmatched_below[0][1]
 
-
-
+  # no rule!
+  print('ERROR: No rule')
   return ('','','')
 
 start_secs = time.time()
@@ -215,7 +321,7 @@ def print_floors():
 print('')
 print_floors()
 steps = 0
-for i in range(20):
+for i in range(1000000):
   (nm1,nm2,direction) = get_move()
   if direction != '':
     move_item(nm1, nm2, direction)
