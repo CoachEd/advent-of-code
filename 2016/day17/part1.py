@@ -5,29 +5,23 @@ import time
 import sys
 import hashlib
 
-passcode = 'hijkl' # test data
+passcode = 'pgflpeqp' # test data
+opasscode = passcode[0:]
 
 arr = [ ['.' for i in range(4)] for i in range(4) ]
-data = {}
-data['0,0'] = [passcode]
 open_arr = ['b', 'c', 'd', 'e', 'f']
+dirs = ['U','D','L','R']
+good_paths = {}
 
+def is_open(passcode,direction):
+  hash = hashlib.md5(passcode.encode('utf-8')).hexdigest()
+  return hash[direction] in open_arr
 
 def valid_coord(y,x):
   global arr
   if y < 0 or x < 0 or y >= len(arr) or x >= len(arr[0]):
     return False
   return True
-
-def path_to(y,x,y1,x1,direction):
-  global open_arr
-  passcode_curr = data[str(y)+','+str(x)]
-  hash = hashlib.md5(passcode_curr.encode('utf-8')).hexdigest()
-  is_open = hash[direction] in open_arr
-  if valid_coord(y,x) and valid_coord(y1,x1) and is_open:
-    print('open path ' + str((y,x)) + ' -> ' + str((y1,x1)) )
-  else:
-    return False
 
 def print_board(arr):
   s = ''
@@ -37,24 +31,46 @@ def print_board(arr):
     s += '\n'
   print(s)
 
-for y in range(len(arr)):
-  for x in range(len(arr[y])):
-    path_to(y,x,y-1,x,0) # up
-    path_to(y,x,y+1,x,1) # down
-    path_to(y,x,y,x-1,2) # left
-    path_to(y,x,y,x+1,3) # right
+def find_paths(passcode,y,x,seen):
+  global arr
+  key = str(y)+','+str(x)
 
+  if key in seen and seen[key] > 10:
+    return
 
-
+  if not valid_coord(y,x):
+    return
+  if y == 3 and x == 3:
+    the_path = passcode.replace(opasscode,'')
+    if not the_path in good_paths:
+      good_paths[the_path] = 0
+    
+  seen2 = seen.copy()
+  if not key in seen2:
+    seen2[key] = 0
+  seen2[key] += 1
+  if is_open(passcode,0): # U
+    find_paths(passcode+dirs[0],y-1,x,seen2)
+  if is_open(passcode,1): # D
+      find_paths(passcode+dirs[1],y+1,x,seen2)
+  if is_open(passcode,2): # L 
+      find_paths(passcode+dirs[2],y,x-1,seen2)
+  if is_open(passcode,3): # R
+      find_paths(passcode+dirs[3],y,x+1,seen2)
 
 start_secs = time.time()
 print('')
 
+find_paths(passcode,0,0,{})
 
+min_len = sys.maxsize
+min_path = ''
+for p in good_paths:
+  if len(p) < min_len:
+    min_path = p
+    min_len = len(p)
 
-
-
-print_board(arr)
+print(min_path)
 
 print('')
 end_secs = time.time()
