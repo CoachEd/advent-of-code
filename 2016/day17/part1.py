@@ -44,6 +44,7 @@ def find_paths(passcode,y,x,seen):
     the_path = passcode.replace(opasscode,'')
     if not the_path in good_paths:
       good_paths[the_path] = 0
+    return
     
   seen2 = seen.copy()
   if not key in seen2:
