@@ -41,17 +41,13 @@ class LinkedList:
 # main
 #num_elves = 3014603  # does not scale well!
 num_elves = 5 # test data
-print('creating linked list...')
 ll = LinkedList()
 elf_num = 1
 for i in range(num_elves):
   n = ll.insert([elf_num,1])
-  if i % 1000 == 0:
-    print(i)
   elf_num += 1
 n.next = ll.head
 
-print('playing...')
 curr = ll.head
 while True:
   arr = curr.data
