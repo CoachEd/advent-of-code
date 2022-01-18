@@ -4,25 +4,6 @@ AoC
 import time
 import sys
 
-def swap(x,y,p):
-  temp = p[x]
-  p[x] = p[y]
-  p[y] = temp
-
-def rotate_based_on(c,p):
-  # rotate based on position of letter f
-  # rotate the string to the right one time, plus a number of times equal to that index, plus one additional time if the index was at least 4.
-  print(p)
-  steps = p.index(c)
-  print(steps)
-  osteps = steps
-  steps += 1
-  if osteps > 3:
-    steps += 1
-
-  print(steps)
-  rotate_right(p,steps)  
-
 def reverse_range(x,y,p):
   mid = ((y-x)+1)//2 + x
   i2 = y
@@ -42,31 +23,24 @@ def rotate_right(p,steps):
       steps = 0
 
 def rotate_left(p,steps):
-  global left_arr
-  # rotate left 4 steps
   len_password = len(p)
-  new_i = steps % len_password
-  new_i = left_arr[new_i]
-  #             abcd 0,1,2,3 i == 0         0
-  # rot left 1: bcda 1,2,3,0 i == 3  1%4 == 1
-  # rot left 2: cdab 2,3,0,1 i == 2  2%4 == 2
-  # rot left 3: dabc 3,0,1,2 i == 1  3%4 == 3
-  # rot left 4: abcd 0,1,2,3 i == 0  4%4 == 0
-  # rot left 5: bcda 1,2,3,0 i == 3  5%4 == 1
-  # ...
-  # left_arr = [0,4,3,2,1]
-  #             abcde 0,1,2,3,4 i == 0         0
-  # rot left 1: bcdea 1,2,3,4,0 i == 4  1%5 == 1
-  # rot left 2: cdeab 2,3,4,0,1 i == 3  2%5 == 2
-  # rot left 3: deabc 3,4,0,1,2 i == 2  3%5 == 3
-  # rot left 4: eabcd 4,0,1,2,3 i == 1  4%5 == 4
-  # rot left 5: bcdea 0,1,2,3,4 i == 0  5%5 == 0
-  # ...  
-  for x in range(len(p)-1):
-    swap(x,new_i,p)
-    new_i += 1
-    if new_i >= len_password:
-      new_i = 0
+  new_head = steps % len_password
+  # shift left by new_head
+  n = new_head
+  new_arr = [ ' ' for i in range(len(p)) ]
+  idx = new_head
+  for i in range(len(p)):
+    new_arr[i] = p[idx]
+    idx += 1
+    if idx >= len_password:
+      idx = 0
+  for i in range(len(p)):
+    p[i] = new_arr[i]
+
+def swap(x,y,p):
+  temp = p[x]
+  p[x] = p[y]
+  p[y] = temp
 
 start_secs = time.time()
 print('')
@@ -79,12 +53,10 @@ for line in lines:
   l.append(line.strip())
 
 # TEST
-left_arr = [0,4,3,2,1]
-password = 'abcde'
+#password = 'abcde'
 
 # ACTUAL INPUT
 # TODO: test individual functions above
-left_arr = [0,7,6,5,4,3,2,1]
 password = 'abcdefgh'
 
 len_password = len(password)
@@ -113,11 +85,13 @@ for s in l:
     # rotate left 4 steps
     rotate_left(p,int(arr[2])) 
   elif cmd_prefix == 'rotate based':
+    # ex: rotate based on position of letter h
     # rotate based on position of letter f
     # rotate the string to the right one time, plus a number of times equal to that index, plus one additional time if the index was at least 4.
     c = arr[6]
-    steps = p.index(c) + 1
-    if steps > 3:
+    the_index = p.index(c)
+    steps = 1 + the_index
+    if the_index > 3:
       steps += 1
     rotate_right(p,steps)
   elif cmd_prefix == 'reverse positions':
@@ -141,7 +115,7 @@ for s in l:
 
 print(''.join(p))
 # gdeabhfc WRONG!
-
+# cdbgfhae WRONG!
     
 
 
