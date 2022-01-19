@@ -3,6 +3,23 @@ AoC
 """
 import time
 
+def print_mem(arr,nodes):
+  # [x,y,size,used,avail,pct]
+  s = ''
+  for r in range(len(arr)):
+    for c in range(len(arr[r])):
+      e = arr[r][c]
+      if e[0] != -1:
+        node_name = str(c)+':'+str(r)
+        node = nodes[node_name]
+        mem_info = "{:03d}".format(node[3]) + '/' + "{:03d}".format(node[2]) + ' '
+        s += mem_info
+      else:
+        s += '.'
+    s += '\n'
+  print(s)
+
+
 start_secs = time.time()
 print('')
 
@@ -24,7 +41,6 @@ for line in lines:
 nodes = {}
 max_x = -1
 max_y = -1
-node_num = 0
 for i in range(2,len(l)):
   arr = l[i].split(' ')
   arr2 = arr[0].split('-')
@@ -52,11 +68,22 @@ for i in range(2,len(l)):
   pct = int(pct[0:i])  
 
   node_name = str(x)+':'+str(y)
-  nodes[node_num] = [x,y,size,used,avail,pct]
-  node_num += 1
+  nodes[node_name] = [x,y,size,used,avail,pct]
 
-print('max_x: ' + str(max_x))
-print('max_y: ' + str(max_y))
+#print('max_x: ' + str(max_x))
+#print('max_y: ' + str(max_y))
+cols = max_x + 1
+rows = max_y + 1
+
+# set up arr
+arr = [ [ [-1,-1] for x in range(cols) ]  for y in range(rows) ]
+for k,v in nodes.items():
+  # [x,y,size,used,avail,pct]
+  mem_location = arr[v[1]][v[0]] # y,x
+  mem_location[0] = v[3] # used
+  mem_location[1] = v[2] # size
+
+#print_mem(arr,nodes)
 
 
 
