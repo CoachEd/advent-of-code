@@ -2,76 +2,25 @@
 AoC
 """
 import time
-import copy
 
-def find_xy(x,y,x2,y2,seen,arr,steps):
-  seen = copy.deepcopy(seen)
-  seen.append( (x,y) )
-  arr = copy.deepcopy(arr)
-  # [x,y,size,used,avail,pct]
-  node1 = arr[y][x]
-  used = node1[0]
-  size = node1[1]  
-  if used != 0:
-    print('error-must start from 000 used: ' + (x,y))
-    return
-  (tx,ty) = (x,y-1)
-  (bx,by) = (x,y+1)
-  (rx,ry) = (x+1,y)
-  (lx,ly) = (x-1,y)
-  good_points = []
-  if has_xy(tx,ty,arr) and not (tx,ty) in seen:
-    good_points.append((tx,ty))
-  if has_xy(bx,by,arr) and not (bx,by) in seen:
-    good_points.append((bx,by))
-  if has_xy(rx,ry,arr) and not (rx,ry) in seen:
-    good_points.append((rx,ry))
-  if has_xy(lx,ly,arr) and not (lx,ly) in seen:
-    good_points.append((lx,ly))
-
-  if len(good_points) == 0:
-    # no moves
-    return
-
-  for p in good_points:
-    (x1,y1) = p
-    node2 = arr[y1][x1]
-    used2 = node2[0]
-
-    # next to destination
-    if x2 == x1 and y2 == y1:
-      print(steps)
-      return
-
-    if size >= used2:
-      # switch
-      steps += 1
-      # [x,y,size,used,avail,pct]
-      node1[0] = node2[0]
-      node2[0] = 0
-      find_xy(x1,y1,x2,y2,seen,arr,steps)
-
-def has_xy(x,y,arr):
-  if x < 0 or y < 0 or x >= len(arr[0]) or y >= len(arr):
-    return False
-  return True
-
-def print_mem(arr):
+def print_mem(arr,node_info):
   s = ''
-  for r in range(len(arr)):
-    for c in range(len(arr[r])):
-      e = arr[r][c]
-      if e[0] != -1:
-        mem_info = "{:03d}".format(e[0]) + '/' + "{:03d}".format(e[1]) + ' '
+  # [x,y,size,used,avail,pct]
+  for y in range(len(arr)):
+    for x in range(len(arr[y])):
+      node_name = str(y)+','+str(x)
+      if node_name in node_info:
+        node = node_info[node_name]
+        size = node[2]
+        used = node[3]
+        mem_info = "{:03d}".format(used) + '/' + "{:03d}".format(size) + ' '
         s += mem_info
       else:
-        s += '.'
+        s += '        '
     s += '\n'
   print(s)
 
-
 start_secs = time.time()
-print('')
 
 # read in input file
 l=[]
@@ -88,9 +37,11 @@ for line in lines:
 
 # Filesystem              Size  Used  Avail  Use%
 # /dev/grid/node-x29-y27   92T   72T    20T   78%
-nodes = {}
+node_list = {}
+node_info = {}
 max_x = -1
 max_y = -1
+node_num = 0
 for i in range(2,len(l)):
   arr = l[i].split(' ')
   arr2 = arr[0].split('-')
@@ -117,75 +68,55 @@ for i in range(2,len(l)):
   i = pct.find('%')
   pct = int(pct[0:i])  
 
-  node_name = str(x)+':'+str(y)
-  nodes[node_name] = [x,y,size,used,avail,pct]
+  node_name = str(y)+','+str(x)
+  node_list[node_num] = [x,y,size,used,avail,pct]
+  node_info[node_name] = [x,y,size,used,avail,pct]
+  node_num += 1
 
-#print('max_x: ' + str(max_x))
-#print('max_y: ' + str(max_y))
 cols = max_x + 1
 rows = max_y + 1
+#print('cols: ' + str(cols)) # 35
+#print('rows: ' + str(rows)) # 30
 
-# set up arr
-arr = [ [ [-1,-1] for x in range(cols) ]  for y in range(rows) ]
-for k,v in nodes.items():
-  # [x,y,size,used,avail,pct]
-  mem_location = arr[v[1]][v[0]] # y,x
-  mem_location[0] = v[3] # used
-  mem_location[1] = v[2] # size
-print_mem(arr)
+viable_pairs = {}
+for i in range(node_num-1):
+  node_a = node_list[i]
+  if node_a[3] == 0:
+    # used is 0
+    continue
+  for j in range(i+1,node_num):
+    node_b = node_list[j]
+    if node_a[3] <= node_b[4]:
+      # node A used will fit on node B avail
+      # [x,y,size,used,avail,pct]
+      node_a_name = str(node_a[1])+','+str(node_a[0])
+      node_b_name = str(node_b[1])+','+str(node_b[0])
+      if not node_a_name in viable_pairs:
+        viable_pairs[node_a_name] = []
+      viable_pairs[node_a_name].append(node_b_name)
 
-# NOT FINISHING???
-# find_xy(28,34,34,0,[],arr,0)
+# opposite direction
+for i in range(node_num-1,0,-1):
+  node_a = node_list[i]
+  if node_a[3] == 0:
+    # used is 0
+    continue
+  for j in range(i-1,-1,-1):
+    node_b = node_list[j]
+    if node_a[3] <= node_b[4]:
+      # node A used will fit on node B avail
+      # [x,y,size,used,avail,pct]
+      node_a_name = str(node_a[1])+','+str(node_a[0])
+      node_b_name = str(node_b[1])+','+str(node_b[0])
+      if not node_a_name in viable_pairs:
+        viable_pairs[node_a_name] = []
+      viable_pairs[node_a_name].append(node_b_name)
 
-
-# remove nodes that cannot move
-# found none?
-
-"""
-for y in range(len(arr)):
-  for x in range(len(arr[y])):
-    
-    # top
-    x1 = x
-    y1 = y-1
-    key1 = str(x1) +':'+str(y1)
-    key = str(x) +':'+str(y)
-    can_move = False
-    if has_xy(x1,y1,arr) and nodes[key1][2] >= nodes[key][3]:
-      continue
-
-    # bottom
-    x1 = x
-    y1 = y+1
-    key1 = str(x1) +':'+str(y1)
-    key = str(x) +':'+str(y)
-    can_move = False
-    if has_xy(x1,y1,arr) and nodes[key1][2] >= nodes[key][3]:
-      continue    
-    
-    # right
-    x1 = x+1
-    y1 = y
-    key1 = str(x1) +':'+str(y1)
-    key = str(x) +':'+str(y)
-    can_move = False
-    if has_xy(x1,y1,arr) and nodes[key1][2] >= nodes[key][3]:
-      continue  
-
-    # left
-    x1 = x-1
-    y1 = y
-    key1 = str(x1) +':'+str(y1)
-    key = str(x) +':'+str(y)
-    can_move = False
-    if has_xy(x1,y1,arr) and nodes[key1][2] >= nodes[key][3]:
-      continue      
-
-    # if we make it here, this node cannot move. remove it.
-    arr[y][x] = '   .   '
-
-print_mem(arr,nodes)
-"""
+arr = [ [ '       ' for x in range(cols) ] for y in range(rows) ]
+print_mem(arr,node_info)
+#print()
+#print(viable_pairs)
+#print(len(viable_pairs))
 
 
 print('')
