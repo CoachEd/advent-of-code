@@ -3,6 +3,7 @@ AoC
 """
 import time
 import copy
+import sys
 
 def is_valid(y,x):
   global rows
@@ -112,9 +113,8 @@ for y in range(len(arr)):
     else:
       arr[y][x] = [-1,-1]
 
-print_mem(arr)
-
-count = 0
+# count viable pairs
+count_viable_pairs = 0
 for y in range(len(arr)):
   for x in range(len(arr[y])):
     n1_y = y
@@ -129,11 +129,15 @@ for y in range(len(arr)):
         if n1_y == n2_y and n1_x == n2_x:
           continue
         avail = arr[n2_y][n2_x][1]
-        if used <= avail and is_adjacent(n1_y,n1_x,n2_y,n2_x):
-          print('viable pair: ' + str((n1_y,n1_x)) + ' -> ' + str((n2_y,n2_x)))
-          count += 1
+        #if used <= avail and is_adjacent(n1_y,n1_x,n2_y,n2_x):
+        if used <= avail:
+          #print('viable pair: ' + str((n1_y,n1_x)) + ' -> ' + str((n2_y,n2_x)))
+          count_viable_pairs += 1
 
-print(count)
+print_mem(arr)
+print(count_viable_pairs)
+
+
 """
 start_y = 34
 start_x = 28
