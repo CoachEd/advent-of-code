@@ -5,6 +5,53 @@ import time
 import copy
 import sys
 
+empty_y = 34
+empty_x = 28
+target_y = 0
+target_x = 29
+steps = 0
+
+def move_node(y,x,direction,arr):
+  global empty_y
+  global empty_x
+  global steps
+  if arr[y][x][0] != 0:
+    print('not 0')
+    return False
+
+  y1 = y
+  x1 = x
+  if direction == 'up':
+    y1 -= 1
+  elif direction == 'down':
+    y1 += 1
+  elif direction == 'right':
+    x1 += 1
+  elif direction == 'left':
+    x1 -= 1
+  if not is_valid(y1,x1):
+    print('not valid')
+    return False
+
+  # can dest node data fit in y,x ?
+  dest_used = arr[y1][x1][0]
+  curr_avail = arr[y][x][1]
+  if dest_used > curr_avail:
+    # cannot fit
+    print('cannot fit')
+    return False
+
+  # move it, move it
+  steps += 1
+  arr[y][x][0] = arr[y1][x1][0]
+  arr[y][x][1] -= arr[y][x][0]
+  arr[y1][x1][1] += arr[y1][x1][0]
+  arr[y1][x1][0] = 0
+  empty_y = y1
+  empty_x = x1
+  return True
+
+
 def is_valid(y,x):
   global rows
   global cols
@@ -134,19 +181,51 @@ for y in range(len(arr)):
           #print('viable pair: ' + str((n1_y,n1_x)) + ' -> ' + str((n2_y,n2_x)))
           count_viable_pairs += 1
 
+
+#print(count_viable_pairs)
+
+
+"""
+empty_y = 34
+empty_x = 28
+target_y = 0
+target_x = 29
+"""
 print_mem(arr)
-print(count_viable_pairs)
+print((empty_y,empty_x,steps))
 
+# up 13
+for i in range(13):
+  move_node(empty_y,empty_x,'up',arr)
 
-"""
-start_y = 34
-start_x = 28
-viable_pairs = get_viable_pairs(y,x,node_list)
-for k,v in viable_pairs.items():
-  print(k + ': ' + str(v))
+# left 5
+for i in range(5):
+  move_node(empty_y,empty_x,'left',arr)
+
+# up 21
+for i in range(21):
+  move_node(empty_y,empty_x,'up',arr)
+
+# right 5 (next to target)
+for i in range(5):
+  move_node(empty_y,empty_x,'right',arr)
+
+# do si do
+for i in range(28):
+  move_node(empty_y,empty_x,'right',arr)
+  move_node(empty_y,empty_x,'down',arr)
+  move_node(empty_y,empty_x,'left',arr)
+  move_node(empty_y,empty_x,'left',arr)
+  move_node(empty_y,empty_x,'up',arr)
+
+move_node(empty_y,empty_x,'right',arr) # last move
+
 print()
-print(len(viable_pairs))
-"""
+print_mem(arr)
+print((empty_y,empty_x,steps))
+
+print('steps: ' + str(steps))
+
 
 print('')
 end_secs = time.time()
