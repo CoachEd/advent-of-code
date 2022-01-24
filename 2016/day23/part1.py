@@ -22,13 +22,6 @@ reg['b'] = 0
 reg['c'] = 0
 reg['d'] = 0
 
-cmds = {}
-cmds['cpy'] = 'cpy'
-cmds['inc'] = 'inc'
-cmds['dec'] = 'dec'
-cmds['jnz'] = 'jnz'
-cmds['tgl'] = 'tgl'
-
 i = 0
 while i < len(l):
   s = l[i]
@@ -40,20 +33,20 @@ while i < len(l):
   if len(arr) == 3:
     arg2 = arr[2]
 
-  if cmd == cmds['cpy']:
+  if cmd == 'cpy':
     if arg1.isalpha():
       val = reg[arg1]
     else:
       val = int(arg1)
     reg[arg2] = val
     i += 1
-  elif cmd == cmds['inc']:
+  elif cmd == 'inc':
     reg[arg1] += 1
     i += 1
-  elif cmd == cmds['dec']:
+  elif cmd == 'dec':
     reg[arg1] -= 1
     i += 1
-  elif cmd == cmds['jnz']:
+  elif cmd == 'jnz':
     if arg1.isalpha():
       val = reg[arg1]
     else:
