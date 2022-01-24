@@ -38,7 +38,11 @@ def run_bunny(l,reg,a):
     val = 0
     val2 = 0
 
+    #print(i)
+    #print(l)
+    print(str(s))
     #print('CMD: ' + cmd + '   ' + str(reg) + ' :   ' + str(l))  # TEST
+    #print('CMD: ' + cmd + '   ' + str(reg))  # TEST
 
     if len(arr) == 3:
       arg2 = arr[2]
@@ -47,12 +51,27 @@ def run_bunny(l,reg,a):
         val = reg[arg1]
       else:
         val = int(arg1)
+
+      if not arg2.isalpha():
+        print("NOT1")
+        sys.exit()
+
       reg[arg2] = val
       i += 1
     elif cmd == 'inc':
+
+      if not arg1.isalpha():
+        print("NOT2")
+        sys.exit()
+
       reg[arg1] += 1
       i += 1
     elif cmd == 'dec':
+
+      if not arg1.isalpha():
+        print("NOT3")
+        sys.exit()
+
       reg[arg1] -= 1
       i += 1
     elif cmd == 'jnz':
@@ -94,11 +113,14 @@ def run_bunny(l,reg,a):
         l[i+val] = cmd2 + instr[3:]
       i += 1
 
-    #print(cmd + ' - ' + str(reg) + ' ' + str(l) + '\n') # TEST
+    #print(reg)
+    #print('b,d,a,c: ' + '{:05d}'.format(reg['b']) + ' ' + '{:05d}'.format(reg['d']) + ' '+ '{:05d}'.format(reg['a']) + ' '+ '{:05d}'.format(reg['c']) + '\n') # TEST
+    #print('b,d,a,c: ' + '{:05d}'.format(reg['b']) + ' ' + '{:05d}'.format(reg['d']) + ' '+ '{:05d}'.format(reg['a'])  ) # TEST
   return reg['a']
 
 
-print( run_bunny(l,reg,7) )
+print( run_bunny(l,reg,7) )  # part 1
+#print( run_bunny(l,reg,12) )  # part 2
 
 print('')
 end_secs = time.time()
