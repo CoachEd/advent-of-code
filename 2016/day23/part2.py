@@ -11,7 +11,7 @@ print('')
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp2.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -38,9 +38,9 @@ def run_bunny(l,reg,a):
     val = 0
     val2 = 0
 
-    #print(i)
-    #print(l)
-    print(str(s))
+    #print('i=' + str(i) + '  ' + s)
+    #print(str(reg))
+    #print(str(s))
     #print('CMD: ' + cmd + '   ' + str(reg) + ' :   ' + str(l))  # TEST
     #print('CMD: ' + cmd + '   ' + str(reg))  # TEST
 
@@ -74,6 +74,16 @@ def run_bunny(l,reg,a):
 
       reg[arg1] -= 1
       i += 1
+    elif cmd == 'nop':
+      i += 1
+    elif cmd == 'jn1':
+      reg['a'] = (reg['d']+1)*reg['b']
+      reg['d'] = 0
+      i += 1
+    elif cmd == 'all':
+      reg[arg1] += reg[arg2]
+      reg[arg2] = 0
+      i += 1
     elif cmd == 'jnz':
       if arg1.isalpha():
         val = reg[arg1]
@@ -86,6 +96,7 @@ def run_bunny(l,reg,a):
         val2 = int(arg2)
     
       if val != 0:
+        #print('i: ' + str(i) + '     val2: ' + str(val2))
         i = i + int(val2)
       else:
         i += 1
@@ -113,14 +124,16 @@ def run_bunny(l,reg,a):
         l[i+val] = cmd2 + instr[3:]
       i += 1
 
+    #print(str(reg))  
+    #print()
     #print(reg)
     #print('b,d,a,c: ' + '{:05d}'.format(reg['b']) + ' ' + '{:05d}'.format(reg['d']) + ' '+ '{:05d}'.format(reg['a']) + ' '+ '{:05d}'.format(reg['c']) + '\n') # TEST
     #print('b,d,a,c: ' + '{:05d}'.format(reg['b']) + ' ' + '{:05d}'.format(reg['d']) + ' '+ '{:05d}'.format(reg['a'])  ) # TEST
   return reg['a']
 
 
-print( run_bunny(l,reg,7) )  # part 1
-#print( run_bunny(l,reg,12) )  # part 2
+#print( run_bunny(l,reg,7) )  # part 1
+print( run_bunny(l,reg,12) )  # part 2
 
 print('')
 end_secs = time.time()
