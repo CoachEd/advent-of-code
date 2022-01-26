@@ -4,6 +4,7 @@ AoC
 import time
 import sys
 import copy
+from itertools import permutations
 
 
 # validate coord
@@ -65,6 +66,11 @@ def print_map(arr):
     s += '\n'
   print(s)
 
+def get_path(A,B):
+  (y0,x0) = (targets[A][0],targets[A][1])
+  (y1,x1) = (targets[B][0],targets[B][1])
+  return path(y0,x0,y1,x1)
+
 def path(y0,x0,y1,x1):
   unvisited = {node: None for node in nodes} #using None as +inf
   visited = {}
@@ -113,7 +119,7 @@ for y in range(rows):
     arr[y][x] = c
 # targets:
 # {0: [1, 175], 2: [3, 49], 1: [7, 7], 4: [17, 165], 3: [19, 1], 7: [31, 11], 5: [31, 177], 6: [33, 43]}
-print(targets)
+#print(targets)
 
 nodes = () # tuple
 for y in range(rows):
@@ -129,80 +135,57 @@ for key, value in distances.items():
 print()
 """
 
+# 5 to others
+arr = [0,5,4,2,3,1,7,6] # 
+A = arr[-1]
+for i in range(0,8):
+  if i in arr:
+    continue
+  print(str(A) + ' -> ' + str(i) + '  ' + str(get_path(A,i)) + ' steps.' )
+print()
+"""
+0 -> 1  266 steps.
+0 -> 2  208 steps.
+0 -> 3  252 steps.
+0 -> 4  26 steps. *****
+0 -> 5  44 steps. *****
+0 -> 6  196 steps.
+0 -> 7  246 steps.
+"""
+
+
 # try
 steps = 0
-A=0
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 4:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
+orders1 = [''.join(p) for p in permutations('12367')]
+orders2 = [ '045'+s for s in orders1 ]
+orders3 = [ '054'+s for s in orders1 ]
+orders = orders2 + orders3
+print('orders: ' + str(len(orders)))
+print()
 
-A=4
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 5:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
+order_num = 1
+for order in orders:
+  steps = 0
+  for i in range(0,len(order)-1):
+    A=int(order[i])
+    B=int(order[i+1])
+    (y0,x0) = (targets[A][0],targets[A][1])
+    (y1,x1) = (targets[B][0],targets[B][1])
+    steps += path(y0,x0,y1,x1)
+  print(str(order_num) + '.  order: ' + order + '    steps = ' + str(steps))
+  order_num += 1
 
-A=5
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 6:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
-
-A=6
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 2:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
-
-A=2
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 3:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
-
-A=3
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 1:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
-
-A=1
-(y0,x0) = (targets[A][0],targets[A][1])
-for B in range(8):
-  if B != 7:
-    continue
-  (y1,x1) = (targets[B][0],targets[B][1])
-  steps1 = path(y0,x0,y1,x1)
-  steps += steps1
-  print(str(A) + ' -> ' + str(B) + ':  ' + str(steps1) )
-
-print(steps)
-# 454 too high
+# order: 04513627    steps = 550
+# order: 04513267    steps = 538
+# order: 04531762    steps = 504
+# order: 04573126    steps = 492
+# 466 too high: 04526317
+# 458 too high: 05462317
+# 454 too high: 04562317
+# 446 too high: 04526731
+#   04562137    steps = 442 RIGHT!!!!
+#
+# 402 too low
 
 print('')
 end_secs = time.time()
