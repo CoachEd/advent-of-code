@@ -19,8 +19,23 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-print(l)
+s = l[0] + l[0][0]
+i = 0
+tot = 0
+nums = []
+while i < len(s)-1:
+  num = -1
+  if s[i] == s[i+1]:
+    num = int(s[i])
+  if num != -1:
+    nums.append(num)
+  i += 1
 
+for n in nums:
+  tot += n
+print(tot)
+
+# 1192 - WRONG too low
 
 print('')
 end_secs = time.time()
