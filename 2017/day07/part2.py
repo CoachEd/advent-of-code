@@ -84,13 +84,24 @@ for s in l:
 #  if len(val[1]) == 0:
 #    print(key)
 
+# THE FIX!!
+weights['drjmjug'] = 420
+
 the_bottom = 'eugwuhl'
 #the_bottom = 'tknk'
 calc_sums(d,the_bottom,weights)
 
 #print(all_weights)
 
+# out.txt is output with original input data
+#   - analyzing the data showed that the smaygo subtree was off
+#   - digging deeper into that subtree showed that hmgrlpj and finally 
+#   - drjmjug were off. All were off by +8
+#   - subtracting 8 from drjmjug's original weight saved the day!
+
 print_tree(d,the_bottom,'')
+
+print(weights['drjmjug'])
 
 print('')
 end_secs = time.time()
