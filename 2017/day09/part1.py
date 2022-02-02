@@ -19,7 +19,26 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-print(l)
+# negate chars
+arr = [ c for c in l[0] ]
+for i in range(len(arr)):
+  if arr[i] == '!' and i < len(arr)-1:
+    arr[i+1] = ''
+s = ''.join(arr)
+print(s)
+
+# remove garbage
+arr = [ c for c in s ]
+while True:
+  if '<' in arr and '>' in arr:
+    less_than = arr.index('<')
+    greater_than = arr.index('>')
+    for i in range(less_than,greater_than+1):
+      arr[i] = ''
+  else:
+    break
+s = ''.join(arr)
+print(s)
 
 
 print('')
