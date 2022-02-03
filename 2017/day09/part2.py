@@ -51,17 +51,24 @@ s = ''.join(arr)
 
 # remove garbage
 arr = [ c for c in s ]
+garbage_count = 0
 while True:
   if '<' in arr and '>' in arr:
     less_than = arr.index('<')
     greater_than = arr.index('>')
+    temp_s = ''.join(arr[less_than:greater_than+1])
+    negation_count = temp_s.count('!')
+
+    temp_count = greater_than - less_than + 1 - 2 - negation_count
+    garbage_count += temp_count
     for i in range(less_than,greater_than+1):
       arr[i] = ''
   else:
     break
 s = ''.join(arr)
 
-print( calc_score(s) )
+#print( calc_score(s) )
+print(garbage_count)
 
 
 
