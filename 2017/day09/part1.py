@@ -9,6 +9,29 @@ from random import randrange
 from copy import copy, deepcopy
 from itertools import permutations
 
+def calc_score(s):
+  # remove commas
+  s = s.replace(',','')
+  arr = []
+  level = 1
+  scores = {}
+  for c in s:
+    if len(arr) == 0:
+      arr.append(c)
+    elif c == '{':
+      arr.append(c)
+      level += 1
+    elif c == '}':
+      if not level in scores:
+        scores[level] = 0
+      scores[level] += 1
+      level -= 1
+      arr.pop()
+  score = 0
+  for key,val in scores.items():
+    score = score + (key * val)
+  return score
+
 start_secs = time.time()
 print('')
 
@@ -25,7 +48,6 @@ for i in range(len(arr)):
   if arr[i] == '!' and i < len(arr)-1:
     arr[i+1] = ''
 s = ''.join(arr)
-print(s)
 
 # remove garbage
 arr = [ c for c in s ]
@@ -38,7 +60,9 @@ while True:
   else:
     break
 s = ''.join(arr)
-print(s)
+
+print( calc_score(s) )
+
 
 
 print('')
