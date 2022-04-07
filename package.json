@@ -1,0 +1,25 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "Solutions for the Advent of Code coding competition: [link](https://adventofcode.com/)",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install -g eslint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoachEd/advent-of-code.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CoachEd/advent-of-code/issues"
+  },
+  "homepage": "https://github.com/CoachEd/advent-of-code#readme",
+  "devDependencies": {
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}
