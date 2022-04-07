@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const getInputString = (filePath) => new Promise((resolve, reject) => {
+  // read input file as a single string
   fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
     if (!err) {
       resolve(data);
@@ -10,6 +11,7 @@ const getInputString = (filePath) => new Promise((resolve, reject) => {
 });
 
 const getInputArray = (filePath) => new Promise((resolve, reject) => {
+  // read input file. each line is a string element in the array
   fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
     if (!err) {
       resolve(data.split('\n'));
