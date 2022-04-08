@@ -1,4 +1,4 @@
-const ac = require('./aocCommon');
+const ac = require('../../js/aocCommon');
 
 // main
 const captcha = (a) => {
