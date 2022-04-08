@@ -51,9 +51,23 @@ const rotRightArray = (a, n) => {
   return arr1;
 };
 
+const strArrToIntArr = (a) => {
+  // return array of ints for array of string nums
+  // ['0', '2', '4'] => [0, 2, 4]
+  if (!a || a.length === 0) {
+    return [];
+  }
+  const a1 = Array(a.length);
+  for (let i = 0; i < a.length; i += 1) {
+    a1[i] = parseInt(a[i], 10);
+  }
+  return a1;
+};
+
 module.exports = {
   getInputString,
   getInputArray,
   strToIntArray,
-  rotRightArray
+  rotRightArray,
+  strArrToIntArr
 };
