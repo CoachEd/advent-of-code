@@ -64,10 +64,22 @@ const strArrToIntArr = (a) => {
   return a1;
 };
 
+const twoDimArrayToString = (a) => {
+  let s = '';
+  for (let i = 0; i < a.length; i += 1) {
+    for (let j = 0; j < a[i].length; j += 1) {
+      s = `${s} ${a[i][j]}`;
+    }
+    s = `${s}\n`;
+  }
+  return s;
+};
+
 module.exports = {
   getInputString,
   getInputArray,
   strToIntArray,
   rotRightArray,
-  strArrToIntArr
+  strArrToIntArr,
+  twoDimArrayToString
 };
