@@ -40,8 +40,6 @@ print('row: ' + str(row))
 print('col: ' + str(col))
 print('blocks: ' + str(row + col))
 
-print(visited)
-
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
