@@ -7,7 +7,28 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
+def showStacks(a):
+  s = ''
 
+  # get max height
+  #maxh = -1
+  #for arr in a:
+  #  if len(arr) > maxh:
+  #    maxh = len(arr)
+  maxh = 45
+  for i in range(maxh-1,-1,-1):
+    for j in range(1,len(a)):
+      arr = a[j]
+      if i < len(arr):
+        s += '[' + arr[i] + '] '
+      else:
+        s += '    '
+    s += '\n'
+    
+  print(s)
+  
+
+    
 # day 5 pt 1
 """
 [M]                     [N] [Z]    
@@ -32,6 +53,8 @@ a.append(['F','M','S','P','V','G','C','N'])
 a.append(['W','Q','R','J','F','V','C','Z'])
 a.append(['R','P','M','L','H'])
 
+showStacks(a)
+
 print()
 l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
@@ -47,6 +70,8 @@ for s in l:
   to = int(instr[5])
   for i in range(count):
     a[to].append(a[fr].pop())
+    time.sleep(0.01)
+    showStacks(a)
 
 s = ''
 for i in range(1, len(a)):
