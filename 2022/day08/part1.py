@@ -89,7 +89,7 @@ rightVis(arr)
 leftVis(arr)
 topVis(arr)
 botVis(arr)
-#printArr(arr, 4)
+#printArr(arr, 1)
 
 count = 0
 for r in range(len(arr)):
