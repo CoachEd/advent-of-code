@@ -119,8 +119,8 @@ def move(d,n,knots):
 
 
 # MAIN
-rows = 500 #500
-cols = 500
+rows = 102 #500
+cols = 360
 numKnots = 10
 (sy,sx) = (int(rows/2), int(cols/2))
 arr = [ ['.' for x in range(cols)] for y in range(rows)]
