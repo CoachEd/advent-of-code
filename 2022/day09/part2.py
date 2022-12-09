@@ -11,7 +11,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-def adjust2(arr,j,d):
+def adjust(arr,j,d):
   global knots
   i = j - 1 # head
   if not adj(knots[i], knots[j]):
@@ -86,12 +86,12 @@ def move(d,n,knots):
     elif d == 'R':
       right(hd)
     for i in range(1, len(knots)):
-      adjust2(arr,i,d)
+      adjust(arr,i,d)
 
 
 # MAIN
-rows = 500 #500
-cols = 500
+rows = 16 #500
+cols = 30
 numKnots = 10
 (sy,sx) = (int(rows/2), int(cols/2))
 arr = [ ['.' for x in range(cols)] for y in range(rows)]
@@ -103,8 +103,7 @@ for s in l:
   distance = int(a[1])
   move(direction,distance,knots)
 
-arr[sy][sx] = 's'
-#printArr(arr)
+printArr(arr)
 print(countArr(arr))
 # 6457 too high
 # 2382 too high
