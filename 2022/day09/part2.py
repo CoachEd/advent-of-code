@@ -26,22 +26,43 @@ def adjust(j):
   if not adj(knots[i], knots[j]):
     (hy,hx) = (knots[i][0],knots[i][1])
     (ty,tx) = (knots[j][0],knots[j][1])
-    if (hy < ty and abs(hy-ty) > 1):
-      # move tail up
-      knots[j][0] -= 1
-      knots[j][1] = knots[i][1]
-    elif (hy > ty and abs(hy-ty) > 1):
-      # move tail down
-      knots[j][0] += 1
-      knots[j][1] = knots[i][1]
-    elif (hx < tx and abs(hx-tx) > 1):
-      # move tail left
-      knots[j][1] -= 1
-      knots[j][0] = knots[i][0]
-    elif (hx > tx and abs(hx-tx) > 1):
-      # move tail right
-      knots[j][1] += 1
-      knots[j][0] = knots[i][0]      
+    if abs(hy-ty) > 1 and abs(hx-tx):
+      # diagonal movement
+
+      if hy < ty and hx > tx:
+        # head is diagonally up right
+        # move tail diagonally up right
+        knots[j][0] -= 1
+        knots[j][1] += 1
+      elif hy < ty and hx < tx:
+        # move tail diagnoally up left
+        knots[j][0] -= 1
+        knots[j][1] -= 1
+      elif hy > ty and hx > tx:
+        # move tail diagonally down right
+        knots[j][0] += 1
+        knots[j][1] += 1
+      elif hy > ty and hx < tx:        
+        # move tail diagonally down left
+        knots[j][0] += 1
+        knots[j][1] -= 1
+    else:    
+      if (hy < ty and abs(hy-ty) > 1):
+        # move tail up
+        knots[j][0] -= 1
+        knots[j][1] = knots[i][1]
+      elif (hy > ty and abs(hy-ty) > 1):
+        # move tail down
+        knots[j][0] += 1
+        knots[j][1] = knots[i][1]
+      elif (hx < tx and abs(hx-tx) > 1):
+        # move tail left
+        knots[j][1] -= 1
+        knots[j][0] = knots[i][0]
+      elif (hx > tx and abs(hx-tx) > 1):
+        # move tail right
+        knots[j][1] += 1
+        knots[j][0] = knots[i][0]      
 
     if j == len(knots)-1:
       # tail
