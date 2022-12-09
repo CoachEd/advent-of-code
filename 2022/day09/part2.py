@@ -15,7 +15,6 @@ def adjust(arr,j,d):
   global knots
   i = j - 1
   (hy,hx) = (knots[i][0],knots[i][1])
-  (ty,tx) = (knots[j][0],knots[j][1])
 
   if not adj(arr, knots[i], knots[j]):
     if d == 'U':
