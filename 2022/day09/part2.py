@@ -50,11 +50,9 @@ def printArr(a):
   print(s)
 
 def adj(hd, tl):
-  (hy,hx) = (hd[0],hd[1])
-  (ty,tx) = (tl[0],tl[1])
-  for y in range(hy-1,hy+2):
-    for x in range(hx-1,hx+2):
-      if ty == y and tx == x:
+  for y in range(hd[0]-1,hd[0]+2):
+    for x in range(hd[1]-1,hd[1]+2):
+      if tl[0] == y and tl[1] == x:
         return True
   return False
 
@@ -93,8 +91,6 @@ numKnots = 2
 (sy,sx) = (int(rows/2), int(cols/2))
 arr = [ ['.' for x in range(cols)] for y in range(rows)]
 arr[sy][sx] = 's'  # s ior # means visited
-(hy,hx) = (sy,sx)
-(ty,tx) = (sy,sx)
 knots = [ [sy,sx] for x in range(numKnots) ]
 for s in l:
   a = s.split()
