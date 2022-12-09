@@ -12,25 +12,25 @@ for line in lines:
   l.append(line.strip())
 
 def adjust(arr,j,d):
+  # adjusts all knots except for head
   global knots
   i = j - 1
-  (hy,hx) = (knots[i][0],knots[i][1])
-
-  if not adj(arr, knots[i], knots[j]):
+  if not adj(knots[i], knots[j]):
     if d == 'U':
       knots[j][0] -= 1
-      knots[j][1] = hx
+      knots[j][1] = knots[i][1]
     elif d == 'D':
       knots[j][0] += 1
-      knots[j][1] = hx
+      knots[j][1] = knots[i][1]
     elif d == 'L':
       knots[j][1] -= 1
-      knots[j][0] = hy
+      knots[j][0] = knots[i][0]
     elif d == 'R':
       knots[j][1] += 1
-      knots[j][0] = hy
+      knots[j][0] = knots[i][0]
 
     if j == len(knots)-1:
+      # tail
       arr[knots[j][0]][knots[j][1]] = "#"
 
 def countArr(a):
@@ -49,7 +49,7 @@ def printArr(a):
     s += '\n'
   print(s)
 
-def adj(arr, hd, tl):
+def adj(hd, tl):
   (hy,hx) = (hd[0],hd[1])
   (ty,tx) = (tl[0],tl[1])
   for y in range(hy-1,hy+2):
