@@ -33,6 +33,33 @@ def adjust(arr,j,d):
       # tail
       arr[knots[j][0]][knots[j][1]] = "#"
 
+def adjust2(arr,j,d):
+  global knots
+  i = j - 1 # head
+  if not adj(knots[i], knots[j]):
+    (hy,hx) = (knots[i][0],knots[i][1])
+    (ty,tx) = (knots[j][0],knots[j][1])
+    if (hy < ty and abs(hy-ty) > 1):
+      # move tail up
+      knots[j][0] -= 1
+      knots[j][1] = knots[i][1]
+    elif (hy > ty and abs(hy-ty) > 1):
+      # move tail down
+      knots[j][0] += 1
+      knots[j][1] = knots[i][1]
+    elif (hx < tx and abs(hx-tx) > 1):
+      # move tail left
+      knots[j][1] -= 1
+      knots[j][0] = knots[i][0]
+    elif (hx > tx and abs(hx-tx) > 1):
+      # move tail right
+      knots[j][1] += 1
+      knots[j][0] = knots[i][0]      
+
+    if j == len(knots)-1:
+      # tail
+      arr[knots[j][0]][knots[j][1]] = "#"
+
 def countArr(a):
   count = 0
   for r in a:
@@ -81,13 +108,13 @@ def move(d,n,knots):
     elif d == 'R':
       right(hd)
     for i in range(1, len(knots)):
-      adjust(arr,i,d)
+      adjust2(arr,i,d)
 
 
 # MAIN
-rows = 8 #500
-cols = 12
-numKnots = 2
+rows = 500 #500
+cols = 500
+numKnots = 10
 (sy,sx) = (int(rows/2), int(cols/2))
 arr = [ ['.' for x in range(cols)] for y in range(rows)]
 arr[sy][sx] = 's'  # s ior # means visited
@@ -102,6 +129,7 @@ arr[sy][sx] = 's'
 printArr(arr)
 print(countArr(arr))
 # 6457 too high
+# 2382 too high
 
 print('')
 end_secs = time.time()
