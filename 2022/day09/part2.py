@@ -11,6 +11,14 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+def clearArr(arr):
+  global sy
+  global sx
+  for y in range(len(arr)):
+    for x in range(len(arr[y])):
+      arr[y][x] = '.'
+  arr[sy][sx] = 's'
+
 def adjust(j):
   global arr
   global knots
