@@ -11,8 +11,9 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-def adjust(arr,i,j,isTail,d):
+def adjust(arr,j,d):
   global knots
+  i = j - 1
   (hy,hx) = (knots[i][0],knots[i][1])
   (ty,tx) = (knots[j][0],knots[j][1])
 
@@ -30,7 +31,7 @@ def adjust(arr,i,j,isTail,d):
       knots[j][1] += 1
       knots[j][0] = hy
 
-    if isTail:
+    if j == len(knots)-1:
       arr[knots[j][0]][knots[j][1]] = "#"
 
 def countArr(a):
@@ -83,7 +84,7 @@ def move(d,n,knots):
     elif d == 'R':
       right(hd)
     for i in range(1, len(knots)):
-      adjust(arr,i-1,i,i==len(knots)-1,d)
+      adjust(arr,i,d)
 
 
 # MAIN
