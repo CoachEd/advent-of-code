@@ -11,7 +11,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-def adjust(j,d):
+def adjust(j):
   global arr
   global knots
   i = j - 1 # head
@@ -86,7 +86,7 @@ def move(d,n,knots):
     elif d == 'R':
       right(hd)
     for i in range(1, len(knots)):
-      adjust(i,d)
+      adjust(i)
 
 
 # MAIN
