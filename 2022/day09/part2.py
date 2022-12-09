@@ -11,28 +11,6 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-def adjust(arr,j,d):
-  # adjusts all knots except for head
-  global knots
-  i = j - 1
-  if not adj(knots[i], knots[j]):
-    if d == 'U':
-      knots[j][0] -= 1
-      knots[j][1] = knots[i][1]
-    elif d == 'D':
-      knots[j][0] += 1
-      knots[j][1] = knots[i][1]
-    elif d == 'L':
-      knots[j][1] -= 1
-      knots[j][0] = knots[i][0]
-    elif d == 'R':
-      knots[j][1] += 1
-      knots[j][0] = knots[i][0]
-
-    if j == len(knots)-1:
-      # tail
-      arr[knots[j][0]][knots[j][1]] = "#"
-
 def adjust2(arr,j,d):
   global knots
   i = j - 1 # head
@@ -117,7 +95,7 @@ cols = 500
 numKnots = 10
 (sy,sx) = (int(rows/2), int(cols/2))
 arr = [ ['.' for x in range(cols)] for y in range(rows)]
-arr[sy][sx] = 's'  # s ior # means visited
+arr[sy][sx] = 's'  # s or # means visited
 knots = [ [sy,sx] for x in range(numKnots) ]
 for s in l:
   a = s.split()
@@ -126,7 +104,7 @@ for s in l:
   move(direction,distance,knots)
 
 arr[sy][sx] = 's'
-printArr(arr)
+#printArr(arr)
 print(countArr(arr))
 # 6457 too high
 # 2382 too high
