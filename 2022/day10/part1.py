@@ -40,7 +40,7 @@ while True:
     arr = instr.split(' ')
     n = int(arr[1])
 
-    getX(t) # cycle start
+    #getX(t) # cycle start
     t += 1
     getX(t) # cycle end/start
     
