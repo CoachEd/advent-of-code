@@ -6,7 +6,7 @@ import heapq
 start_secs = time.time()
 print('')
 
-# keyworkds: Dijkstra, graph, GRAPH, vertice, node, shortest
+# keyworkds: Dijkstra, graph, GRAPH, vertice, node, shortest, shortest path
 
 # BEGIN CLASS - ORIGINAL CODE
 class Dijkstra:
