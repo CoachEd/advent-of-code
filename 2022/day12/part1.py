@@ -5,30 +5,42 @@ import heapq
 start_secs = time.time()
 print('')
 
-# Dijkstra’s algorithm example
-def calculate_distances(graph, starting_vertex):
-    distances = {vertex: float('infinity') for vertex in graph}
-    distances[starting_vertex] = 0
+# BEGIN CLASS
+class Dijkstra:
+  def __init__(self, vertices, graph):
+    self.vertices = vertices  # ("A", "B", "C" ...)
+    self.graph = graph  # {"A": {"B": 1}, "B": {"A": 3, "C": 5} ...}
 
-    pq = [(0, starting_vertex)]
-    while len(pq) > 0:
-        current_distance, current_vertex = heapq.heappop(pq)
+  def find_route(self, start, end):
+    unvisited = {n: float("inf") for n in self.vertices}
+    unvisited[start] = 0  # set start vertex to 0
+    visited = {}  # list of all visited nodes
+    parents = {}  # predecessors
+    while unvisited:
+      min_vertex = min(unvisited, key=unvisited.get)  # get smallest distance
+      for neighbour, _ in self.graph.get(min_vertex, {}).items():
+        if neighbour in visited:
+          continue
+        new_distance = unvisited[min_vertex] + self.graph[min_vertex].get(neighbour, float("inf"))
+        if new_distance < unvisited[neighbour]:
+          unvisited[neighbour] = new_distance
+          parents[neighbour] = min_vertex
+      visited[min_vertex] = unvisited[min_vertex]
+      unvisited.pop(min_vertex)
+      if min_vertex == end:
+        break
+    return parents, visited
 
-        # Nodes can get added to the priority queue multiple times. We only
-        # process a vertex the first time we remove it from the priority queue.
-        if current_distance > distances[current_vertex]:
-            continue
-
-        for neighbor, weight in graph[current_vertex].items():
-            distance = current_distance + weight
-
-            # Only consider this new path if it's better than any path we've
-            # already found.
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                heapq.heappush(pq, (distance, neighbor))
-
-    return distances
+  @staticmethod
+  def generate_path(parents, start, end):
+    path = [end]
+    while True:
+      key = parents[path[0]]
+      path.insert(0, key)
+      if key == start:
+        break
+    return path
+# END CLASS
 
 def printMap(a):
   s = ''
@@ -66,18 +78,26 @@ for y in range(rows):
     elif l[y][x] == 'E':
       (ey,ex) = (y,x)
 
-# CREATE graph (dictionary of dictionaries), for example
+# create names for all vertices, e.g. row,col '0,1'
+input_vertices = ()
+for y in range(rows):
+  for x in range(cols):
+    nodeName = str(y) + ',' + str(x)
+    input_vertices = input_vertices + (nodeName,)
+# create graph, e.g.
 """
-example_graph = {
-    'U': {'V': 2, 'W': 5, 'X': 1},
-    'V': {'U': 2, 'X': 2, 'W': 3},
-    'W': {'V': 3, 'U': 5, 'X': 3, 'Y': 1, 'Z': 5},
-    'X': {'U': 1, 'V': 2, 'W': 3, 'Y': 1},
-    'Y': {'X': 1, 'W': 1, 'Z': 1},
-    'Z': {'W': 5, 'Y': 1},
+input_graph = {
+  "A": {"B": 5, "D": 3, "E": 12, "F": 5},
+  "B": {"A": 5, "D": 1, "G": 2},
+  "C": {"E": 1, "F": 16, "G": 2},
+  "D": {"A": 3, "B": 1, "E": 1, "G": 1},
+  "E": {"A": 12, "C": 1, "D": 1, "F": 2},
+  "F": {"A": 5, "C": 16, "E": 2},
+  "G": {"B": 2, "C": 2, "D": 1}
 }
 """
-theGraph = {} # dictionary of dictionaries
+
+input_graph = {} # dictionary of dictionaries
 weights = {}
 for c in 'abcdefghijklmnopqrstuvwxyz':
   weights[c] = ord(c)
@@ -87,10 +107,10 @@ weights['E'] = ord('z')
 for y in range(rows):
   for x in range(cols):
     nodename = str(y) + ',' + str(x)
-    if not nodename in theGraph:
-      theGraph[nodename] = {}
+    if not nodename in input_graph:
+      input_graph[nodename] = {}
     
-    nodeList = theGraph[nodename]  # this nodes list of neighbors
+    nodeList = input_graph[nodename]  # this nodes list of neighbors
     nodeWeight = weights[l[y][x]] # additional restriction is that neighbor must be at most one more than my weight
 
     # neighbors
@@ -131,9 +151,18 @@ for y in range(rows):
         neighborName = str(ty) + ',' + str(tx)
         nodeList[neighborName] = weight
 
-startNode = str(sy) + ',' + str(sx)
-danswer = calculate_distances(theGraph, startNode)
-print(danswer[str(ey)+','+str(ex)])
+start_vertex = str(sy) + ',' + str(sx)
+end_vertex= str(ey) + ',' + str(ex)
+
+dijkstra = Dijkstra(input_vertices, input_graph)
+
+p, v = dijkstra.find_route(start_vertex, end_vertex)
+print("Distance from %s to %s is: %.2f" % (start_vertex, end_vertex, v[end_vertex]))
+
+se = dijkstra.generate_path(p, start_vertex, end_vertex)
+print("Path from %s to %s is: %s" % (start_vertex, end_vertex, " -> ".join(se)))
+print()
+print('steps %s' % str(len(se)-1))
 
 print('')
 end_secs = time.time()
