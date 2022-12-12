@@ -1,11 +1,14 @@
 import time
 import sys
+import math
 from copy import copy, deepcopy
 import heapq
 start_secs = time.time()
 print('')
 
-# BEGIN CLASS
+# keyworkds: Dijkstra, graph, GRAPH, vertice, node, shortest
+
+# BEGIN CLASS - ORIGINAL CODE
 class Dijkstra:
   def __init__(self, vertices, graph):
     self.vertices = vertices  # ("A", "B", "C" ...)
@@ -57,8 +60,6 @@ def validPoint(y,x,a):
     return False
   return True
 
-
-# SOLUTION
 # read in input file
 l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
@@ -79,31 +80,32 @@ for y in range(rows):
       (ey,ex) = (y,x)
 
 # create names for all vertices, e.g. row,col '0,1'
+# input_vertices is a tuple of vertex names (e.g. y,x):
+#   ('0,0', '0,1', '0,2', '0,3', '0,4', '0,5', ...
 input_vertices = ()
 for y in range(rows):
   for x in range(cols):
     nodeName = str(y) + ',' + str(x)
     input_vertices = input_vertices + (nodeName,)
-# create graph, e.g.
-"""
-input_graph = {
-  "A": {"B": 5, "D": 3, "E": 12, "F": 5},
-  "B": {"A": 5, "D": 1, "G": 2},
-  "C": {"E": 1, "F": 16, "G": 2},
-  "D": {"A": 3, "B": 1, "E": 1, "G": 1},
-  "E": {"A": 12, "C": 1, "D": 1, "F": 2},
-  "F": {"A": 5, "C": 16, "E": 2},
-  "G": {"B": 2, "C": 2, "D": 1}
-}
-"""
 
-input_graph = {} # dictionary of dictionaries
+# weights (costs) of going from an adjacent node to THIS node
 weights = {}
 for c in 'abcdefghijklmnopqrstuvwxyz':
-  weights[c] = ord(c)
-weights['S'] = ord('a')
-weights['E'] = ord('z')
+  weights[c] = ord(c) # ordinal value is the cost
+weights['S'] = ord('a')  # default
+weights['E'] = ord('z')  # default
 
+# create input_graph is a dictionary of dictionaries
+# format is nodename : edges where
+#   edge is nodename : weight
+"""
+input_graph = {
+  '0,0': {'0,1': 5, '1,0': 3},
+  '0,1': {'0,0': 5, '1,1': 1, '0,2': 9},
+  ...
+}
+"""
+input_graph = {} 
 for y in range(rows):
   for x in range(cols):
     nodename = str(y) + ',' + str(x)
@@ -111,7 +113,7 @@ for y in range(rows):
       input_graph[nodename] = {}
     
     nodeList = input_graph[nodename]  # this nodes list of neighbors
-    nodeWeight = weights[l[y][x]] # additional restriction is that neighbor must be at most one more than my weight
+    nodeWeight = weights[l[y][x]]  # cost of going to THIS node
 
     # neighbors
     (uy,ux) = (y-1,x)
@@ -123,6 +125,8 @@ for y in range(rows):
     (ty,tx) = (uy,ux)
     if validPoint(ty,tx,l):
       weight = weights[l[ty][tx]]
+      # problem restriction: the node you are going to can be at most 1 greater than
+      # the node you are coming from
       if (nodeWeight + 1) >= weight:
         neighborName = str(ty) + ',' + str(tx)
         nodeList[neighborName] = weight
@@ -151,18 +155,26 @@ for y in range(rows):
         neighborName = str(ty) + ',' + str(tx)
         nodeList[neighborName] = weight
 
+# MAIN
 start_vertex = str(sy) + ',' + str(sx)
 end_vertex= str(ey) + ',' + str(ex)
 
 dijkstra = Dijkstra(input_vertices, input_graph)
 
 p, v = dijkstra.find_route(start_vertex, end_vertex)
-print("Distance from %s to %s is: %.2f" % (start_vertex, end_vertex, v[end_vertex]))
 
-se = dijkstra.generate_path(p, start_vertex, end_vertex)
-print("Path from %s to %s is: %s" % (start_vertex, end_vertex, " -> ".join(se)))
+# check if NO path
+dist = v[end_vertex]
+if (math.isinf(dist)):
+  # this path is an infinite cycle
+  print('error - no path from %s to %s' % (start_vertex, end_vertex) )
+  exit()
+
 print()
-print('steps %s' % str(len(se)-1))
+se = dijkstra.generate_path(p, start_vertex, end_vertex)
+print("Path from %s to %s is:\n%s" % (start_vertex, end_vertex, " -> ".join(se)))
+print('distance: %.2f' % (dist))
+print('steps: %s' % str(len(se)-1))
 
 print('')
 end_secs = time.time()
