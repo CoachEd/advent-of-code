@@ -75,7 +75,7 @@ items = [
 ]
 
 numMonkeys = len(items)
-counts = [0 for x in range(numMonkeys)]
+counts = [-2 for x in range(numMonkeys)]
 def playRound():
   global numMonkeys,items,counts
   for i in range(numMonkeys):
@@ -83,9 +83,11 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item * 5
-        #wl = math.floor(wl / 3)
         if wl % 11 == 0:
-          items[6].append(wl)
+          if (wl * wl) % 7 == 0:
+            items[5].append(wl*wl)
+          else:
+            items[6].append(wl)
         else:
           items[5].append(wl)
       items[i].clear()
@@ -93,7 +95,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item + 5
-        #wl = math.floor(wl / 3)
         if wl % 19 == 0:
           items[6].append(wl)
         else:
@@ -103,7 +104,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item * 19
-        #wl = math.floor(wl / 3)
         if wl % 5 == 0:
           items[3].append(wl)
         else:
@@ -113,7 +113,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item + 7
-        #wl = math.floor(wl / 3)
         if wl % 3 == 0:
           items[1].append(wl)
         else:
@@ -123,7 +122,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item + 2
-        #wl = math.floor(wl / 3)
         if wl % 13 == 0:
           items[2].append(wl)
         else:
@@ -133,7 +131,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item + 1
-        #wl = math.floor(wl / 3)
         if wl % 17 == 0:
           items[4].append(wl)
         else:
@@ -143,7 +140,6 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item * item
-        #wl = math.floor(wl / 3)
         if wl % 7 == 0:
           items[5].append(wl)
         else:
@@ -153,31 +149,19 @@ def playRound():
       for item in items[i]:
         counts[i] += 1
         wl = item + 4
-        #wl = math.floor(wl / 3)
         if wl % 2 == 0:
           items[3].append(wl)
         else:
           items[2].append(wl)
       items[i].clear()
 
-m0 = ''
-m7 = ''
-prev0 = 0
-prev7 = 0
-rounds = 501
+rounds = 200    
 for r in range(rounds):
   playRound()
-  #m0 += str(counts[0]) + '\n'
-  #m7 += str(counts[7]) + '\n'
-  m0 += str(counts[0] - prev0) + ' '
-  m7 += str(counts[7] - prev7) + ' '
-  prev0 = counts[0]
-  prev7 = counts[7]
 
-print('0:\n' + m0)
-print()
-print('7:\n' + m7)
-
+print('0: ' + str(counts[0]))
+print('1: ' + str(counts[7]))
+print(counts[0]*counts[-1]) # hard code multiplying top two counts
 
 print('')
 end_secs = time.time()
