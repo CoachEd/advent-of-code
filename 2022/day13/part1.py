@@ -3,6 +3,7 @@ import sys
 from ast import literal_eval
 from copy import copy, deepcopy
 start_secs = time.time()
+print()
 
 # SOLUTION
 # read in input file
@@ -19,33 +20,32 @@ def isList(x):
   return type(x) is list
 
 def isOrder(left,right):
+  # two lists as input parameters
 
-  if isInt(left) and isInt(right):
-    if left <= right:
-      return True # correct order or continue comparing
-    else:
-      return False # wrong order
+  for i in range(len(left)):
+    if i >= len(right):
+      return False  # right ran out
+    l = left[i]
+    r = right[i]
+    # l and r are integers
+    if isInt(l) and isInt(r):  
+      if l < r:
+        return True
+      elif l > r:
+        return False
+    elif isList(l) and isList(r):
+      # TODO: l and r are both lists
+      pass
+    elif isList(l) and isInt(r):
+      # TODO: l is a list and r is an integer
+      pass
+    elif isInt(l) and isList(r):
+      # TODO: l is an integer and r is a list
+      pass
 
-  if isList(left) and isList(right):
-    if len(left) == 0 and len(right) == 0:
-      return True
-    if len(left) == 0 and len(right) > 0:
-      return True
-    if len(left) > 0 and len(right) == 0:
-      return False
-    l0 = left[0]
-    r0 = right[0]
-    if isOrder(l0,r0):
-      return isOrder(left[1:],right[1:])
-    else:
-      return False
 
-  # no need to worry about running out of items
-  if isInt(left) and isList(right):
-    return left < right[0]
-  if isList(left) and isInt(right):
-    return left[0] < right
 
+    
 # main
 index = 1
 tot = 0
@@ -53,10 +53,15 @@ for i in range(0, len(l), +3):
   left = literal_eval(l[i])
   right = literal_eval(l[i+1])
   if isOrder(left, right):
+    print('IN ORDER')
     tot += index
+  else:
+    print('NOT IN ORDER')
   index += 1
 
+print()
 print(tot)
+# 358 TOO LOW
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
