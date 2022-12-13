@@ -27,6 +27,7 @@ def isOrder(left,right):
       return False  # right ran out
     l = left[i]
     r = right[i]
+
     # l and r are integers
     if isInt(l) and isInt(r):  
       if l < r:
