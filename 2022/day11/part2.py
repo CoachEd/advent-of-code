@@ -155,7 +155,7 @@ def playRound():
           items[2].append(wl)
       items[i].clear()
 
-rounds = 200    
+rounds = 200
 for r in range(rounds):
   playRound()
 
