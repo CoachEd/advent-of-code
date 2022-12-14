@@ -33,7 +33,7 @@ def printCave(a):
   print(s)
 
 def dropSand(a):
-  global sand_x, sand_y, min_x, min_y, max_x, max_y
+  global sand_x, sand_y, min_x, min_y, max_x, max_y, found_void
   x = sand_x
   y = sand_y
   while True:
