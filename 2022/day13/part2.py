@@ -11,7 +11,11 @@ l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
-  l.append(line.strip())
+  l2 = line.strip()
+  if len(l2) > 0:
+    l.append( literal_eval(line.strip()))
+l.append( literal_eval('[[2]]'))
+l.append( literal_eval('[[6]]'))
 
 def isInt(x):
   return isinstance(x, int)
@@ -21,9 +25,6 @@ def isList(x):
 
 def isOrder(left,right):
   # two lists as input parameters
-  #print(left)
-  #print(right)
-  #print()
 
   # if both are integers
   if isInt(left) and isInt(right):  
@@ -69,24 +70,29 @@ def isOrder(left,right):
     return True
 
   return rval
-    
+
+def selectionSort(array, size):
+  for ind in range(size):
+      min_index = ind
+      for j in range(ind + 1, size):
+          if isOrder(array[j], array[min_index]):
+              min_index = j
+      (array[ind], array[min_index]) = (array[min_index], array[ind])
+
 # main
 index = 1
 tot = 0
-for i in range(0, len(l), +3):
-  left = literal_eval(l[i])
-  right = literal_eval(l[i+1])
-  rval = isOrder(left, right)
-  if rval == True:
-    print('%s passed' % (index,))
-    tot += index
-  else:
-    print('%s failed' % (index,))
-  index += 1
 
-print()
-print(tot)
-# 358 TOO LOW
+selectionSort(l, len(l))
+p1 = -1
+p2 = -1
+for i in range(len(l)):
+  if str(l[i]) == '[[2]]':
+    p1 = i + 1
+  if str(l[i]) == '[[6]]':
+    p2 = i + 1
+
+print(p1 * p2)
 
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
