@@ -66,7 +66,7 @@ def dropSand(a):
       a[y+1][x] = 'O'
       y = y+1
 
-    #printCave(a)
+    printCave(a)
 
 
 
@@ -137,7 +137,7 @@ for s in l:
         cave[y][x0] = '#'
 
 
-#printCave(cave)
+printCave(cave)
 
 while not found_void:
   dropSand(cave)
