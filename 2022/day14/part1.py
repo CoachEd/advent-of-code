@@ -139,11 +139,6 @@ for s in l:
 
 #printCave(cave)
 
-# TODO: 
-# Modify program to take an image of a cave
-# See how the cave fills out, then pre-populate SAND !!!
-# pre-populate sand in final output
-
 while not found_void:
   dropSand(cave)
 
