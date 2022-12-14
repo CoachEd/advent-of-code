@@ -7,7 +7,7 @@ print('')
 def countSand(a):
   global min_x, min_y, max_x, max_y
   count = 0
-  start_y = min_y - 4
+  start_y = 0
   end_y = max_y + 3
   start_x = min_x - 3
   end_x = max_x + 3
@@ -46,7 +46,7 @@ def dropSand(a):
         return
 
     if a[y+1][x] != '.' and a[y+1][x-1] != '.' and a[y+1][x+1] != '.':
-      return True
+      return
     
     if a[y+1][x] != '.' and a[y+1][x-1] == '.':
       # move diagonally down left
@@ -147,7 +147,7 @@ for s in l:
 while not found_void:
   dropSand(cave)
 
-#printCave(cave)
+printCave(cave)
 
 print( countSand(cave) )
 # 699 WRONG TOO LOW
