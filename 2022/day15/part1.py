@@ -12,11 +12,13 @@ for line in lines:
   l.append(line.strip())
 
 # TODO:
-# only consider sensors that y value is at most 9 spots above and 9 spots below the
-# line we are checking (i.e., y=2000000)
-# for each sensor in that range, calculate the beacon it sees and where the beacon cannot be for that sensor
-# do the same for each sensor.
-# count up the # symbols on line y=2000000
+# for all sensors
+#  find closest beacon
+#  determine manhattan distance X to that beacon
+#  if the sensor is X away from y=2000000 (above or below):
+#    fill matrix with # where other beacons CANNOT be
+#
+# Add up all #s in line y=2000000
 
 
 
