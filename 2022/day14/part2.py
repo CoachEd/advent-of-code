@@ -25,7 +25,6 @@ def printCave(a):
   end_y = max_y + 3
   start_x = min_x - 3
   end_x = max_x + 3
-
   for y in range(start_y, end_y):
     for x in range(start_x, end_x):
       s += a[y][x]
@@ -37,6 +36,11 @@ def dropSand(a):
   x = sand_x
   y = sand_y
   while True:
+
+    if y == 0 and x == 500 and a[y+1][x-1] == 'O' and a[y+1][x] == 'O' and  a[y+1][x+1] == 'O':
+      a[y][x] = 'O'
+      found_void = True
+      return
 
     if a[y][x] == 'O':
       if y > max_y or x < min_x or x > max_x:
@@ -101,10 +105,19 @@ for s in l:
     if y > max_y:
       max_y = y
 
-cols = max_x + 5
-rows = max_y + 5
+cols = max_x + 20
+rows = max_y + 20
 cave = [ ['.' for x in range(cols)] for y in range(rows) ]
 cave[sand_y][sand_x] = '+'
+
+floor_y = max_y + 2
+floor_x0 = min_x - 10
+floor_x1 = max_x + 13
+min_x = floor_x0
+max_x = floor_x1
+max_y = floor_y
+for i in range(floor_x0,floor_x1):
+  cave[floor_y][i] = '#'
 
 for s in l:
   arr = s.split(' -> ')
@@ -135,9 +148,6 @@ for s in l:
         end = y1
       for y in range(start, end+1):
         cave[y][x0] = '#'
-
-
-printCave(cave)
 
 while not found_void:
   dropSand(cave)
