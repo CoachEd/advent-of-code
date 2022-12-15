@@ -70,7 +70,7 @@ def dropSand(a):
       a[y+1][x] = 'O'
       y = y+1
 
-    printCave(a)
+    #printCave(a)
 
 
 
@@ -105,14 +105,14 @@ for s in l:
     if y > max_y:
       max_y = y
 
-cols = max_x + 20
+cols = max_x + 1000
 rows = max_y + 20
 cave = [ ['.' for x in range(cols)] for y in range(rows) ]
 cave[sand_y][sand_x] = '+'
 
 floor_y = max_y + 2
-floor_x0 = min_x - 10
-floor_x1 = max_x + 13
+floor_x0 = min_x - 120
+floor_x1 = max_x + 170
 min_x = floor_x0
 max_x = floor_x1
 max_y = floor_y
@@ -155,7 +155,7 @@ while not found_void:
 printCave(cave)
 
 print( countSand(cave) )
-# 699 WRONG TOO LOW
+# 995 WRONG TOO LOW
 
 print('')
 end_secs = time.time()
