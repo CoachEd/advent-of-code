@@ -27,8 +27,8 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-row = 10 # TODO: INPUT
-#row = 2000000 # TODO: INPUT
+#row = 10 # TODO: INPUT
+row = 2000000 # TODO: INPUT
 xs = set()
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
@@ -66,6 +66,7 @@ for i in range(len(sensors)):
 print(len(xs))
 # 6262636 TOO HIGH
 # 9584037
+# 5108096 YES!
 
 
 print('')
