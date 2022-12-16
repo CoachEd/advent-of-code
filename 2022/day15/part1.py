@@ -75,7 +75,7 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-row = 10 # input
+row = 2000000 # input
 positions = 0
 seen = []
 for i in range(len(sensors)):
@@ -86,15 +86,32 @@ for i in range(len(sensors)):
   max_y = sy + dist
   if row >= min_y and row <= max_y:
     # consider this sensor
-    d2 = abs(row-sy)
+    d2 = abs(row) - abs(sy)
+    if row < sy:
+      d2 = abs(sy) - abs(row)
+
     lx = sx - dist + d2
     rx = sx + dist - d2
-    for x in range(lx, rx+1):
-      if not (x,row) in beacons and not (x,row) in sensors and not (x,row) in seen:
-        positions += 1
-        seen.append((x,row))
 
-print(positions)
+    start_x = lx
+    end_x = rx
+    count = abs(end_x - start_x) + 1
+    
+    # remove sensors
+    for (x,y) in sensors:
+      if x >= start_x and x <= end_x and y == row:
+        count -= 1
+    
+    # remove beacons
+    for (x,y) in beacons:
+      if x >= start_x and x <= end_x and y == row:
+        count -= 1
+
+    positions += count
+
+print(positions+1)
+# 6262636 TOO HIGH
+# 9584037
   
 
 print('')
