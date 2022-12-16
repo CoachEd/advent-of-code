@@ -78,6 +78,7 @@ for s in l:
 positions = 0
 seen = []
 row = 10 # TODO: INPUT
+points = set()
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
   (bx,by) = beacons[i]
