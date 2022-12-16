@@ -27,7 +27,8 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-bound = 20
+#bound = 4000000 # part 2
+bound = 20 # part 2 sample test
 x0 = 0
 x1 = bound
 y0 = 0
