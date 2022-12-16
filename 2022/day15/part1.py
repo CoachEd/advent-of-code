@@ -75,9 +75,9 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-row = 2000000 # input
 positions = 0
 seen = []
+row = 10 # TODO: INPUT
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
   (bx,by) = beacons[i]
@@ -109,10 +109,10 @@ for i in range(len(sensors)):
 
     positions += count
 
-print(positions+1)
+print(positions)
 # 6262636 TOO HIGH
 # 9584037
-  
+
 
 print('')
 end_secs = time.time()
