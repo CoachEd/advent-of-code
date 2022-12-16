@@ -81,16 +81,13 @@ seen = []
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
   (bx,by) = beacons[i]
-  (points, min_x, max_x, min_y, max_y) = getArea(sx,sy,bx,by)
+  dist = abs(sx-bx) + abs(sy-by)
+  min_y = sy - dist
+  max_y = sy + dist
   if row >= min_y and row <= max_y:
-    # count it
-    for x in range(min_x,max_x+1):
-      if (x,row) in points and not (x,row) in seen:
-        positions += 1
-        seen.append((x,row))
-
-print(positions)
-
+    # consider this sensor
+    print((sy,sx))
+  
   
 
 print('')
