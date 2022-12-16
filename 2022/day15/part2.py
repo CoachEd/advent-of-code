@@ -32,7 +32,8 @@ x0 = 0
 x1 = bound
 y0 = 0
 y1 = bound
-nobeacons = []
+nobeacons = [ None for i in range(10000)] # may need to bump this up
+nb_i = 0
 for row in range(y0, y1+1):
   xs = set()
   #row = 2000000 # TODO: INPUT
@@ -69,7 +70,8 @@ for row in range(y0, y1+1):
             xs.remove(x)
 
       for xx in xs:
-        nobeacons.append((xx,row))
+        nobeacons[nb_i] = (xx,row)
+        nb_i += 1
 
 space = [ [' ' for x in range(x1+1)] for y in range(y1+1)]
 for x in range(x0,x1+1):
