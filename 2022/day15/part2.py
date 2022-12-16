@@ -70,7 +70,8 @@ for row in range(y0, y1+1):
             xs.remove(x)
 
       for xx in xs:
-        nobeacons[nb_i] = (xx,row)
+        if xx >= x0 and xx <= x1:
+          nobeacons[nb_i] = (xx,row)
         nb_i += 1
 
 space = [ [' ' for x in range(x1+1)] for y in range(y1+1)]
