@@ -86,8 +86,15 @@ for i in range(len(sensors)):
   max_y = sy + dist
   if row >= min_y and row <= max_y:
     # consider this sensor
-    print((sy,sx))
-  
+    d2 = abs(row-sy)
+    lx = sx - dist + d2
+    rx = sx + dist - d2
+    for x in range(lx, rx+1):
+      if not (x,row) in beacons and not (x,row) in sensors and not (x,row) in seen:
+        positions += 1
+        seen.append((x,row))
+
+print(positions)
   
 
 print('')
