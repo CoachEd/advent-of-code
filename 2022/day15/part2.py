@@ -27,82 +27,46 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-#bound = 4000000 # part 2
-bound = 20 # part 2 sample test
-x0 = 0
-x1 = bound
-y0 = 0
-y1 = bound
-nobeacons = [ None for i in range(10000)] # may need to bump this up
-nb_i = 0
-for row in range(y0, y1+1):
-  xs = set()
-  #row = 2000000 # TODO: INPUT
-  for i in range(len(sensors)):
-    (sx,sy) = sensors[i]
-    (bx,by) = beacons[i]
-    dist = abs(sx-bx) + abs(sy-by)
-    min_y = sy - dist
-    max_y = sy + dist
-    if row >= min_y and row <= max_y:
-      # consider this sensor
-      d2 = abs(row) - abs(sy)
-      if row < sy:
-        d2 = abs(sy) - abs(row)
+row = 10 # TODO: INPUT
+#row = 2000000 # TODO: INPUT
+xs = set()
+for i in range(len(sensors)):
+  (sx,sy) = sensors[i]
+  (bx,by) = beacons[i]
+  dist = abs(sx-bx) + abs(sy-by)
+  min_y = sy - dist
+  max_y = sy + dist
+  if row >= min_y and row <= max_y:
+    # consider this sensor
+    d2 = abs(row) - abs(sy)
+    if row < sy:
+      d2 = abs(sy) - abs(row)
 
-      lx = sx - dist + d2
-      rx = sx + dist - d2
+    lx = sx - dist + d2
+    rx = sx + dist - d2
 
-      start_x = lx
-      end_x = rx
-      for i in range(start_x, end_x + 1):
-        xs.add(i)
+    start_x = lx
+    end_x = rx
+    for i in range(start_x, end_x + 1):
+      xs.add(i)
 
-      # remove sensors
-      for (x,y) in sensors:
-        if x >= start_x and x <= end_x and y == row:
-          if x in xs:
-            xs.remove(x)
+    # remove sensors
+    for (x,y) in sensors:
+      if x >= start_x and x <= end_x and y == row:
+        if x in xs:
+          xs.remove(x)
 
-      # remove beacons
-      for (x,y) in beacons:
-        if x >= start_x and x <= end_x and y == row:
-          if x in xs:
-            xs.remove(x)
+    # remove beacons
+    for (x,y) in beacons:
+      if x >= start_x and x <= end_x and y == row:
+        if x in xs:
+          xs.remove(x)
 
-      for xx in xs:
-        if xx >= x0 and xx <= x1:
-          nobeacons[nb_i] = (xx,row)
-        nb_i += 1
 
-space = [ [' ' for x in range(x1+1)] for y in range(y1+1)]
-for x in range(x0,x1+1):
-  for y in range(y0,y1+1):
-    if (x,y) in nobeacons:
-      space[y][x] = '#'
-
-for (x,y) in beacons:
-  if x >= x0 and x <= x1 and y >= y0 and y <= x1:
-    space[y][x] = '#'
-for (x,y) in sensors:
-  if x >= x0 and x <= x1 and y >= y0 and y <= x1:
-    space[y][x] = '#'    
-
-"""
-s = ''
-for r in range(y1+1): 
-  for c in range(x1+1):
-    s += space[r][c]
-  s += '\n'
-print(s)
-"""
-
-for r in range(y1+1): 
-  for c in range(x1+1):
-    if space[r][c] == ' ':
-      tf = c * 4000000 + r
-      print(tf)
-      exit()
+print(len(xs))
+# 6262636 TOO HIGH
+# 9584037
+# 5108096 YES!
 
 
 print('')
