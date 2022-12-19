@@ -69,9 +69,14 @@ for row in row_bounds:
   arr0 = np.array([' ']*(bound_max+1))
   for rng in row_bounds[row]:
     (x0,x1) = rng
-    for x2 in range(x0,x1+1):
-      if x2 >= 0 and x2 <= bound_max:
-        arr0[x2] = '#'
+    if x0 < 0:
+      x0 = 0
+    if x1 > bound_max:
+      x1 = bound_max
+    arr0[x0:x1+1] = '#'
+    #for x2 in range(x0,x1+1):
+    #  if x2 >= 0 and x2 <= bound_max:
+    #    arr0[x2] = '#'
   #print(arr0)
   (unique, counts) = np.unique(arr0, return_counts=True)
   d = dict(zip(unique, counts))
