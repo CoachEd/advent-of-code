@@ -27,7 +27,11 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-row = 10 # TODO: INPUT
+bound_min = 0
+#bound_max = 4000000
+bound_max = 20
+space = set()
+
 #row = 2000000 # TODO: INPUT
 xs = set()
 for i in range(len(sensors)):
@@ -36,37 +40,31 @@ for i in range(len(sensors)):
   dist = abs(sx-bx) + abs(sy-by)
   min_y = sy - dist
   max_y = sy + dist
-  if row >= min_y and row <= max_y:
-    # consider this sensor
-    d2 = abs(row) - abs(sy)
-    if row < sy:
-      d2 = abs(sy) - abs(row)
+  for row in range(bound_max+1):
+    if row >= min_y and row <= max_y:
+      # consider this sensor
+      d2 = abs(row) - abs(sy)
+      if row < sy:
+        d2 = abs(sy) - abs(row)
 
-    lx = sx - dist + d2
-    rx = sx + dist - d2
+      lx = sx - dist + d2
+      rx = sx + dist - d2
 
-    start_x = lx
-    end_x = rx
-    for i in range(start_x, end_x + 1):
-      xs.add(i)
+      start_x = lx
+      end_x = rx
+      for i in range(start_x, end_x + 1):
+        if i >= bound_min and i <= bound_max:
+          space.add( (i, row) )
 
-    # remove sensors
-    for (x,y) in sensors:
-      if x >= start_x and x <= end_x and y == row:
-        if x in xs:
-          xs.remove(x)
-
-    # remove beacons
-    for (x,y) in beacons:
-      if x >= start_x and x <= end_x and y == row:
-        if x in xs:
-          xs.remove(x)
-
-
-print(len(xs))
-# 6262636 TOO HIGH
-# 9584037
-# 5108096 YES!
+done = False
+for y in range(bound_max+1):
+  for x in range(bound_max+1):
+    if not (x,y) in space:
+      print( x * 4000000 + y)
+      done = True
+      break
+  if done:
+    break
 
 
 print('')
