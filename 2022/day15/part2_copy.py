@@ -66,9 +66,13 @@ for i in range(len(sensors)):
           #space.add( (k, row) )
 
 print()
-for row in range(len(row_bounds)-1, -1, -1):
+arr0 = np.array([' ']*(bound_max+1))
+#for row in range(len(row_bounds)-1, -1, -1):
+start_row = int(sys.argv[1])
+end_row = int(sys.argv[2])
+for row in range(start_row,end_row+1):
   print('row ' + str(row))
-  arr0 = np.array([' ']*(bound_max+1))
+  arr0.fill(' ')
   for rng in row_bounds[row]:
     (x0,x1) = rng
     if x0 < 0:
@@ -80,10 +84,13 @@ for row in range(len(row_bounds)-1, -1, -1):
     #  if x2 >= 0 and x2 <= bound_max:
     #    arr0[x2] = '#'
   #print(arr0)
-  (unique, counts) = np.unique(arr0, return_counts=True)
-  d = dict(zip(unique, counts))
+  (unique) = np.unique(arr0, return_counts=False)
+  #print(unique)
+  #print(len(unique))
+  #d = dict(zip(unique, counts))
   #print('row: ' + str(row) + ' counts: ' + str(d))
-  if ' ' in d:
+  #if ' ' in d:
+  if len(unique) == 2:
     #print('row ' + str(row) + '   ' + str(d))
     for x in range(0, bound_max+1):
       if arr0[x] == ' ':
