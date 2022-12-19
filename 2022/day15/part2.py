@@ -1,6 +1,7 @@
 import time
 import sys
 from copy import copy, deepcopy
+import numpy as np
 start_secs = time.time()
 print('')
 
@@ -30,7 +31,7 @@ for s in l:
 bound_min = 0
 #bound_max = 4000000
 bound_max = 20
-space = set()
+row_bounds = dict()
 
 xs = set()
 for i in range(len(sensors)):
@@ -39,7 +40,10 @@ for i in range(len(sensors)):
   dist = abs(sx-bx) + abs(sy-by)
   min_y = sy - dist
   max_y = sy + dist
+  print('sensor %s' % str(i))
   for row in range(bound_max+1):
+    if not row in row_bounds:
+      row_bounds[row] = []
     if row >= min_y and row <= max_y:
       # consider this sensor
       d2 = abs(row) - abs(sy)
@@ -54,10 +58,33 @@ for i in range(len(sensors)):
 
       start_x = lx
       end_x = rx
-      for i in range(start_x, end_x + 1):
-        if i >= bound_min and i <= bound_max:
-          space.add( (i, row) )
+      #print('sensor ' + str(i) + '    ' + str((start_x,end_x)) + ' ' + str(row))
+      row_bounds[row].append((start_x,end_x))
+      #for k in range(start_x, end_x + 1):
+      #  if k >= bound_min and k <= bound_max:
+          
+          #space.add( (k, row) )
 
+for row in row_bounds:
+  arr0 = np.array([' ']*(bound_max+1))
+  for rng in row_bounds[row]:
+    (x0,x1) = rng
+    for x2 in range(x0,x1+1):
+      if x2 >= 0 and x2 <= bound_max:
+        arr0[x2] = '#'
+  #print(arr0)
+  (unique, counts) = np.unique(arr0, return_counts=True)
+  d = dict(zip(unique, counts))
+  #print('row: ' + str(row) + ' counts: ' + str(d))
+  if ' ' in d:
+    #print('row ' + str(row) + '   ' + str(d))
+    for x in range(0, bound_max+1):
+      if arr0[x] == ' ':
+        print((x * 4000000 + row))
+        exit()
+  
+
+"""
 done = False
 for y in range(bound_max+1):
   for x in range(bound_max+1):
@@ -67,7 +94,7 @@ for y in range(bound_max+1):
       break
   if done:
     break
-
+"""
 
 print('')
 end_secs = time.time()
