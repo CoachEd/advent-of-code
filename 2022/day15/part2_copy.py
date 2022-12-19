@@ -66,7 +66,7 @@ for i in range(len(sensors)):
           #space.add( (k, row) )
 
 print()
-for row in row_bounds:
+for row in range(len(row_bounds)-1, -1, -1):
   print('row ' + str(row))
   arr0 = np.array([' ']*(bound_max+1))
   for rng in row_bounds[row]:
