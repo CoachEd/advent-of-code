@@ -32,7 +32,6 @@ bound_min = 0
 bound_max = 20
 space = set()
 
-#row = 2000000 # TODO: INPUT
 xs = set()
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
@@ -49,6 +48,9 @@ for i in range(len(sensors)):
 
       lx = sx - dist + d2
       rx = sx + dist - d2
+      if rx < bound_min or lx > bound_max:
+        # skip this sensor
+        break
 
       start_x = lx
       end_x = rx
