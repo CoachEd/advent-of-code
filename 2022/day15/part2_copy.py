@@ -29,8 +29,8 @@ for s in l:
 
 # for each sensor, calculate its areas
 bound_min = 0
-bound_max = 4000000
-#bound_max = 20
+#bound_max = 4000000
+bound_max = 20
 row_bounds = dict()
 
 xs = set()
@@ -41,11 +41,10 @@ for i in range(len(sensors)):
   min_y = sy - dist
   max_y = sy + dist
   print('sensor %s' % str(i))
-  for row in range(bound_max+1):
+  for row in range(min_y,max_y+1):
     if not row in row_bounds:
       row_bounds[row] = []
-    if row >= min_y and row <= max_y:
-      # consider this sensor
+    if row >= 0 and row <= bound_max:
       d2 = abs(row) - abs(sy)
       if row < sy:
         d2 = abs(sy) - abs(row)
@@ -66,10 +65,33 @@ for i in range(len(sensors)):
           #space.add( (k, row) )
 
 print()
+
+# add beacons and sensors
+for (x,y) in beacons:
+  if y >=0 and y <= bound_max:
+    row_bounds[y].append((x,x))
+for (x,y) in sensors:
+  if y >=0 and y <= bound_max:
+    row_bounds[y].append((x,x))
+
+for r in range(len(row_bounds)):
+  a = row_bounds[r]
+  b = []
+  print(r)
+  print(sorted(a))
+  for begin,end in sorted(a):
+    if b and b[-1][1] >= begin - 1:
+      b[-1] = (b[-1][0], end)
+    else:
+      b.append((begin, end))
+  print(b)
+  print()
+  row_bounds[r] = deepcopy(b)
+
 arr0 = np.array([' ']*(bound_max+1))
 #for row in range(len(row_bounds)-1, -1, -1):
-start_row = int(sys.argv[1])
-end_row = int(sys.argv[2])
+start_row = 0
+end_row = 20
 for row in range(start_row,end_row+1):
   print('row ' + str(row))
   arr0.fill(' ')

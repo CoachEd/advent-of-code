@@ -1,6 +1,7 @@
 import time
 import sys
 from copy import copy, deepcopy
+from sympy import Interval, Union
 import numpy as np
 start_secs = time.time()
 print('')
@@ -28,22 +29,19 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-bound_min = 0
-bound_max = 4000000
-#bound_max = 20
-row_bounds = dict()
-
+row = 10 # TODO: INPUT
+#row = 2000000 # TODO: INPUT
+bound_max = 20
+#bound_max = 4000000
 xs = set()
+ranges = dict()
 for i in range(len(sensors)):
   (sx,sy) = sensors[i]
   (bx,by) = beacons[i]
   dist = abs(sx-bx) + abs(sy-by)
   min_y = sy - dist
   max_y = sy + dist
-  print('sensor %s' % str(i))
-  for row in range(bound_max+1):
-    if not row in row_bounds:
-      row_bounds[row] = []
+  for row in range(min_y,max_y+1):
     if row >= min_y and row <= max_y:
       # consider this sensor
       d2 = abs(row) - abs(sy)
@@ -52,56 +50,65 @@ for i in range(len(sensors)):
 
       lx = sx - dist + d2
       rx = sx + dist - d2
-      if rx < bound_min or lx > bound_max:
-        # skip this sensor
-        break
 
+      if row < 0 or row > bound_max:
+        continue
+
+      if not row in ranges:
+        ranges[row] = []
       start_x = lx
       end_x = rx
-      #print('sensor ' + str(i) + '    ' + str((start_x,end_x)) + ' ' + str(row))
-      row_bounds[row].append((start_x,end_x))
-      #for k in range(start_x, end_x + 1):
-      #  if k >= bound_min and k <= bound_max:
-          
-          #space.add( (k, row) )
+      ranges[row].append((start_x, end_x))
 
-print()
-for row in row_bounds:
-  print('row ' + str(row))
-  arr0 = np.array([' ']*(bound_max+1))
-  for rng in row_bounds[row]:
-    (x0,x1) = rng
-    if x0 < 0:
-      x0 = 0
-    if x1 > bound_max:
-      x1 = bound_max
-    arr0[x0:x1+1] = '#'
-    #for x2 in range(x0,x1+1):
-    #  if x2 >= 0 and x2 <= bound_max:
-    #    arr0[x2] = '#'
-  #print(arr0)
-  (unique, counts) = np.unique(arr0, return_counts=True)
-  d = dict(zip(unique, counts))
-  #print('row: ' + str(row) + ' counts: ' + str(d))
-  if ' ' in d:
-    #print('row ' + str(row) + '   ' + str(d))
-    for x in range(0, bound_max+1):
+# add sensors and beacons
+for (x,y) in sensors:
+  if y >= 0 and y <= bound_max:
+    ranges[y].append((x,x))
+for (x,y) in beacons:
+  if y >= 0 and y <= bound_max:
+    ranges[y].append((x,x))
+
+for r in range(0, bound_max+1):
+  a = ranges[r]
+  b = []
+  for begin,end in sorted(a):
+    if b and b[-1][1] >= begin - 1:
+      b[-1][1] = max(b[-1][1], end)
+    else:
+      b.append([begin, end])
+  b = list(map(tuple, b))
+  num_taken = 0
+  for (x,y) in b:
+    if x < 0 and y < 0:
+      continue
+    if x > bound_max and y > bound_max:
+      continue
+    if y < 0:
+      continue  
+    if x > bound_max:
+      continue
+
+    if x < 0:
+      x = 0
+    if y > bound_max:
+      y = bound_max    
+    num_taken += (y - x) + 1
+
+  #print(str(r) + ': ' + str(num_taken))
+  if num_taken == bound_max:
+    # found the row    
+    arr0 = np.array([' ']*(bound_max+1))
+    for (x,y) in ranges[r]:
+      if x < 0:
+        x = 0
+      if y > bound_max:
+        y = bound_max
+      arr0[x:y+1] = '#'
+    for x in range(len(arr0)):
       if arr0[x] == ' ':
-        print((x * 4000000 + row))
-        exit()
-  
+        print(x*4000000+r)
 
-"""
-done = False
-for y in range(bound_max+1):
-  for x in range(bound_max+1):
-    if not (x,y) in space:
-      print( x * 4000000 + y)
-      done = True
-      break
-  if done:
-    break
-"""
+
 
 print('')
 end_secs = time.time()
