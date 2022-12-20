@@ -29,11 +29,13 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-bound_max = 20
-#bound_max = 4000000
+#bound_max = 20
+bound_max = 4000000
 xs = set()
 ranges = dict()
+print('collecting data...')
 for i in range(len(sensors)):
+  print('sensor ' + str(i))
   (sx,sy) = sensors[i]
   (bx,by) = beacons[i]
   dist = abs(sx-bx) + abs(sy-by)
@@ -58,13 +60,8 @@ for i in range(len(sensors)):
       end_x = rx
       ranges[row].append((start_x, end_x))
 
-# add sensors and beacons
-for (x,y) in sensors:
-  if y >= 0 and y <= bound_max:
-    ranges[y].append((x,x))
-for (x,y) in beacons:
-  if y >= 0 and y <= bound_max:
-    ranges[y].append((x,x))
+print('analyzing data...')
+print()
 
 for r in range(0, bound_max+1):
   a = ranges[r]
@@ -92,7 +89,6 @@ for r in range(0, bound_max+1):
       y = bound_max    
     num_taken += (y - x) + 1
 
-  #print(str(r) + ': ' + str(num_taken))
   if num_taken == bound_max:
     # found the row    
     arr0 = np.array([' ']*(bound_max+1))
@@ -105,9 +101,9 @@ for r in range(0, bound_max+1):
     for x in range(len(arr0)):
       if arr0[x] == ' ':
         print(x*4000000+r)
+        print('')
+        end_secs = time.time()
+        print('--- ' + str(end_secs-start_secs) + ' secs ---')
+        exit()
 
-
-
-print('')
-end_secs = time.time()
-print('--- ' + str(end_secs-start_secs) + ' secs ---')
+# CORRECT! 10553942650264
