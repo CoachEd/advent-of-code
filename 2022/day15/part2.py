@@ -29,8 +29,6 @@ for s in l:
   beacons.append((bx,by))
 
 # for each sensor, calculate its areas
-row = 10 # TODO: INPUT
-#row = 2000000 # TODO: INPUT
 bound_max = 20
 #bound_max = 4000000
 xs = set()
