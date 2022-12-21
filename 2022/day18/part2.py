@@ -43,13 +43,6 @@ for s in l:
   max_y = max(max_y, y) + 1
   max_z = max(max_z, z) + 1
 
-air = set()
-for x in range(min_x, max_x+1):
-  for y in range(min_y, max_y+1):
-    for z in range(min_z, max_z+1):
-      if not (x,y,z) in lava:
-        air.add((x,y,z))
-
 count = 0
 for p in lava:
   (x,y,z) = p
@@ -60,19 +53,25 @@ for p in lava:
       count += 1
 
 count2 = 0
-for p in air:
+pocket_points = set()
+for p in lava:
   (x,y,z) = p
   arr = adjLava(x,y,z)
-  air_pocket = True
   for p2 in arr:
     (x1,y1,z1) = p2
     if not (x1,y1,z1) in lava:
-      air_pocket = False
-      break
-  if air_pocket:
-    count2 += 1
-    #print((x,y,z))
+      pocket_points.add((x1,y1,z1))
 
+for p in pocket_points:
+  (x,y,z) = p
+  arr = adjLava(x,y,z)
+  pocket = True
+  for p2 in arr:
+    (x1,y1,z1) = p2
+    if not (x1,y1,z1) in lava:
+      pocket = False
+  if pocket:
+    count2 += 1
 
 print(str(count - (count2 * 6)))
 # 1496 TOO LOW
