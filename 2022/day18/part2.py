@@ -52,8 +52,7 @@ for p in lava:
     if not (x1,y1,z1) in lava:
       count += 1
 
-count2 = 0
-pocket_points = set()
+pocket_points = set() # candidates
 for p in lava:
   (x,y,z) = p
   arr = adjLava(x,y,z)
@@ -62,6 +61,7 @@ for p in lava:
     if not (x1,y1,z1) in lava:
       pocket_points.add((x1,y1,z1))
 
+count2 = 0
 for p in pocket_points:
   (x,y,z) = p
   arr = adjLava(x,y,z)
@@ -75,7 +75,7 @@ for p in pocket_points:
 
 print(str(count - (count2 * 6)))
 # 1496 TOO LOW
-# 
+# 3464 TOO HIGH
 
 
 print('')
