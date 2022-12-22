@@ -14,21 +14,20 @@ def addPockets(x,y,z,pockets):
   if (x,y,z) in lava:
     return False
 
+  olen = len(pockets)
   arr = adjLava(x,y,z)
-  new_pockets = set()
   for (x1,y1,z1) in arr:
     if not (x1,y1,z1) in pockets and not (x1,y1,z1) in lava:
-      new_pockets.add((x1,y1,z1))
+      pockets.add((x1,y1,z1))
 
-  if len(new_pockets) == 0:
+  if len(pockets) == olen:
     # no new pockets can be added
     return True
   
   isPocket = True
-  pockets.update(new_pockets)
-  for (x0,y0,z0) in new_pockets:
+  for (x0,y0,z0) in pockets.copy():
     if (x0,y0,z0) not in lava:
-      isPocket = isPocket and addPockets(x0,y0,z0,pockets.copy())
+      isPocket = isPocket and addPockets(x0,y0,z0,pockets)
 
   return isPocket
 
