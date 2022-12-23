@@ -4,9 +4,10 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
-def getIdx(arr, i, steps):
+def getIdx(arr, i):
   # keywords: circular list, circular array, backward, forward, reverse, steps
   # arr is a list, i is the start index, steps forward or backward (+/-)
+  steps = arr[i]
   newIndex = (i + steps) % len(arr)
   if newIndex < 0:
     newIndex = len(arr) + newIndex
@@ -14,39 +15,37 @@ def getIdx(arr, i, steps):
 
 def moveOne(arr,i):
   n = arr[i]
-  to_i = getIdx(arr, i, n)
   if n == 0:
     # do not move
-    arr[i] = str(0)
-    pass
-  elif n > 0:
-    # moving to the right, add after
+    arr[i] = str(n)
+    return arr
+
+  to_i = getIdx(arr, i)
+  if to_i == i:
+    # landed on the same spot, don't move
+    arr[i] = n
+    return arr
+
+  if n > 0:
+    # moving to the right, insert after
+    arr[i] = ' '
+    to_i += 1
     if to_i >= len(arr):
-      # end of list
       arr.append(str(n))
-      arr.pop(i)
     else:
-      if i < to_i:
-        to_i += 1
-        arr.insert(to_i,str(n))
-        arr.pop(i)
-      else:
-        if to_i < i:
-          to_i += 1
-        arr.insert(to_i,str(n))
-        arr.pop(i+1)
-  elif n < 0:
-    # moving to the left, add before
+      arr.insert(to_i,str(n))
+    arr.remove(' ')
+  else:
+    # moving to the left, insert before
+    arr[i] = ' '
     if to_i == 0:
+      # move to end
       arr.append(str(n))
-      arr.pop(i)
     else:
-      if i < to_i:
-        arr.insert(to_i,str(n))
-        arr.pop(i)
-      else:
-        arr.insert(to_i,str(n))
-        arr.pop(i+1)
+      arr.insert(to_i,str(n))
+    arr.remove(' ')
+
+  return arr
 
 # read in input file
 l=[]
@@ -56,15 +55,19 @@ for line in lines:
   l.append(line.strip())
 
 arr = [ int(x) for x in l]
-i = 0
 
+i = 0
 while i < len(arr):
   n = arr[i]
   if not(type(n) == int or type(n) == float):
     i += 1
     continue
-  moveOne(arr,i)
+  arr = moveOne(arr,i)
   i = 0
+
+
+
+
 
 #print(arr)
 
@@ -88,12 +91,9 @@ while not done:
 
 print(total)
 # 3898 too low
+# 2785 too low
+# 19808 too low
 
-arr = [3,1,3,4]
-print(arr)
-i = 0
-moveOne(arr,i)
-print(arr)
 
 
 print('')
