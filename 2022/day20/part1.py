@@ -23,7 +23,7 @@ def moveOne(arr,i):
   to_i = getIdx(arr, i)
   if to_i == i:
     # landed on the same spot, don't move
-    arr[i] = n
+    arr[i] = str(n)
     return arr
 
   if n > 0:
