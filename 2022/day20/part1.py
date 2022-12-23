@@ -65,10 +65,6 @@ while i < len(arr):
   arr = moveOne(arr,i)
   i = 0
 
-
-
-
-
 #print(arr)
 
 indexes = [1000, 2000, 3000]
@@ -78,7 +74,7 @@ j = 0
 
 total = 0
 seen = 0
-while not done:
+while True:
   i += 1
   j += 1
   if i >= len(arr):
