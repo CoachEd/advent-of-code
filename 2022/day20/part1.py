@@ -19,9 +19,10 @@ def getIdx(arr, i):
 
 def moveOne(arr,i):
   n = arr[i]
+
   if n == 0:
     # do not move
-    arr[i] = str(n)
+    arr[i] = str(arr[i])
     return
 
   to_i = getIdx(arr, i)
@@ -32,7 +33,7 @@ def moveOne(arr,i):
 
   if to_i == after_i:
     # same spot, no change
-    arr[i] = str(n)
+    arr[i] = str(arr[i])
     return
   
   if to_i == 0 or to_i < i:
