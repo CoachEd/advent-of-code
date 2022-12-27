@@ -11,6 +11,10 @@ def getIdx(arr, i):
   newIndex = (i + steps) % len(arr)
   if newIndex < 0:
     newIndex = len(arr) + newIndex
+  if arr[i] > 0:
+    newIndex += 1
+    if newIndex >= len(arr):
+      newIndex = 0
   return newIndex
 
 def moveOne(arr,i):
@@ -18,34 +22,31 @@ def moveOne(arr,i):
   if n == 0:
     # do not move
     arr[i] = str(n)
-    return arr
+    return
 
   to_i = getIdx(arr, i)
-  if to_i == i:
-    # landed on the same spot, don't move
+
+  after_i = i + 1
+  if after_i >= len(arr):
+    after_i = 0
+
+  if to_i == after_i:
+    # same spot, no change
     arr[i] = str(n)
-    return arr
-
-  if n > 0:
-    # moving to the right, insert after
-    arr[i] = ' '
-    to_i += 1
-    if to_i >= len(arr):
-      arr.append(str(n))
-    else:
-      arr.insert(to_i,str(n))
-    arr.remove(' ')
-  else:
-    # moving to the left, insert before
-    arr[i] = ' '
-    if to_i == 0:
-      # move to end
-      arr.append(str(n))
-    else:
-      arr.insert(to_i,str(n))
-    arr.remove(' ')
-
-  return arr
+    return
+  
+  if to_i == 0 or to_i < i:
+    arr.pop(i)
+    arr.insert(to_i, str(n))
+    return
+  
+  if to_i > i:
+    to_i -= 1
+    arr.pop(i)
+    arr.insert(to_i, str(n))
+    return
+  
+  return
 
 # read in input file
 l=[]
@@ -54,7 +55,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-arr = [ int(x) for x in l]
+arr = [ int(x) for x in l ]
 
 i = 0
 while i < len(arr):
@@ -62,29 +63,27 @@ while i < len(arr):
   if not(type(n) == int or type(n) == float):
     i += 1
     continue
-  arr = moveOne(arr,i)
+  moveOne(arr,i)
   i = 0
 
-#print(arr)
-
 indexes = [1000, 2000, 3000]
-done = False
 i = arr.index('0')
 j = 0
-
 total = 0
 seen = 0
 while True:
-  i += 1
-  j += 1
-  if i >= len(arr):
-    i = 0
-  if j in indexes:
+  if j == 1000 or j == 2000 or j == 3000:
     total += int(arr[i])
     seen += 1
     if seen == 3:
       break
+  i += 1
+  j += 1
 
+  if i >= len(arr):
+    i = 0
+
+print()
 print(total)
 # 3898 too low
 # 2785 too low
