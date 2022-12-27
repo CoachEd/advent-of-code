@@ -18,11 +18,13 @@ def getIdx(arr, i):
   return newIndex
 
 def moveOne(arr,i):
-  n = arr[i]
+  i2 = arr[i].index('_')  
+  n = int(arr[i][0:i2])
+  arr[i] = n
 
   if n == 0:
     # do not move
-    arr[i] = str(arr[i])
+    arr[i] = n
     return
 
   to_i = getIdx(arr, i)
@@ -33,18 +35,18 @@ def moveOne(arr,i):
 
   if to_i == after_i:
     # same spot, no change
-    arr[i] = str(arr[i])
+    arr[i] = n
     return
   
   if to_i == 0 or to_i < i:
     arr.pop(i)
-    arr.insert(to_i, str(n))
+    arr.insert(to_i, n)
     return
   
   if to_i > i:
     to_i -= 1
     arr.pop(i)
-    arr.insert(to_i, str(n))
+    arr.insert(to_i, n)
     return
   
   return
@@ -56,19 +58,15 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-arr = [ int(x) for x in l ]
+arr = [ l[i] + '_' + str(i) for i in range(len(l)) ]
+arr2 = arr.copy()
 
-i = 0
-while i < len(arr):
-  n = arr[i]
-  if not(type(n) == int or type(n) == float):
-    i += 1
-    continue
-  moveOne(arr,i)
-  i = 0
+for s in arr2:
+  i = arr.index(s)
+  moveOne(arr, i)
 
 indexes = [1000, 2000, 3000]
-i = arr.index('0')
+i = arr.index(0)
 j = 0
 total = 0
 seen = 0
