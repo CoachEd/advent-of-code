@@ -67,6 +67,7 @@ for s in arr2:
 
 indexes = [1000, 2000, 3000]
 i = arr.index(0)
+
 j = 0
 total = 0
 seen = 0
@@ -87,8 +88,6 @@ print(total)
 # 3898 too low
 # 2785 too low
 # 19808 too low
-
-
 
 print('')
 end_secs = time.time()
