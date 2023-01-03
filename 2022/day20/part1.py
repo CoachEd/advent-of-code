@@ -7,46 +7,47 @@ print('')
 def getIdx(arr, i):
   # keywords: circular list, circular array, backward, forward, reverse, steps
   # arr is a list, i is the start index, steps forward or backward (+/-)
+  # if positive, insert after
+  # if negative, insert before
   steps = arr[i]
   newIndex = (i + steps) % len(arr)
   if newIndex < 0:
     newIndex = len(arr) + newIndex
-  if arr[i] > 0:
-    newIndex += 1
-    if newIndex >= len(arr):
-      newIndex = 0
   return newIndex
 
 def moveOne(arr,i):
   i2 = arr[i].index('_')  
-  n = int(arr[i][0:i2])
+  n = int(arr[i][0:i2]) # n value
+
   arr[i] = n
+  to_i = getIdx(arr, i)
+  arr[i] = 'ORIG'
 
   if n == 0:
     # do not move
     arr[i] = n
     return
 
-  to_i = getIdx(arr, i)
-
-  after_i = i + 1
-  if after_i >= len(arr):
-    after_i = 0
-
-  if to_i == after_i:
-    # same spot, no change
+  if to_i == i:
+    # landed on same spot
     arr[i] = n
     return
-  
-  if to_i == 0 or to_i < i:
-    arr.pop(i)
-    arr.insert(to_i, n)
+
+  if n > 0:
+    # insert after
+    if to_i == len(arr)-1:
+      # if destination is last element, just append
+      arr.append(n)
+    else:
+      to_i += 1
+      arr.insert(to_i,n)
+    arr.pop(arr.index('ORIG'))
     return
-  
-  if to_i > i:
-    to_i -= 1
-    arr.pop(i)
+
+  if n < 0:
+    # insert before
     arr.insert(to_i, n)
+    arr.pop(arr.index('ORIG'))
     return
   
   return
@@ -72,8 +73,8 @@ j = 0
 total = 0
 seen = 0
 while True:
-  if j == 1000 or j == 2000 or j == 3000:
-    total += int(arr[i])
+  if j in indexes:
+    total += arr[i]
     seen += 1
     if seen == 3:
       break
@@ -88,6 +89,7 @@ print(total)
 # 3898 too low
 # 2785 too low
 # 19808 too low
+# 27130 incorrect
 
 print('')
 end_secs = time.time()
