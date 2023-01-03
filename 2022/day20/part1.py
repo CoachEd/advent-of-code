@@ -91,11 +91,6 @@ print(total)
 # 19808 too low
 # 27130 incorrect
 
-
-arr = [0,1,2,3,4]
-print(arr[0 % len(arr)])
-
-
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
