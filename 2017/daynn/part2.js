@@ -5,6 +5,7 @@ const ac = require('../../js/aocCommon');
 const go = async () => {
   const startTime = Date.now();
   const sarr = await ac.getInputArray('inp.txt');
+
   console.log(sarr);
 
   const endTime = Date.now();
