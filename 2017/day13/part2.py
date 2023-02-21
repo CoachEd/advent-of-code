@@ -1,11 +1,53 @@
 import time
 import sys
 from copy import copy, deepcopy
+from itertools import cycle, islice, tee
 start_secs = time.time()
 print('')
 
+def get_sequence(start_i, n, direction):
+  arr = []
+  for k in range(0, n):
+    arr.append(k)
+  for j in range(n-2, 0, -1):
+    arr.append(j)
+  pool = cycle(arr)
+  arr = []
+  for i in range(100):
+    arr.append(next(pool))
+
+  first_occurence = arr.index(start_i)
+  second_occurrence = arr.index(start_i, first_occurence + 1)
+  if direction == 'd':
+    return arr[first_occurence:]
+  else:
+    return arr[second_occurrence:]
+
+#arr = get_sequence(6, 7, 'u')
 
 # SOLUTION
+def nth(iterable, n, default=None):
+  return next(islice(iterable, n, None), default)
+
+def create_pool(n):
+  arr = []
+  for k in range(0, n):
+    arr.append(k)
+  for j in range(n-2, 0, -1):
+    arr.append(j)
+  pool = cycle(arr)
+  return pool
+
+"""
+p = create_pool(5)
+p, p1 = tee(p)
+print( nth(p1, 0) )
+
+p, p1 = tee(p)
+print( nth(p1, 1) )
+"""
+
+pools = dict()
 
 def move_scanners(d1, direction1, pos1, sz1):
   for snum in d1:
@@ -56,68 +98,52 @@ for s in l:
 for e in d:
   d[e][0] = 'S'
 
+#print(d) # initial
 d_orig = deepcopy(d)
-direction_orig = deepcopy(direction)
 pos_orig = deepcopy(pos)
+direction_orig = deepcopy(direction)
 
-max_delay = 1000000
-delays = []
+delay = 1000000
+for i in range(1, delay + 1):
+  # init dicts
+  if i % 100 == 0:
+    print(i)
+  d = deepcopy(d_orig)
+  pos= deepcopy(pos_orig)
+  direction = deepcopy(direction_orig)
 
-# remove delays that won't work
-print('getting sizes...')
-sizes = []
-for sz1 in sz:
-  sizes.append(sz[sz1])
-
-print('getting delays...')
-for n in range(max_delay):
-  keep = True
-  offset = 0
-  for sz1 in sizes:
-    factor = sz1 + (sz1 - 1) - 1 + offset
-    offset += 1
-    if n % factor == 0:
-      keep = False
-      break
-  if keep:
-    delays.append(n)
-
-print('trying delays...')
-
-for delay in delays:
-  #print(delay)
-  #d = deepcopy(d_orig)
-
-  for e in d:
-    d[e][pos[e]] = ' '
-    d[e][0] = 'S'
-    direction[e] = 'd'
-    pos[e] = 0
-
-  good = True
-
-  # delay
-  for i in range(delay):
+  for x in range(i): 
     move_scanners(d, direction, pos, sz)
-
-  for snum in range(last_snum+1):
-    if not snum in d:
-      move_scanners(d, direction, pos, sz)
-      continue
-
-    if pos[snum] != 0:
-      move_scanners(d, direction, pos, sz)
-      continue      
-
-    if pos[snum] == 0:
-      # caught
-      good = False
-      break
   
-  if good:
-    print('')
-    print(delay)
+  found = True
+  for snum in d:
+    pos1 = pos[snum]
+    dir1 = direction[snum]
+    sz1 = sz[snum]
+    key = str(pos1) + ':' + str(sz1) + ':' + dir1
+    if not key in pools:
+      pools[key] = get_sequence(pos1, sz1, dir1)
+    pool = pools[key]
+
+    if snum == 0:
+      if pos1 == 0:
+        found = False
+        break
+      else:
+        continue
+
+    future_pos = pool[snum]
+    if future_pos == 0:
+      found = False
+      break
+
+  if found:
+    print()
+    print(i)
     break
+  else:
+    #print('not found')
+    pass
 
 
 print('')
