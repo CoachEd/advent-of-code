@@ -98,13 +98,38 @@ for s in l:
 for e in d:
   d[e][0] = 'S'
 
+factors = set()
+for e in sz:
+  factor = (sz[e] - 1) * 2 + e
+  #print(str(e) + ': ' + str(sz[e]) + '   factor: ' + str(factor))
+  factors.add(factor)
+
+#print()
+#print(factors)
+
+print('getting valid delays...')
+max_delay = 1000000
+delays = [ n for n in range(max_delay)]
+for i in range(max_delay):
+  remove = False
+  for f in factors:
+    if i % f == 0:
+      remove = True
+      break
+  if remove:
+    delays.remove(i)
+#print(len(delays))
+#sys.exit(99)
+
 #print(d) # initial
 d_orig = deepcopy(d)
 pos_orig = deepcopy(pos)
 direction_orig = deepcopy(direction)
 
-delay = 1000000
-for i in range(1, delay + 1):
+#delay = 1000000
+#for i in range(1, delay + 1):
+print('running...')
+for i in delays:
   # init dicts
   if i % 100 == 0:
     print(i)
