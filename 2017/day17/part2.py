@@ -1,41 +1,67 @@
 import time
 import sys
+from LinkedList import LinkedList
 from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
-def addOne(n):
-  global arr
+def setPos():
   global steps
   global pos
-  if len(arr) == 1:
-    arr.append(n)
+  global nodes
+
+  num_nodes = len(nodes)
+
+  if num_nodes == 1:
     pos = 1
   else:
-    rem = steps % len(arr)
+    rem = steps % num_nodes
     new_pos = pos + rem + 1
-    if new_pos < len(arr):
+    if new_pos < num_nodes:
       pos = new_pos
     else:
-      pos = new_pos - len(arr)
-    arr.insert(pos, n)
+      pos = new_pos - num_nodes
 
 steps = 359 # real
 #steps = 3 # sample
-pos = 0
-arr = [0]
 
-insertions = 2017
+ll = LinkedList()
+node = ll.insertAfter(ll.head, 0)
+
+# part1
+#insertions = 2017
+#find_num = 2017
+
+# part2
+insertions = 50000000
+find_num = 0
+
+#insertions = 10
+count = 0
 for i in range(1, insertions + 1):
-  addOne(i)
+  p = node
+  for j in range(steps):
+    p = p.next
+  node = ll.insertAfter(p, i)
+  count += 1
+  if count % 1000000 == 0:
+    print(count)
+  
+  #ll.printLL()
+  #print()
 
-i = arr.index(2017)
-if i == len(arr) - 1:
-  i = 0
-else:
-  i += 1
+curr = ll.head
+while curr.data != find_num:
+  curr = curr.next
 
-print(arr[i])
+curr = curr.next
+print(curr.data)
+
+
+
+
+
+
 
 print('')
 end_secs = time.time()
