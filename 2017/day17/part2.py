@@ -55,10 +55,11 @@ while curr.data != find_num:
   curr = curr.next
 
 curr = curr.next
+print()
 print(curr.data)
 
-
-
+# 39479736
+# wow, took 2865 secs !
 
 
 
