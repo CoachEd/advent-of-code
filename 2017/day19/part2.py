@@ -57,6 +57,7 @@ def done(y,x,seen,a):
 # SOLUTION
 # read in input file
 max_cols = 0
+steps = 0
 l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
@@ -97,6 +98,7 @@ ns = 's'
 ew = ''
 while True:
   c = arr[y][x]
+  steps += 1
   if c.isalpha():
     letters += c
     (y1, x1) = next_pos(y,x,ns,ew)
@@ -114,7 +116,7 @@ while True:
   if arr[y][x] == ' ':
     break
 
-print(letters)
+print(steps)
 
 print('')
 end_secs = time.time()
