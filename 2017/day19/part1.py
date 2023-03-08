@@ -86,6 +86,7 @@ while True:
     ns = ''
     (y1, x1) = next_pos(y,x,ns,ew)
   elif c == '+':
+   # TODO
    pass    
 
   (prev_y, prev_x) = (y, x)
