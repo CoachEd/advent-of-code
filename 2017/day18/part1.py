@@ -10,16 +10,12 @@ set X Y sets register X to the value of Y.
 add X Y increases register X by the value of Y.
 mul X Y sets register X to the result of multiplying the value contained in register X by the value of Y.
 mod X Y sets register X to the remainder of dividing the value contained in register X by the value of Y (that is, it sets X to the result of X modulo Y).
-
 rcv X recovers the frequency of the last sound played, but only when the value of X is not zero. (If it is zero, the command does nothing.)
-
 jgz X Y jumps with an offset of the value of Y, but only if the value of X is greater than zero. (An offset of 2 skips the next instruction, an offset of -1 jumps to the previous instruction, and so on.)
 """
-def run_command(c):
+def run_command(pos, commands, registers):
   global frequency
-  global registers
-  global pos
-  arr = c.split(' ')
+  arr = commands[pos].split(' ')
 
   cmd = arr[0]
   X = arr[1]
@@ -72,19 +68,18 @@ def run_command(c):
     if X.isalpha():
       X = registers[X]
     else:
-      X = int(X)    
-
+      X = int(X)
     if Y.isalpha():
       Y = registers[Y]
     else:
       Y = int(Y)
-
-    if X != 0:
+    if X > 0:
       pos += Y
-      return
+      return pos
   else:
     print('invalid instruction: ' + cmd)
   pos += 1
+  return pos
 
 # SOLUTION
 # read in input file
@@ -102,8 +97,7 @@ for c in 'abcdefghijklmnopqrstuvwxyz':
   registers[c] = 0
 
 while pos < len(l):
-  c = l[pos]
-  run_command(c)
+  pos = run_command(pos, l, registers)
 
 print('')
 end_secs = time.time()
