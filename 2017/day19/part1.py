@@ -4,6 +4,24 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
+def next_pos_t(y,x,ns,ew,a):
+  if len(ns) > 0:
+    # can only go either e or w
+    (ry, rx) = (y, x+1)
+    (ly, lx) = (y, x-1)
+    if valid(ry, rx, a) and a[ry][rx] != ' ':
+      return ( (ry, rx, '', 'e') )
+    if valid(ly, lx, a) and a[ly][lx] != ' ':
+      return ( (ly, lx, '', 'w') )
+  elif len(ew) > 0:
+    # can only go n or s
+    (ty, tx) = (y-1, x)
+    (by, bx) = (y+1, x)
+    if valid(ty,tx,a) and a[ty][tx] != ' ':
+      return( (ty, tx, 'n', '') )
+    if valid(by, bx, a) and a[by][bx] != ' ':
+      return ( (by, bx, 's', '') )
+
 def next_pos(y,x,ns,ew):
   if len(ns) > 0:
     if ns == 'n':
@@ -21,14 +39,14 @@ def valid(y,x,a):
     return False
   return True
 
-def done(y,x,py,px,a):
+def done(y,x,seen,a):
   (y0, x0) = (y, x+1)
   (y1, x1) = (y, x-1)
   (y2, x2) = (y+1, x)
   (y3, x3) = (y-1, x)
   a = [ (y0, x0), (y1, x1), (y2, x2), (y3, x3)]
   for (ytemp, xtemp) in a:
-    if ytemp == py and xtemp == px:
+    if (ytemp, xtemp) in seen:
       continue
     if valid(ytemp, xtemp, a):
       if arr[ytemp][xtemp] != ' ':
@@ -53,12 +71,14 @@ for y in range(len(l)):
     arr[y][x] = l[y][x]
 
 # print - testing
+"""
 s = ''
 for y in range(len(arr)):
   for x in range(len(arr[y])):
     s += arr[y][x]
   s += '\n'
 print(s)
+"""
 
 # get starting point
 y = 0
@@ -68,6 +88,7 @@ for i in range(len(l[0])):
     x = i
     break
 
+seen = set()
 letters = ''
 x1 = 0
 y1 = 0
@@ -80,21 +101,20 @@ while True:
     letters += c
     (y1, x1) = next_pos(y,x,ns,ew)
   elif c == '|':
-    ew = ''
     (y1, x1) = next_pos(y,x,ns,ew)
   elif c == '-':
-    ns = ''
     (y1, x1) = next_pos(y,x,ns,ew)
   elif c == '+':
-   # TODO
-   pass    
+   (y1, x1, ns, ew) = next_pos_t(y,x,ns,ew,arr)
 
   (prev_y, prev_x) = (y, x)
   x = x1
   y = y1
-  if done(y, x, prev_y, prev_x, arr):
+
+  if arr[y][x] == ' ':
     break
 
+print(letters)
 
 print('')
 end_secs = time.time()
