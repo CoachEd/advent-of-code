@@ -4,6 +4,36 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
+# TODO: make sure this works with 2D array, not array of strings
+def print_square(square):
+  s = ''
+  for y in range(len(square)):
+    for x in range(len(square[y])):
+      s += square[y][x]
+    s += '\n'
+  print(s)
+
+def breakup_image(image):
+  len1 = len(image)
+  sz = None
+  if len1 % 2 == 0:
+    sz = 2
+  elif len1 % 3 == 0:
+    sz = 3
+  arr = []
+  arr_temp = [ [ ' ' for i in range(sz) ] for x in range(sz) ]
+  for y in range(0,len1, sz):
+    for x in range(0,len1,sz):
+      y0 = 0
+      for y1 in range(y,y+sz):
+        x0 = 0
+        for x1 in range(x,x+sz):
+          arr_temp[y0][x0] = image[y1][x1]
+          x0 += 1
+        y0 += 1
+      arr.append(deepcopy(arr_temp))
+  return arr
+
 def get_pattern(a):
   global patterns, rules
 
@@ -86,16 +116,26 @@ for s in l:
   patterns.append(a[1].split('/'))
 
 # starting image
-image = '.#./..#/###'.split('/')
+arr = '.#./..#/###'.split('/')
+image = [ [ ' ' for i in range(len(arr)) ] for j in range(len(arr)) ]
+for y in range(len(arr)):
+  for x in range(len(arr[y])):
+    image[y][x] = arr[y][x]
 
-# TEST
-p = get_pattern(image)
-print(p)
+print_square(image)
 
-iterations = 5
+# TODO LEFT OFF HERE - image is now 2D array
+iterations = 2 # 5
+print(image)
+images = breakup_image(image)
 for i in range(iterations):
-  pass
+  new_squares = [ None for i in range(len(images)) ]
+  for i in range(len(images)):
+    square = images[i]
+    new_squares[i] = deepcopy(get_pattern(square))
+  images = new_squares
 
+  print('next')
 
 
 
