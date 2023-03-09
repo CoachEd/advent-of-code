@@ -103,6 +103,7 @@ def is_match(a, r):
 # read in input file
 rules=[]
 patterns=[]
+temp_patterns=[]
 l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
@@ -113,7 +114,17 @@ for s in l:
   s = s.replace(' ','').replace('=>',',')
   a = s.split(',')
   rules.append(a[0].split('/'))
-  patterns.append(a[1].split('/'))
+  temp_patterns.append(a[1].split('/'))
+
+patterns = [ None for i in range(len(temp_patterns))]
+for i in range(len(temp_patterns)):
+  p = temp_patterns[i]
+  sz = len(p)
+  arr1 = [ [ '' for i in range(sz) ] for x in range(sz) ]
+  for y in range(len(p)):
+    for x in range(len(p[y])):
+      arr1[y][x] = p[y][x]
+  patterns[i] = arr1
 
 # starting image
 arr = '.#./..#/###'.split('/')
@@ -122,22 +133,24 @@ for y in range(len(arr)):
   for x in range(len(arr[y])):
     image[y][x] = arr[y][x]
 
-print_square(image)
-
-# TODO LEFT OFF HERE - image is now 2D array
-iterations = 2 # 5
-print(image)
-images = breakup_image(image)
+# TODO LEFT OFF HERE
+iterations = 5
+# breaks up image into 2x2 or 3x3 images. array is in order 
+# starting from top row 0, left-to-right , top-to-bottom
+# for example, if 3x3 images, then dimension (x) of overall square: x = len(images) / 3
+images = breakup_image(image) 
 for i in range(iterations):
   new_squares = [ None for i in range(len(images)) ]
+  sz = None
   for i in range(len(images)):
     square = images[i]
-    new_squares[i] = deepcopy(get_pattern(square))
-  images = new_squares
-
-  print('next')
-
-
+    pattern = get_pattern(square)
+    pattern_sz = len(pattern)
+    new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
+  
+  print(pattern_sz) # TODO: useful for combining squares at the end for next iteration?
+  # TODO: combine all in new_squares, logically, top-down, left-right to get images
+  # images = combine(new_squares)  # TODO
 
 print('')
 end_secs = time.time()
