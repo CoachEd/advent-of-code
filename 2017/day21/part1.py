@@ -128,13 +128,16 @@ for i in range(len(temp_patterns)):
 
 # starting image
 arr = '.#./..#/###'.split('/')
+
+arr = '#..#/..../..../#..#'.split('/') # TEST
+
 image = [ [ ' ' for i in range(len(arr)) ] for j in range(len(arr)) ]
 for y in range(len(arr)):
   for x in range(len(arr[y])):
     image[y][x] = arr[y][x]
 
 # TODO LEFT OFF HERE
-iterations = 5
+iterations = 1
 # breaks up image into 2x2 or 3x3 images. array is in order 
 # starting from top row 0, left-to-right , top-to-bottom
 # for example, if 3x3 images, then dimension (x) of overall square: x = len(images) / 3
@@ -148,6 +151,7 @@ for i in range(iterations):
     pattern_sz = len(pattern)
     new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
   
+  print(new_squares)
   print(pattern_sz) # TODO: useful for combining squares at the end for next iteration?
   # TODO: combine all in new_squares, logically, top-down, left-right to get images
   # images = combine(new_squares)  # TODO
