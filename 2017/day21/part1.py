@@ -1,10 +1,26 @@
 import time
 import sys
+import math
 from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
-# TODO: make sure this works with 2D array, not array of strings
+
+def combine(squares, N):
+  # squares is an array of 2D squares
+  # N is the dimension while combining the above squares; N=2... 2x2 squares
+  square_sz = len(squares[0])
+  final_square_sz = square_sz * N
+  image = [ [ ' ' for i in range(final_square_sz) ] for j in range(final_square_sz) ]
+  for sq in squares:
+    # TODO:
+    # add sq to right position in 2D image array
+    # square_sz and final_square_sz will help here.
+    pass
+
+  # return a 2D array of the combined squares
+  pass
+
 def print_square(square):
   s = ''
   for y in range(len(square)):
@@ -148,13 +164,11 @@ for i in range(iterations):
   for i in range(len(images)):
     square = images[i]
     pattern = get_pattern(square)
-    pattern_sz = len(pattern)
     new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
   
-  print(new_squares)
-  print(pattern_sz) # TODO: useful for combining squares at the end for next iteration?
-  # TODO: combine all in new_squares, logically, top-down, left-right to get images
-  # images = combine(new_squares)  # TODO
+  N = math.sqrt(len(new_squares)) # e.g., if result is N, then arrange squares in 2x2
+  # TODO: take all squares in new_squares, arrange them in N x N, 2D array, assign it to images
+  # images = combine(new_squares, N)  # TODO
 
 print('')
 end_secs = time.time()
