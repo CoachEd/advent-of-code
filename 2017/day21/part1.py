@@ -79,6 +79,7 @@ def get_pattern(a):
   return []
 
 def is_match(a, r):
+  # TODO: This isn't working quite right. It works for some cases, but not all
   len1 = len(a)
   if len1 == 3:
     # no rotation
@@ -160,10 +161,10 @@ for i in range(len(temp_patterns)):
   patterns[i] = arr1
 
 # starting image
-arr = '.#./..#/###'.split('/')
-#arr = '#..#/..../..../#..#'.split('/') # TEST one iter
-
-#arr = '#..#/..../..../#..#'.split('/') # TEST
+#arr = '.#./..#/###'.split('/')  # OK
+arr = '.#./#../###'.split('/') # TODO: DOES NOT WORK, but it should produce the same result as above
+#arr = '#../#.#/##.'.split('/') # OK
+#arr = '###/..#/.#.'.split('/') # TODO: DOES NOT WORK, but it should produce the same result as above
 
 image = [ [ ' ' for i in range(len(arr)) ] for j in range(len(arr)) ]
 for y in range(len(arr)):
@@ -172,23 +173,26 @@ for y in range(len(arr)):
 
 # TODO LEFT OFF HERE
 iterations = 2
+iterations = 1 # TEST
 # breaks up image into 2x2 or 3x3 images. array is in order 
 # starting from top row 0, left-to-right , top-to-bottom
 # for example, if 3x3 images, then dimension (x) of overall square: x = len(images) / 3
 for t in range(iterations):
   images = breakup_image(image)
+
+
   new_squares = [ None for k in range(len(images)) ]
   sz = None
   for i in range(len(images)):
     square = images[i]
-    pattern = get_pattern(square)
+    pattern = get_pattern(square)  # TODO: this is not working for some cases (see above TODO)
     new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
 
   N = int(math.sqrt(len(new_squares))) # e.g., if result is N, then arrange squares in 2x2
   # TODO: take all squares in new_squares, arrange them in N x N, 2D array, assign it to images
   image = combine(new_squares, N)  # TODO
 
-#print_square(image)
+print_square(image)
 print( count_on(image) )
 
 print('')
