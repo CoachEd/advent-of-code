@@ -9,17 +9,26 @@ print('')
 def combine(squares, N):
   # squares is an array of 2D squares
   # N is the dimension while combining the above squares; N=2... 2x2 squares
+  N = int(N)
   square_sz = len(squares[0])
-  final_square_sz = square_sz * N
+  final_square_sz = int(square_sz * N)
   image = [ [ ' ' for i in range(final_square_sz) ] for j in range(final_square_sz) ]
-  for sq in squares:
-    # TODO:
-    # add sq to right position in 2D image array
-    # square_sz and final_square_sz will help here.
-    pass
 
-  # return a 2D array of the combined squares
-  pass
+  row = 0
+  col = 0
+  for i in range(len(squares)):
+    sq = squares[i]
+    for y in range(len(sq)):
+      for x in range(len(sq[y])):
+        (iy,ix) = (y + row,col + x)
+        image[iy][ix] = sq[y][x]
+
+    col += square_sz
+    if i != 0 and ((i + 1) % N == 0):
+      row += square_sz
+      col = 0 
+  
+  return image
 
 def print_square(square):
   s = ''
@@ -28,6 +37,14 @@ def print_square(square):
       s += square[y][x]
     s += '\n'
   print(s)
+
+def count_on(square):
+  count = 0
+  for y in range(len(square)):
+    for x in range(len(square[y])):
+      if (square[y][x]) == '#':
+        count += 1
+  return(count)
 
 def breakup_image(image):
   len1 = len(image)
@@ -144,8 +161,9 @@ for i in range(len(temp_patterns)):
 
 # starting image
 arr = '.#./..#/###'.split('/')
+#arr = '#..#/..../..../#..#'.split('/') # TEST one iter
 
-arr = '#..#/..../..../#..#'.split('/') # TEST
+#arr = '#..#/..../..../#..#'.split('/') # TEST
 
 image = [ [ ' ' for i in range(len(arr)) ] for j in range(len(arr)) ]
 for y in range(len(arr)):
@@ -153,22 +171,25 @@ for y in range(len(arr)):
     image[y][x] = arr[y][x]
 
 # TODO LEFT OFF HERE
-iterations = 1
+iterations = 2
 # breaks up image into 2x2 or 3x3 images. array is in order 
 # starting from top row 0, left-to-right , top-to-bottom
 # for example, if 3x3 images, then dimension (x) of overall square: x = len(images) / 3
-images = breakup_image(image) 
-for i in range(iterations):
-  new_squares = [ None for i in range(len(images)) ]
+for t in range(iterations):
+  images = breakup_image(image)
+  new_squares = [ None for k in range(len(images)) ]
   sz = None
   for i in range(len(images)):
     square = images[i]
     pattern = get_pattern(square)
     new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
-  
-  N = math.sqrt(len(new_squares)) # e.g., if result is N, then arrange squares in 2x2
+
+  N = int(math.sqrt(len(new_squares))) # e.g., if result is N, then arrange squares in 2x2
   # TODO: take all squares in new_squares, arrange them in N x N, 2D array, assign it to images
-  # images = combine(new_squares, N)  # TODO
+  image = combine(new_squares, N)  # TODO
+
+#print_square(image)
+print( count_on(image) )
 
 print('')
 end_secs = time.time()
