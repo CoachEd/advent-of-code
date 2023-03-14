@@ -37,7 +37,7 @@ registers = dict()
 for c in 'abcdefgh':
   registers[c] = 0
 
-# debug switch
+# debug mode
 registers['a'] = 1
 
 # read in input file
