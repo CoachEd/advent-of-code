@@ -5,6 +5,39 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
 
+def rotate(a):
+  a2 = deepcopy(a)
+  x2 = len(a2) - 1
+  for y in range(len(a2)):
+    for x in range(len(a2[y])):
+      y2 = x
+      a[y2][x2] = a2[y][x]
+    x2 -= 1
+
+def flip(a):
+  # flips top to bottom
+  n = len(a)
+  mid = n // 2
+  rem = n % 2
+  temp_col = [ None for i in range(n) ]
+  ry = None
+  ly = None
+  if rem == 0:
+    ry = mid
+    ly = mid - 1
+  else:
+    ry = mid + 1
+    ly = mid - 1
+
+  while ly >= 0:
+    for x in range(n):
+      temp_col[x] = a[ly][x]
+    for x in range(n):
+      a[ly][x] = a[ry][x]
+    for x in range(n):
+      a[ry][x] = temp_col[x]      
+    ly -= 1
+    ry += 1
 
 def combine(squares, N):
   # squares is an array of 2D squares
@@ -80,59 +113,32 @@ def get_pattern(a):
 
 def is_match(a, r):
   # TODO: This isn't working quite right. It works for some cases, but not all
-  len1 = len(a)
-  if len1 == 3:
-    # no rotation
-    t1 = (r[0][0], r[0][1], r[0][2], r[1][0], r[1][1], r[1][2], r[2][0], r[2][1], r[2][2])
-    t2 = (a[0][0], a[0][1], a[0][2], a[1][0], a[1][1], a[1][2], a[2][0], a[2][1], a[2][2])
-    if t1 == t2:
+  sz = len(a)
+  rarr = [ [ '' for x in range(sz) ] for y in range(sz) ]
+  for y in range(len(r)):
+    for x in range(len(r[y])):
+      rarr[y][x] = r[y][x]
+
+  p = deepcopy(a)  # pattern
+  if p == rarr:
+    return True
+  
+  for i in range(3):
+    rotate(p)
+    if p == rarr:
       return True
     
-    # rotate a one turn
-    t1 = (r[0][0], r[0][1], r[0][2], r[1][0], r[1][1], r[1][2], r[2][0], r[2][1], r[2][2])
-    t2 = (a[2][0], a[1][0], a[0][0], a[2][1], a[1][1], a[0][1], a[2][2], a[1][2], a[0][2])
-    if t1 == t2:
+  flip(p)
+  if p == rarr:
+    return True
+
+  for i in range(3):
+    rotate(p)
+    if p == rarr:
       return True
 
-    # rotate a one turn
-    t1 = (r[0][0], r[0][1], r[0][2], r[1][0], r[1][1], r[1][2], r[2][0], r[2][1], r[2][2])
-    t2 = (a[2][2], a[2][1], a[2][0], a[1][2], a[1][1], a[1][0], a[0][2], a[0][1], a[0][0])
-    if t1 == t2:
-      return True
-    
-    # rotate a one turn
-    t1 = (r[0][0], r[0][1], r[0][2], r[1][0], r[1][1], r[1][2], r[2][0], r[2][1], r[2][2])
-    t2 = (a[0][2], a[1][2], a[2][2], a[0][1], a[1][1], a[2][1], a[0][0], a[1][0], a[2][0])
-    if t1 == t2:
-      return True  
-    
-    return False
-  elif len1 == 2:
-    # no rotation
-    t1 = (r[0][0], r[0][1], r[1][0], r[1][1])
-    t2 = (a[0][0], a[0][1], a[1][0], a[1][1])
-    if t1 == t2:
-      return True
-    
-    # rotate one turn
-    t1 = (r[0][0], r[0][1], r[1][0], r[1][1])
-    t2 = (a[1][0], a[0][0], a[1][1], a[0][1])
-    if t1 == t2:
-      return True  
-    
-    # rotate one turn
-    t1 = (r[0][0], r[0][1], r[1][0], r[1][1])
-    t2 = (a[1][1], a[1][0], a[0][1], a[0][0])
-    if t1 == t2:
-      return True    
+  return False  
 
-    # rotate one turn
-    t1 = (r[0][0], r[0][1], r[1][0], r[1][1])
-    t2 = (a[0][1], a[1][1], a[0][0], a[1][0])
-    if t1 == t2:
-      return True    
-  else:
-    print('error! no match for length: ' + str(len1))
 
 # read in input file
 rules=[]
@@ -161,38 +167,30 @@ for i in range(len(temp_patterns)):
   patterns[i] = arr1
 
 # starting image
-#arr = '.#./..#/###'.split('/')  # OK
-arr = '.#./#../###'.split('/') # TODO: DOES NOT WORK, but it should produce the same result as above
-#arr = '#../#.#/##.'.split('/') # OK
-#arr = '###/..#/.#.'.split('/') # TODO: DOES NOT WORK, but it should produce the same result as above
+arr = '.#./..#/###'.split('/')
 
 image = [ [ ' ' for i in range(len(arr)) ] for j in range(len(arr)) ]
 for y in range(len(arr)):
   for x in range(len(arr[y])):
     image[y][x] = arr[y][x]
 
-# TODO LEFT OFF HERE
-iterations = 2
-iterations = 1 # TEST
+iterations = 5
+
 # breaks up image into 2x2 or 3x3 images. array is in order 
 # starting from top row 0, left-to-right , top-to-bottom
 # for example, if 3x3 images, then dimension (x) of overall square: x = len(images) / 3
 for t in range(iterations):
   images = breakup_image(image)
-
-
   new_squares = [ None for k in range(len(images)) ]
   sz = None
   for i in range(len(images)):
     square = images[i]
-    pattern = get_pattern(square)  # TODO: this is not working for some cases (see above TODO)
-    new_squares[i] = deepcopy(pattern) # for this square, get the pattern that it becomes
+    pattern = get_pattern(square)
+    new_squares[i] = deepcopy(pattern)
 
   N = int(math.sqrt(len(new_squares))) # e.g., if result is N, then arrange squares in 2x2
-  # TODO: take all squares in new_squares, arrange them in N x N, 2D array, assign it to images
-  image = combine(new_squares, N)  # TODO
+  image = combine(new_squares, N)
 
-print_square(image)
 print( count_on(image) )
 
 print('')
