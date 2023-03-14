@@ -47,6 +47,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+# TODO: eliminate expensive loops in the instructions; may have to do it multiple times
 num_commands = len(l)
 while iindex < num_commands:
   s = l[iindex]
