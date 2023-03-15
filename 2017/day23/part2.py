@@ -15,6 +15,7 @@ def exec_command(s):
   cmd = a[0]
   X = a[1]
   Y = a[2]
+
   if cmd == 'jnz':
     if X.isalpha():
       X = int(registers[X])
@@ -72,6 +73,7 @@ while iindex < num_commands:
   #  print(str(registers) + '  jnz g -13')
 
 # 2002 TOO HIGH
+# 1001 TOO HIGH
 
 print()
 print('muls: ' + str(muls))
