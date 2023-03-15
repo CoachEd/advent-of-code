@@ -62,15 +62,11 @@ num_commands = len(l)
 while iindex < num_commands:
   s = l[iindex]
 
-  #if iindex == 10:
-  #  print(str(registers) + '  set e 2')
+  curr_iindex = iindex
   
-  #print(s)
+  print(s)
   
   exec_command(s)
-
-  #if iindex == 23:
-  #  print(str(registers) + '  jnz g -13')
 
 # 2002 TOO HIGH
 # 1001 TOO HIGH
