@@ -5,7 +5,7 @@ start_secs = time.time()
 print('')
 
 def exec_command(s):
-  global registers, iindex
+  global registers, iindex, muls
 
   if s == 'nop':
     iindex += 1
@@ -37,9 +37,11 @@ def exec_command(s):
       registers[X] += Y      
     elif cmd == 'mul':
       registers[X] *= Y
+      muls += 1
   iindex += 1
 
 iindex = 0
+muls = 0
 registers = dict()
 for c in 'abcdefgh':
   registers[c] = 0
@@ -59,19 +61,21 @@ num_commands = len(l)
 while iindex < num_commands:
   s = l[iindex]
 
-  #if iindex == 11:
-  #  print(str(registers) + '  set g d')
+  #if iindex == 10:
+  #  print(str(registers) + '  set e 2')
   
   #print(s)
   
   exec_command(s)
 
-  #if iindex == 19:
-  #  print(str(registers) + '  jnz g -8')
+  #if iindex == 23:
+  #  print(str(registers) + '  jnz g -13')
 
+# 2002 TOO HIGH
 
 print()
-print(registers['h'])
+print('muls: ' + str(muls))
+print('h: ' + str(registers['h']))
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
