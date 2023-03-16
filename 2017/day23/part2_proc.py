@@ -13,7 +13,7 @@ def proc2():
 
 def proc1():
   global registers, muls
-  print('proc1 start; (e,f,g): ' + str((registers['e'], registers['f'], registers['g'])))
+  #print('proc1 start  ' + str(registers))
   while True:
     registers['g'] = registers['d']
     registers['g'] *= registers['e']
@@ -26,8 +26,8 @@ def proc1():
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
-  print('proc1 end; (e,f,g): ' + str((registers['e'], registers['f'], registers['g'])))
-  print()
+  #print('proc1 end    ' + str(registers))
+  print((registers['e'], registers['f'],registers['g']))
 
 muls = 0
 registers = dict()
