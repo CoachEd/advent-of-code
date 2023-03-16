@@ -1,6 +1,6 @@
 def proc2(registers):
   global muls
-  #print('proc2 start')
+  #print('proc2 start  ' + str(registers))
   while True:
     registers['e'] = 2
     proc1(registers)
@@ -9,7 +9,8 @@ def proc2(registers):
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
-  #print('proc2 end')
+  #print('proc2 end  ' + str(registers))
+  #print()
 
 def proc1(registers):
   global muls
@@ -66,6 +67,7 @@ while True:
 
   registers['b'] -= -17
 
+print()
 print('muls: ' + str(muls))
 print()
 print('h: ' + str(registers['h']))
