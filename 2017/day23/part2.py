@@ -62,11 +62,15 @@ num_commands = len(l)
 while iindex < num_commands:
   s = l[iindex]
 
-  curr_iindex = iindex
+  if iindex == 10:
+    print(str(registers) + '  BEFORE ' + str(l[iindex]))
   
-  print(s)
-  
+  #print(s)
   exec_command(s)
+
+  if iindex == 23:
+    print(str(registers) + '  AFTER ' + str(l[iindex]))  
+    print()
 
 # 2002 TOO HIGH
 # 1001 TOO HIGH

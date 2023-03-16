@@ -1,0 +1,14 @@
+
+"""
+set g d START
+mul g e
+sub g b
+jnz g 2
+set f 0
+sub e -1
+set g e
+sub g b
+jnz g -8 END
+"""
+
+
