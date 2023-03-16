@@ -1,4 +1,5 @@
 def proc2():
+  print('proc2 start')
   global registers, muls
   while True:
     registers['e'] = 2
@@ -8,9 +9,11 @@ def proc2():
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
+  print('proc2 end')
 
 def proc1():
   global registers, muls
+  print('proc1 start; (e,f,g): ' + str((registers['e'], registers['f'], registers['g'])))
   while True:
     registers['g'] = registers['d']
     registers['g'] *= registers['e']
@@ -23,13 +26,16 @@ def proc1():
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
+  print('proc1 end; (e,f,g): ' + str((registers['e'], registers['f'], registers['g'])))
+  print()
 
 muls = 0
 registers = dict()
 for c in 'abcdefgh':
   registers[c] = 0
 
-registers['a'] = 0  # debug mode
+registers['a'] = 1  # debug mode
+#registers['a'] = 0  # normal mode
 
 # main
 registers['b'] = 65
@@ -61,3 +67,6 @@ while True:
   registers['b'] -= -17
 
 print('muls: ' + str(muls))
+print()
+print('h: ' + str(registers['h']))
+print()
