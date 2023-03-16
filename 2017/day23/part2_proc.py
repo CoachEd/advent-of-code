@@ -1,18 +1,18 @@
-def proc2():
-  print('proc2 start')
-  global registers, muls
+def proc2(registers):
+  global muls
+  #print('proc2 start')
   while True:
     registers['e'] = 2
-    proc1()
+    proc1(registers)
     registers['d'] -= -1
     registers['g'] = registers['d']
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
-  print('proc2 end')
+  #print('proc2 end')
 
-def proc1():
-  global registers, muls
+def proc1(registers):
+  global muls
   #print('proc1 start  ' + str(registers))
   while True:
     registers['g'] = registers['d']
@@ -27,7 +27,7 @@ def proc1():
     if registers['g'] == 0:
       break
   #print('proc1 end    ' + str(registers))
-  print((registers['e'], registers['f'],registers['g']))
+  #print()
 
 muls = 0
 registers = dict()
@@ -52,7 +52,7 @@ while True:
   registers['f'] = 1
   registers['d'] = 2
 
-  proc2()
+  proc2(registers)
 
   if registers['f'] == 0:
     registers['h'] -= -1
