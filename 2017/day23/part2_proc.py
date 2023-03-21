@@ -18,8 +18,7 @@ def proc2(registers):
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
-  print('proc2 end  ' + str(registers))
-  print()
+  print('proc2 end    ' + str(registers))
 
 def proc1_a(r):
   r['e'] = r['b']
@@ -78,9 +77,8 @@ while True:
 
   registers['f'] = 1
   registers['d'] = 2
-  #print('BEFORE: ' + str(registers))
-  proc2_a(registers)
-  #print('AFTER: ' + str(registers))
+  proc2(registers)
+  print()
 
   if registers['f'] == 0:
     registers['h'] -= -1
