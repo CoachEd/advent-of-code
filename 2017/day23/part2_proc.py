@@ -1,21 +1,42 @@
+
+import sys
+
+def proc2_a(registers):
+  registers['e'] = 2
+  proc1_a(registers) # e, f, g
+  registers['g'] = 0
+  registers['d'] = registers['b']
+
 def proc2(registers):
   global muls
-  #print('proc2 start  ' + str(registers))
+  print('proc2 start  ' + str(registers))
   while True:
     registers['e'] = 2
-    proc1(registers)
+    proc1_a(registers) # e, f, g
     registers['d'] -= -1
     registers['g'] = registers['d']
     registers['g'] -= registers['b']
     if registers['g'] == 0:
       break
-  #print('proc2 end  ' + str(registers))
-  #print()
+  print('proc2 end  ' + str(registers))
+  print()
+
+def proc1_a(r):
+  r['e'] = r['b']
+  r['g'] = 0
+  if r['b'] % 2 == 0:
+    r['f'] = 0
+  else:
+    r['f'] = 1
+
 
 def proc1(registers):
   global muls
   #print('proc1 start  ' + str(registers))
+  print()
+  print('proc1 start   ' + str(registers))
   while True:
+    #print('proc1 top  ' + str(registers))
     registers['g'] = registers['d']
     registers['g'] *= registers['e']
     muls += 1
@@ -25,9 +46,13 @@ def proc1(registers):
     registers['e'] -= -1
     registers['g'] = registers['e']
     registers['g'] -= registers['b']
+    #print('proc1 bot  ' + str(registers))
     if registers['g'] == 0:
       break
-  #print('proc1 end    ' + str(registers))
+
+  print('proc1 end     ' + str(registers))
+  print()
+  #print()
   #print()
 
 muls = 0
@@ -37,6 +62,7 @@ for c in 'abcdefgh':
 
 registers['a'] = 1  # debug mode
 #registers['a'] = 0  # normal mode
+
 
 # main
 registers['b'] = 65
@@ -52,8 +78,9 @@ while True:
 
   registers['f'] = 1
   registers['d'] = 2
-
-  proc2(registers)
+  #print('BEFORE: ' + str(registers))
+  proc2_a(registers)
+  #print('AFTER: ' + str(registers))
 
   if registers['f'] == 0:
     registers['h'] -= -1

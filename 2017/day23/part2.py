@@ -74,6 +74,7 @@ while iindex < num_commands:
 
 # 2002 TOO HIGH
 # 1001 TOO HIGH
+# 501 INCORRECT
 
 print()
 print('muls: ' + str(muls))
