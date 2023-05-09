@@ -5,17 +5,11 @@ start_secs = time.time()
 print('')
 
 def exec_command(s):
-  global registers, iindex, muls
-
-  if s == 'nop':
-    iindex += 1
-    return
-
+  global registers, iindex
   a = s.split()
   cmd = a[0]
   X = a[1]
   Y = a[2]
-
   if cmd == 'jnz':
     if X.isalpha():
       X = int(registers[X])
@@ -34,20 +28,15 @@ def exec_command(s):
       registers[X] = Y
     elif cmd == 'sub':
       registers[X] -= Y
-    elif cmd == 'add':
-      registers[X] += Y      
     elif cmd == 'mul':
       registers[X] *= Y
-      muls += 1
   iindex += 1
 
 iindex = 0
-muls = 0
 registers = dict()
 for c in 'abcdefgh':
   registers[c] = 0
 
-# debug mode
 registers['a'] = 1
 
 # read in input file
@@ -57,29 +46,12 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
-# TODO: eliminate expensive loops in the instructions; may have to do it multiple times
 num_commands = len(l)
 while iindex < num_commands:
   s = l[iindex]
-
-  #if iindex == 10:
-  #  print(str(registers) + '  BEFORE ' + str(l[iindex]))
-  
-  #print(s)
   exec_command(s)
 
-  #if iindex == 23:
-  #  print(str(registers) + '  AFTER ' + str(l[iindex]))  
-  #  print()
-
-# 2002 TOO HIGH
-# 1001 TOO HIGH
-# 501 INCORRECT
-# 500 INCORRECT
-
-print()
-print('muls: ' + str(muls))
-print('h: ' + str(registers['h']))
+print(registers['h'])
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
