@@ -8,6 +8,9 @@ def exec_command(s):
   global registers, iindex, num_mul
   a = s.split()
   cmd = a[0]
+  if cmd == 'nop':
+    iindex += 1
+    return  
   X = a[1]
   Y = a[2]
   if cmd == 'jnz':
