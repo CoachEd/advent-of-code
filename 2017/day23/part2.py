@@ -42,7 +42,7 @@ def exec_cmd_str(s):
 init_registers()
 
 # debug mode - part 2
-registers['a'] = 0
+registers['a'] = 1
 
 # read input file
 l=[]
@@ -57,7 +57,7 @@ while iindex < num_commands:
 
 
 print(registers['h'])
-print(mul_count)
+#print(mul_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
