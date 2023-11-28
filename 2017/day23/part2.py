@@ -32,6 +32,9 @@ def exec_cmd_str(s):
   elif cmd == 'mul':
     registers[arg1] = registers[arg1] * valueOf(arg2)
     mul_count += 1
+  elif cmd == 'nop':
+    # NOOP line
+    pass # e.g., nop 0 0
   elif cmd == 'jnz':
     if valueOf(arg1) != 0:
       iindex += valueOf(arg2)
@@ -42,7 +45,7 @@ def exec_cmd_str(s):
 init_registers()
 
 # debug mode - part 2
-registers['a'] = 1
+registers['a'] = 0
 
 # read input file
 l=[]
@@ -55,9 +58,9 @@ while iindex < num_commands:
   s = l[iindex]
   exec_cmd_str(s)
 
-
-print(registers['h'])
-#print(mul_count)
+print(registers)
+#print(registers['h']) # part 2
+print(mul_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
