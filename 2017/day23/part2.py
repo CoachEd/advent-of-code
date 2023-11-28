@@ -88,7 +88,7 @@ while iindex < num_commands:
   s = l[iindex]
   exec_cmd_str(s)
 
-print(registers)
+#print(registers)
 #print(registers['h']) # part 2
 print(mul_count)
 print('')
