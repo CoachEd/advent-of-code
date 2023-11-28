@@ -6,7 +6,7 @@ print('')
 
 registers = {}
 iindex = 0
-#mul_count = 0
+mul_count = 0
 
 def init_registers():
   global registers
@@ -31,7 +31,7 @@ def exec_cmd_str(s):
     registers[arg1] = registers[arg1] - valueOf(arg2)
   elif cmd == 'mul':
     registers[arg1] = registers[arg1] * valueOf(arg2)
-    #mul_count += 1
+    mul_count += 1
   elif cmd == 'jnz':
     if valueOf(arg1) != 0:
       iindex += valueOf(arg2)
@@ -42,7 +42,7 @@ def exec_cmd_str(s):
 init_registers()
 
 # debug mode - part 2
-registers['a'] = 1
+registers['a'] = 0
 
 # read input file
 l=[]
@@ -57,7 +57,7 @@ while iindex < num_commands:
 
 
 print(registers['h'])
-# print(mul_count)
+#print(mul_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
