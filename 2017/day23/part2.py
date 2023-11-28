@@ -16,10 +16,20 @@ def f1():
   jnz g 2
   set f 0  
   """
-  global registers, iindex, mul_count
+  global registers, mul_count
   mul_count += 1
   if ((registers['d'] * registers['e']) - registers['b']) == 0:
     registers['f'] = 0
+
+def f2():
+  global registers
+  """
+  sub e -1
+  set g e
+  sub g b
+  """
+  registers['e'] = registers['e'] + 1
+  registers['g'] = registers['e'] - registers['b']
 
 def init_registers():
   global registers
@@ -42,6 +52,8 @@ def exec_cmd_str(s):
     registers[arg1] = valueOf(arg2)
   elif cmd == 'f1':
     f1()
+  elif cmd == 'f2':
+    f2()    
   elif cmd == 'sub':
     registers[arg1] = registers[arg1] - valueOf(arg2)
   elif cmd == 'mul':

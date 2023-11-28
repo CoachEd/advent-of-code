@@ -14,9 +14,9 @@ nop 0 0
 nop 0 0
 nop 0 0
 nop 0 0
-sub e -1
-set g e
-sub g b
+nop 0 0
+nop 0 0
+f2 0 0
 jnz g -8
 sub d -1
 set g d
