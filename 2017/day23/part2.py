@@ -8,6 +8,19 @@ registers = {}
 iindex = 0
 mul_count = 0
 
+def f1():
+  """
+  set g d
+  mul g e
+  sub g b
+  jnz g 2
+  set f 0  
+  """
+  global registers, iindex, mul_count
+  mul_count += 1
+  if ((registers['d'] * registers['e']) - registers['b']) == 0:
+    registers['f'] = 0
+
 def init_registers():
   global registers
   (registers['a'], registers['b'], registers['c'], registers['d'], registers['e'], registers['f'], registers['g'], registers['h']) = (0,0,0,0,0,0,0,0)
@@ -27,6 +40,8 @@ def exec_cmd_str(s):
   arg2 = arr[2]
   if cmd == 'set':
     registers[arg1] = valueOf(arg2)
+  elif cmd == 'f1':
+    f1()
   elif cmd == 'sub':
     registers[arg1] = registers[arg1] - valueOf(arg2)
   elif cmd == 'mul':
