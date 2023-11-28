@@ -28,8 +28,11 @@ def f2():
   set g e
   sub g b
   """
+  print(registers)
   registers['e'] = registers['e'] + 1
   registers['g'] = registers['e'] - registers['b']
+  print(registers)
+  print()
 
 def init_registers():
   global registers
