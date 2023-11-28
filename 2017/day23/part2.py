@@ -57,7 +57,7 @@ while iindex < num_commands:
 
 
 print(registers['h'])
-#print(mul_count)
+print(mul_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
