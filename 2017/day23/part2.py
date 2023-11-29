@@ -49,6 +49,8 @@ def f3():
   registers['g'] = registers['g'] - registers['b']
   print(registers)
   print()
+  #registers['d'] = registers['b']
+  #registers['g'] = 0
 
 def init_registers():
   global registers
@@ -64,6 +66,8 @@ def valueOf(z):
 def exec_cmd_str(s):
   global iindex, registers, mul_count
   arr = s.split()
+  if s == 'jnz f 2':
+    print('---')
   cmd = arr[0]
   arg1 = arr[1]
   arg2 = arr[2]
@@ -106,8 +110,11 @@ while iindex < num_commands:
   s = l[iindex]
   exec_cmd_str(s)
 
-#print(registers['h']) # part 2
+print('h: ' + str(registers['h'])) # part 2
 print(mul_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
+
+# 115112999  TOO HIGH
+# 501  TOO LOW
