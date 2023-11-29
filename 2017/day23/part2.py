@@ -22,15 +22,31 @@ def f1():
     registers['f'] = 0
 
 def f2():
-  global registers
+  global registers, mul_count
   """
   sub e -1
   set g e
   sub g b
   """
-  print(registers)
   registers['e'] = registers['e'] + 1
   registers['g'] = registers['e'] - registers['b']
+  mul_count += abs(registers['g'])
+  registers['e'] = registers['b']
+  registers['g'] = 0
+  if registers['b'] % registers['d'] == 0:
+    registers['f'] = 0
+
+def f3():
+  """
+  sub d -1
+  set g d
+  sub g b
+  """
+  global registers
+  print(registers)
+  registers['d'] = registers['d'] + 1
+  registers['g'] = registers['d']
+  registers['g'] = registers['g'] - registers['b']
   print(registers)
   print()
 
@@ -56,7 +72,9 @@ def exec_cmd_str(s):
   elif cmd == 'f1':
     f1()
   elif cmd == 'f2':
-    f2()    
+    f2()   
+  elif cmd == 'f3':
+    f3()        
   elif cmd == 'sub':
     registers[arg1] = registers[arg1] - valueOf(arg2)
   elif cmd == 'mul':
@@ -88,7 +106,6 @@ while iindex < num_commands:
   s = l[iindex]
   exec_cmd_str(s)
 
-#print(registers)
 #print(registers['h']) # part 2
 print(mul_count)
 print('')
