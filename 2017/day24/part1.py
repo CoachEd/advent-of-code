@@ -17,11 +17,27 @@ def getEnds(s):
   a = s.split('/')
   return (int(a[0]), int(a[1]))
 
-def getBridges():
+def canConnect(c,n):
+  # can component c connect to value n?
+  # if so, return other side
+  # if not, return -1
+  (x,y) = getEnds(c)
+  if x == n:
+    return y
+  elif y == n:
+    return x
+  else:
+    return -1
+
+def getBridges(c, n, l):
+  # TODO
+  # get the bridges that continue component c, at value n, using components in l
   pass
 
 
 # main
+
+# get starting points
 starting_points = {} # component : list
 for c in components:
   (x,y) = getEnds(c)
@@ -31,7 +47,7 @@ for c in components:
     starting_points[c] = arr1
 
 for c,l in starting_points.items():
-  print(c + ': ' + str(l))
+  print(c + ': ' + str(l)) # starting component : remaining list
 
 
 print('')
