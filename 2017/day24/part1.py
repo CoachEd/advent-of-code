@@ -29,6 +29,20 @@ def canConnect(c,n):
   else:
     return -1
 
+def getStartingPoints(n,l):
+  # n is the value
+  # l is the component list
+  # return dictionary with c : l2  entries where
+  # c is the starting node and l2 is the remaining list
+  d = {} # component : list
+  for c in l:
+    (x,y) = getEnds(c)
+    if x == n or y == n:
+      arr1 = l.copy()
+      arr1.remove(c)
+      d[c] = arr1
+  return d
+
 def getBridges(c, n, l):
   # TODO
   # get the bridges that continue component c, at value n, using components in l
@@ -37,14 +51,8 @@ def getBridges(c, n, l):
 
 # main
 
-# get starting points
-starting_points = {} # component : list
-for c in components:
-  (x,y) = getEnds(c)
-  if x == 0 or y == 0:
-    arr1 = components.copy()
-    arr1.remove(c)
-    starting_points[c] = arr1
+# get starting 0 points
+starting_points = getStartingPoints(0, components) # component : list
 
 for c,l in starting_points.items():
   print(c + ': ' + str(l)) # starting component : remaining list
