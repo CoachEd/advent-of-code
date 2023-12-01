@@ -37,15 +37,12 @@ for line in lines:
   line = line.strip()
   l.append(line)
 
-
 tot = 0
 for s in l:
   fnum = findFirst(s)
   lnum = findLast(s)
   tot += int(str(fnum)+str(lnum))
 print(tot)
-
-
 
 print('')
 end_secs = time.time()
