@@ -1,56 +1,44 @@
 import time
 import sys
+from functools import reduce
+
 from copy import copy, deepcopy
+
+
 start_secs = time.time()
+
+def factors(n):    
+  return set(reduce(list.__add__, 
+  ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
+
 print('')
 
 registers = {}
 iindex = 0
 mul_count = 0
 
-def f1():
-  """
-  set g d
-  mul g e
-  sub g b
-  jnz g 2
-  set f 0  
-  """
+def f0():
   global registers, mul_count
-  mul_count += 1
-  if ((registers['d'] * registers['e']) - registers['b']) == 0:
-    registers['f'] = 0
-
-def f2():
-  global registers, mul_count
-  """
-  sub e -1
-  set g e
-  sub g b
-  """
-  registers['e'] = registers['e'] + 1
-  registers['g'] = registers['e'] - registers['b']
-  mul_count += abs(registers['g'])
-  registers['e'] = registers['b']
+  start = registers['e']  # 2
+  end = registers['b'] - 1 # 64
   registers['g'] = 0
-  if registers['b'] % registers['d'] == 0:
-    registers['f'] = 0
+  registers['e'] = registers['b']
+  fs =factors(registers['b'])
+  mul_count += end - start + 1
+  for x in fs:
+    if x >= start and x <= end:
+      registers['f'] = 0
+      return
 
-def f3():
+def f1():
   """
   sub d -1
   set g d
   sub g b
   """
-  global registers
-  print(registers)
-  registers['d'] = registers['d'] + 1
-  registers['g'] = registers['d']
-  registers['g'] = registers['g'] - registers['b']
-  print(registers)
-  print()
-  #registers['d'] = registers['b']
-  #registers['g'] = 0
+  start = registers['d']  # 2
+  end = registers['b'] - 1 # 65
+  registers['d'] = end
 
 def init_registers():
   global registers
@@ -65,20 +53,19 @@ def valueOf(z):
 
 def exec_cmd_str(s):
   global iindex, registers, mul_count
-  arr = s.split()
   if s == 'jnz f 2':
-    print('---')
+    print(registers)
+    print('')
+  arr = s.split()
   cmd = arr[0]
   arg1 = arr[1]
   arg2 = arr[2]
   if cmd == 'set':
     registers[arg1] = valueOf(arg2)
+  elif cmd == 'f0':
+    f0()  
   elif cmd == 'f1':
-    f1()
-  elif cmd == 'f2':
-    f2()   
-  elif cmd == 'f3':
-    f3()        
+    f1()          
   elif cmd == 'sub':
     registers[arg1] = registers[arg1] - valueOf(arg2)
   elif cmd == 'mul':
@@ -92,12 +79,16 @@ def exec_cmd_str(s):
       iindex += valueOf(arg2)
       return
   iindex += 1
+  if s == 'set d 2':
+    print(registers)
+  if s == 'sub g b':
+    print('\t' + str(registers))
 
 # main
 init_registers()
 
 # debug mode - part 2
-registers['a'] = 0
+registers['a'] = 1
 
 # read input file
 l=[]
