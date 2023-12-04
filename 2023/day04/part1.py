@@ -7,14 +7,14 @@ start_secs = time.time()
 print('')
  
 # SOLUTION
-def processCard(w,m,i):
+def processCard(w,m):
   # w is winners list
   # m is mine list
   # i is card index (starting at 0)
   # n is number of winning numbers
   m2 = m.copy()
   for x in m:
-    if x in w[i]:
+    if x in w:
       m2.remove(x)
   n = len(m) - len(m2)
   return n
@@ -43,7 +43,7 @@ score = 0
 for i in range(len(mine)):
   m = mine[i]
 
-  n = processCard(winners,m,i) # n is number of winning numbers
+  n = processCard(winners[i],m) # n is number of winning numbers
 
   g = int(2 ** (n-1))
   #print(g)
