@@ -75,6 +75,7 @@ for s in seeds:
     start_num = getIndex(start_num, i)
   if start_num < min_loc:
     min_loc = start_num
+  print(str(s) + ' --> ' + str(start_num))
   
 
 print()
