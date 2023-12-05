@@ -62,19 +62,17 @@ while i < len(l):
     maps[map_num].append((s0,s1,d0,d1))
   i += 1
 
+min_loc = sys.maxsize
 for s in seeds:
-  min_loc = -1
   start_num = s
   for i in range(len(maps)):
     start_num = getIndex(start_num, i)
-  #print(str(s) + ' --> ' + str(start_num))
-  if min_loc == -1:
-    min_loc = start_num
   if start_num < min_loc:
     min_loc = start_num
+  
 
 print()
-print(start_num)
+print(min_loc)
 
 
 # 2369219742 too high
