@@ -10,26 +10,14 @@ print('')
 def reduceMap6(min_loc):
   # given some min_loc, reduce the maps from the bottom up
   global maps
-
-  # from last map, remove all ranges that do NOT encompass the min_loc
-  i = len(maps)-1
-  m = maps[i]
-  m2 = maps[i].copy()
   start = 0
   end = min_loc
-  # see if min_loc is in a range
-  t1 = None
-  for j in range(len(m2)):
-    t = m2[j]
-    (s0,s1,d0,d1) = (t)
-    if min_loc >= d0 and min_loc <= d1:
-      # in range
-      t1 = deepcopy(t)
-      break
-  m.clear()
-  if not t1 is None:
-    # found
-    m.append(t1)
+  i = len(maps)-1
+  m = maps[i]
+  m2 = m.copy()
+  for t in m2:
+    pass
+  # keep ALL ranges (tuples) that have destination ranges including or less than min_loc
 
 def reduceMapN(N):
   global maps
@@ -54,7 +42,7 @@ def getIndex(n,mapnum):
 
 # read in input file
 l=[]
-my_file = open("inp2.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -63,9 +51,7 @@ print('creating seeds...')
 seeds = []
 a = l[0].split()
 del a[0]
-for i in range(0, len(a), 2):
-  for j in range(int(a[i]), int(a[i])+int(a[i+1])):
-    seeds.append(j)
+seeds = [ int(x) for x in a]
 
 del l[0]
 del l[0]
@@ -101,13 +87,10 @@ while i < len(l):
 
 print('reduce maps...')
 #reduceMap6(46)
-reduceMap6(551761867)
+reduceMap6(551761867) # this should still result in the answer 551761867, but it doesn't. why?
 
 print()
-print()
 
-
-print('processing ' + str(len(seeds)) + ' seeds...')
 min_loc = sys.maxsize
 for s in seeds:
   start_num = s
@@ -117,12 +100,10 @@ for s in seeds:
     min_loc = start_num
   #print(str(s) + ' --> ' + str(start_num))
   
-
 print()
 print(min_loc)
 
-
-# 2369219742 too high
+# 22652094 too low
 
 print('')
 end_secs = time.time()
