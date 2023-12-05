@@ -7,6 +7,37 @@ print('')
 
 # SOLUTION
 
+def reduceMap6(min_loc):
+  # given some min_loc, reduce the maps from the bottom up
+  global maps
+
+  # from last map, remove all ranges that do NOT encompass the min_loc
+  i = len(maps)-1
+  m = maps[i]
+  m2 = maps[i].copy()
+  start = 0
+  end = min_loc
+  # see if min_loc is in a range
+  t1 = None
+  for j in range(len(m2)):
+    t = m2[j]
+    (s0,s1,d0,d1) = (t)
+    if min_loc >= d0 and min_loc <= d1:
+      # in range
+      t1 = deepcopy(t)
+      break
+  m.clear()
+  if not t1 is None:
+    # found
+    m.append(t1)
+
+def reduceMapN(N):
+  global maps
+  map = maps[N]
+  map_below = maps[N+1]
+  # only keep tuples in map that have destinations that map to sources in map_below
+  pass
+
 def getIndex(n,mapnum):
   global maps
   # given an number n and the map number (0-6)
@@ -67,6 +98,15 @@ while i < len(l):
     maps[map_num].append((s0,s1,d0,d1))
   i += 1
 
+
+print('reduce maps...')
+#reduceMap6(46)
+reduceMap6(551761867)
+
+print()
+print()
+
+
 print('processing ' + str(len(seeds)) + ' seeds...')
 min_loc = sys.maxsize
 for s in seeds:
@@ -75,7 +115,7 @@ for s in seeds:
     start_num = getIndex(start_num, i)
   if start_num < min_loc:
     min_loc = start_num
-  print(str(s) + ' --> ' + str(start_num))
+  #print(str(s) + ' --> ' + str(start_num))
   
 
 print()
