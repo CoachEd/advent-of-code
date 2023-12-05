@@ -18,7 +18,7 @@ def getIndex(n,mapnum):
     if n >= s0 and n <= s1:
       # found the range
       n1 = n - s0 + d0
-      return(n1)
+      return n1
   return n
 
 # read in input file
