@@ -28,6 +28,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+print('creating seeds...')
 seeds = []
 a = l[0].split()
 del a[0]
@@ -38,6 +39,7 @@ for i in range(0, len(a), 2):
 del l[0]
 del l[0]
 
+print('creating maps...')
 maps = [ [] for i in range(7) ] # each element is an array of ranges (s0,s1,d0,d1)
 i = 0
 map_num = -1
@@ -65,6 +67,7 @@ while i < len(l):
     maps[map_num].append((s0,s1,d0,d1))
   i += 1
 
+print('processing ' + str(len(seeds)) + ' seeds...')
 min_loc = sys.maxsize
 for s in seeds:
   start_num = s
