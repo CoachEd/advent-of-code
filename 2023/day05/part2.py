@@ -6,7 +6,7 @@ print('')
 
 
 # SOLUTION
-
+# WOW - TOOK --- 24624.036353111267 secs ---
 def reduceMap(n,i):
   # n is max dest vale we care about
   # i is the map we are reducing
@@ -49,16 +49,32 @@ def getIndex(n,mapnum):
 
 # read in input file
 l=[]
-my_file = open("inp2.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+"""
 print('creating seeds...')
-seeds = []
+seed_start = 3995609239
+seed_end =   4138877354
+len1 = seed_end - seed_start + 1
+seeds = [ None for i in range(len1) ]
+index = 0
+for i in range(seed_start, seed_end+1):
+  seeds[index] = i
+  index += 1
+  
+# seed_end - seed_start = 143268115
+"""
 a = l[0].split()
 del a[0]
-seeds = [ int(x) for x in a]
+a1 = [ int(x) for x in a ]
+seed_ranges = []
+for i in range(0,len(a1),2):
+  start = int(a1[i])
+  end = start + int(a1[i+1])-1
+  seed_ranges.append((start,end))
 
 del l[0]
 del l[0]
@@ -91,33 +107,38 @@ while i < len(l):
     maps[map_num].append((s0,s1,d0,d1))
   i += 1
 
-#print(maps[5])
-print('reduce maps...')
-n = reduceMap(35,6)
+"""
+#print('reduce maps...')
+
+#n = reduceMap(35,6)
+n = reduceMap(551761867,6)
+
 n = reduceMap(n, 5)
 n = reduceMap(n, 4)
 n = reduceMap(n, 3)
 n = reduceMap(n, 2)
 n = reduceMap(n, 1)
 n = reduceMap(n, 0)
-
-
+"""
 
 print()
-
 min_loc = sys.maxsize
-for s in seeds:
-  start_num = s
-  for i in range(len(maps)):
-    start_num = getIndex(start_num, i)
-  if start_num < min_loc:
-    min_loc = start_num
-  #print(str(s) + ' --> ' + str(start_num))
-  
+range_num = 0
+for t in seed_ranges:
+  print('processing range ' + str(range_num))
+  (s,e) = t
+  for s in range(s,e+1):
+    start_num = s
+    for i in range(len(maps)):
+      start_num = getIndex(start_num, i)
+    if start_num < min_loc:
+      min_loc = start_num
+  print('    min_loc: ' + str(min_loc))
+
 print()
 print(min_loc)
 
-# 22652094 too low
+# 15998365 too low
 
 print('')
 end_secs = time.time()
