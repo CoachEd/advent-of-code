@@ -23,7 +23,7 @@ def getIndex(n,mapnum):
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp2.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())

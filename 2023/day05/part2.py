@@ -7,24 +7,31 @@ print('')
 
 # SOLUTION
 
-def reduceMap6(min_loc):
-  # given some min_loc, reduce the maps from the bottom up
+def reduceMap(n,i):
+  # n is max dest vale we care about
+  # i is the map we are reducing
   global maps
   start = 0
-  end = min_loc
-  i = len(maps)-1
   m = maps[i]
-  m2 = m.copy()
-  for t in m2:
-    pass
-  # keep ALL ranges (tuples) that have destination ranges including or less than min_loc
+  m2 = []
+  max_s1 = -1
+  for t in m:
+    (s0,s1,d0,d1) = t
+    # if range is beyond n, throw it out, otherwise, keep it
+    if d0 > n:
+      pass
+    else:
+      m2.append(t)
+      if s1 > max_s1:
+        max_s1 = s1
+  m.clear()
+  m += m2
+  if len(m2) == 0:
+    # no ranges contain n
+    return n
+  else:
+    return max_s1
 
-def reduceMapN(N):
-  global maps
-  map = maps[N]
-  map_below = maps[N+1]
-  # only keep tuples in map that have destinations that map to sources in map_below
-  pass
 
 def getIndex(n,mapnum):
   global maps
@@ -42,7 +49,7 @@ def getIndex(n,mapnum):
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp2.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -84,10 +91,17 @@ while i < len(l):
     maps[map_num].append((s0,s1,d0,d1))
   i += 1
 
-
+#print(maps[5])
 print('reduce maps...')
-#reduceMap6(46)
-reduceMap6(551761867) # this should still result in the answer 551761867, but it doesn't. why?
+n = reduceMap(35,6)
+n = reduceMap(n, 5)
+n = reduceMap(n, 4)
+n = reduceMap(n, 3)
+n = reduceMap(n, 2)
+n = reduceMap(n, 1)
+n = reduceMap(n, 0)
+
+
 
 print()
 
