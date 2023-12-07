@@ -37,36 +37,42 @@ def process_instr(o,a,b,c):
     # seti (set immediate) stores value A into register C. (Input B is ignored.)
     registers[c] = a   
   elif o == 'gtir':
-    registers[c] = 0
     if a > registers[b]:
       registers[c] = 1
+    else:
+      registers[c] = 0
   elif o == 'gtri':
-    registers[c] = 0
     if registers[a] > b:
       registers[c] = 1
+    else:
+      registers[c] = 0
   elif o == 'gtrr':
-    registers[c] = 0
     if registers[a] > registers[b]:
       registers[c] = 1
+    else:
+      registers[c] = 0
   elif o == 'eqir':
-    registers[c] = 0
     if a == registers[b]:
       registers[c] = 1
+    else:
+      registers[c] = 0
   elif o == 'eqri':
-    registers[c] = 0
     if registers[a] == b:
       registers[c] = 1
+    else:
+      registers[c] = 0
   elif o == 'eqrr':
-    registers[c] = 0
     if registers[a] == registers[b]:
       registers[c] = 1
+    else:
+      registers[c] = 0
   else:
     print("invalid instruction!")
     sys.exit()
 
 # read in input file
 l=[]
-my_file = open("inp2.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -79,17 +85,19 @@ ip = 0
 while True:
   a = l[ip].split()
   (instr,a,b,c) = (a[0],int(a[1]),int(a[2]),int(a[3]))
+  
   registers[instr_register] = ip
 
-  rb = registers.copy()
+  #rb = registers.copy()
 
   process_instr(instr,a,b,c)
 
-  print('ip=' + str(ip) + ' [' + ''.join(str(x)+ ' ' for x in rb) + '] ' + l[ip] + ' [' + ''.join(str(x)+ ' ' for x in registers) + ']')
+  #print('ip=' + str(ip) + ' [' + ''.join(str(x)+ ' ' for x in rb) + '] ' + l[ip] + ' [' + ''.join(str(x)+ ' ' for x in registers) + ']')
   
   ip = registers[instr_register]
+  
   ip += 1
-  if ip >= len(l):
+  if ip >= len(l) or ip < 0:
     break
 
 print()
