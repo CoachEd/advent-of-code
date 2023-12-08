@@ -7,7 +7,19 @@ from itertools import cycle
 from functools import reduce
 
 def lcm(a):
+  # search terms: lcm LCM LCD lcd gcf gcd
   # least common multiple of list
+  # i.e., when you want n repeating numbers to line up
+  # e.g., a = [3, 5, 15] , lcm(a) => 15
+  # a repeats every 3, b repeats every 5, c repeats ever 15
+  # the first number where they all line up is 15
+  #
+  # 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+  # ----------------------------------------------------
+  #          a        a        a       a        a
+  #                b             b              b
+  #                                             c       
+
   lcm = 1
   for i in a:
     lcm = lcm*i//math.gcd(lcm, i)
@@ -15,7 +27,7 @@ def lcm(a):
 
 start_secs = time.time()
 print('')
- 
+
 # SOLUTION
 # read in input file
 l=[]
