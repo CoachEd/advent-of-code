@@ -1,4 +1,4 @@
-# Day 8 part 2
+# day 8 part 2
 import time
 import sys
 from copy import copy, deepcopy
@@ -34,7 +34,7 @@ for k,v in d.items():
   if k.endswith('A'):
     nodes.append(k)
 steps = 0
-instructions = [ cycle(instr1) for i in range(len(nodes)) ]
+instructions = cycle(instr1)
 while True:
   
   done = True
@@ -45,8 +45,8 @@ while True:
   if done:
     break
     
+  c = next(instructions)
   for i in range(len(nodes)):
-    c = next(instructions[i])
     src = nodes[i]
     nodes[i] =  d[nodes[i]][c]
     #print((src,c,nodes[i]))
