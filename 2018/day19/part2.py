@@ -81,6 +81,7 @@ for line in lines:
 instr_register = int(l[0][4:])
 del l[0]
 
+registers[0] = 1 # PART 2
 ip = 0
 while True:
   a = l[ip].split()
