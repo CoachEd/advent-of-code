@@ -7,27 +7,21 @@ from copy import copy, deepcopy
 from itertools import cycle
 from functools import reduce
 
-def lcm(a):
-  # search terms: lcm LCM LCD lcd gcf gcd
-  # least common multiple of list
-  # i.e., when you want n repeating numbers to line up
-  # e.g., a = [3, 5, 15] , lcm(a) => 15
-  # a repeats every 3, b repeats every 5, c repeats ever 15
-  # the first number where they all line up is 15
-  #
-  # 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
-  # ----------------------------------------------------
-  #          a        a        a       a        a
-  #                b             b              b
-  #                                             c       
-
-  lcm = 1
-  for i in a:
-    lcm = lcm*i//math.gcd(lcm, i)
-  return lcm
+# USE math.lcm() <-- takes comma-separated args (convert arr this way: *arr)
+# search terms: lcm LCM LCD lcd gcf gcd
+# least common multiple of list
+# i.e., when you want n repeating numbers to line up
+# e.g., a = [3, 5, 15] , math.lcm(*a) => 15
+# a repeats every 3, b repeats every 5, c repeats ever 15
+# the first number where they all line up is 15
+#
+# 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+# ----------------------------------------------------
+#          a        a        a       a        a
+#                b             b              b
+#                                             c       
 
 start_secs = time.time()
-print('')
 
 # SOLUTION
 # read in input file
@@ -68,8 +62,6 @@ for i in range(len(nodes)):
     node = d[node][c]
     steps += 1
 
-print(lcm(nums))
-
-print('')
+print(math.lcm(*nums))
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
