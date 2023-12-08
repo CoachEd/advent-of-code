@@ -1,8 +1,17 @@
-# day 8 part 2
+# Day 8 part 2
 import time
 import sys
+import math
 from copy import copy, deepcopy
 from itertools import cycle
+from functools import reduce
+
+def lcm(a):
+  # least common multiple of list
+  lcm = 1
+  for i in a:
+    lcm = lcm*i//math.gcd(lcm, i)
+  return lcm
 
 start_secs = time.time()
 print('')
@@ -33,26 +42,21 @@ nodes = []
 for k,v in d.items():
   if k.endswith('A'):
     nodes.append(k)
-steps = 0
-instructions = cycle(instr1)
-while True:
-  
-  done = True
-  for n in nodes:
-    if not n.endswith('Z'):
-      done = False
-      break
-  if done:
-    break
-    
-  c = next(instructions)
-  for i in range(len(nodes)):
-    src = nodes[i]
-    nodes[i] =  d[nodes[i]][c]
-    #print((src,c,nodes[i]))
-  steps += 1
 
-print(steps)
+nums = []
+for i in range(len(nodes)):
+  node = nodes[i]
+  steps = 0
+  instructions = cycle(instr1)
+  while True:
+    if node.endswith('Z'):
+      nums.append(steps)
+      break
+    c = next(instructions)
+    node = d[node][c]
+    steps += 1
+    
+print(lcm(nums))
 
 print('')
 end_secs = time.time()
