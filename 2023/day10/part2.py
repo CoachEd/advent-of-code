@@ -33,6 +33,39 @@ def printMap2(a):
     s += '\n'
   print(s)
 
+def printMap3(a):
+  global rows,cols,pipes,sc
+  s = ''
+  for y in range(rows):
+    for x in range(cols):
+      c = m[y][x]
+      if c == 'S':
+        c = sc
+      if not (y,x) in pipes:
+        if c == 'I':
+          s += c
+        else:
+          s += '.'
+      else:
+        if c in '-|':
+          if c == '-':
+            s += u'\u2501'
+          elif c == '|':
+            s += u'\u2503'
+          #s += c
+        else:
+          if c == 'F':
+            s += u'\u250F'
+          elif c == '7':
+            s += u'\u2513'
+          elif c == 'L':
+            s += u'\u2517'
+          elif c == 'J':
+            s += u'\u251B'
+        
+    s += '\n'
+  print(s)
+
 def cleanUp(a):
   global rows,cols,pipes
   for y in range(rows):
@@ -61,25 +94,25 @@ def fillInside(y,x):
   (n0,n1,s0,s1,e0,e1,w0,w1) = (y-1,x,y+1,x,y,x+1,y,x-1)
   
   (y0,x0) = (n0,n1)
-  if goodp(y0,x0) and m[y0][x0] == '.' and not (y0,x0) in seen:
+  if goodp(y0,x0) and m[y0][x0] in '. ' and not (y0,x0) in seen:
     seen[(y0,x0)] = None
     m[y0][x0] = 'I'
     fillInside(y0,x0)
     
   (y0,x0) = (s0,s1)
-  if goodp(y0,x0) and m[y0][x0] == '.' and not (y0,x0) in seen:
+  if goodp(y0,x0) and m[y0][x0] in '. ' and not (y0,x0) in seen:
     seen[(y0,x0)] = None
     m[y0][x0] = 'I'
     fillInside(y0,x0)
     
   (y0,x0) = (e0,e1)
-  if goodp(y0,x0) and m[y0][x0] == '.' and not (y0,x0) in seen:
+  if goodp(y0,x0) and m[y0][x0] in '. ' and not (y0,x0) in seen:
     seen[(y0,x0)] = None
     m[y0][x0] = 'I'
     fillInside(y0,x0)
     
   (y0,x0) = (w0,w1)
-  if goodp(y0,x0) and m[y0][x0] == '.' and not (y0,x0) in seen:
+  if goodp(y0,x0) and m[y0][x0] in  '. ' and not (y0,x0) in seen:
     seen[(y0,x0)] = None
     m[y0][x0] = 'I'
     fillInside(y0,x0)
@@ -126,7 +159,6 @@ def countPath(y,x):
   steps = 1
   while True:
     #print((y,x))
-    pipes[(y,x)] = None
     a = getPaths(y,x)
     d[(y,x)] = None
     (y0,x0)= (a[0])
@@ -135,11 +167,13 @@ def countPath(y,x):
       (y,x) = (y0,x0)
       d[(y,x)] = None
       moves.append((y,x))
+      pipes[(y,x)] = None
       steps += 1
     elif (y1,x1) not in d:
       (y,x) = (y1,x1)
       d[(y,x)] = None
       moves.append((y,x))
+      pipes[(y,x)] = None
       steps += 1
     else:
       break
@@ -148,10 +182,12 @@ def countPath(y,x):
 # read in input file
 l=[]
 
-sc = 'F' # test data
-fname = 'inp3.txt'
-sc = 'F' # test data
-fname = 'inp2.txt'
+#sc = 'L' # test data
+#fname = 'inp4.txt'
+#sc = 'F' # test data
+#fname = 'inp3.txt'
+#sc = 'F' # test data
+#fname = 'inp2.txt'
 sc = 'L' # real data
 fname = 'inp.txt'
 seen = {}
@@ -174,14 +210,13 @@ for y in range(rows):
     if m[y][x] == 'S':
       (sy,sx) = (y,x)
 
-
+moves.append((sy,sx))
 countPath(sy,sx)
-
+pipes[(sy,sx)] = None
 
 # Part 2
 found = []
 cleanUp(m)
-
 (y0,x0) = (sy,sx)
 for (y,x) in moves:
   (n0,n1,s0,s1,e0,e1,w0,w1) = (y-1,x,y+1,x,y,x+1,y,x-1)
@@ -210,30 +245,40 @@ for (y,x) in moves:
       found.append((s0,s1))
       
   """
-
   # s - w real data scenario
   if y == (y0-1):
-    # moved N
+    # moved N 
+    #print('N')
     if goodp(e0,e1) and m[e0][e1] == '.':
       m[e0][e1] = 'I'
       found.append((e0,e1))
   elif y == (y0+1):
     # moved S
+    #print('S')
     if goodp(w0,w1) and m[w0][w1] == '.':
       m[w0][w1] = 'I'
       found.append((w0,w1))
   elif x == (x0+1):
     # moved E
+    #print('E')
     if goodp(s0,s1) and m[s0][s1] == '.':
       m[s0][s1] = 'I'
-      found.append((s0,s1))
+      found.append((s0,s1))    
+
+    # if 'J', check east too - NEW CHECK
+    if m[y][x] == 'J':
+      if goodp(e0,e1) and m[e0][e1] == '.':
+        m[e0][e1] = 'I'
+        found.append((e0,e1))       
+
   elif x == (x0-1):
     # moved W
     if goodp(n0,n1) and m[n0][n1] == '.':
       m[n0][n1] = 'I'
       found.append((n0,n1))
-      
-      
+
+
+
   (y0,x0) = (y,x)
 
 
@@ -242,7 +287,16 @@ for (y,x) in found:
   seen = {}
   fillInside(y,x)
 
-printMap(m)
+"""
+# if space is surrounded by four pipes, turn it to 'I'
+for y in range(rows):
+  for x in range(cols):
+    (n0,n1,s0,s1,e0,e1,w0,w1) = (y-1,x,y+1,x,y,x+1,y,x-1)
+    if m[y][x] == '.' and (n0,n1) in pipes and (s0,s1) in pipes and (e0,e1) in pipes and (w0,w1) in pipes:
+      m[y][x] = 'I'
+"""
+
+printMap3(m)
 
 count = 0
 for y in range(rows):
@@ -251,9 +305,13 @@ for y in range(rows):
       count += 1
 print(count)
 
+printMap3(m)
+
 #print()
 #printAround(sy,sx,m,4)
 #591 too low
+#592
+# 828 TOO HIGH
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
