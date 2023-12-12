@@ -54,10 +54,20 @@ def arrangements(a,n):
 
   # return array of possibles
   #(4,0,0,0) (3,1,0,0) (2,2,0,0) 
-  a2 = list(IT.permutations(range(4), 3))
-  print(a2)
+  #a2 = list(IT.permutations(range(4), 3))
+  #print(a2)
 # [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
 
+  l = ['###','##','#','.','.','.','.','.','.']
+  perms = list(IT.permutations(l))
+  permsu = set()
+  for p in perms:
+    permsu.add(''.join(p))
+
+  for p in permsu:
+    print(p)
+  print()
+  print(len(permsu))
   return a
 
 
