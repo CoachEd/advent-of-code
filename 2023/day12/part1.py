@@ -39,11 +39,14 @@ def arrangements(a,n):
   # return array of all possible arrangements
 
   # get minimal pattern using sizes
+  print(a,n)
   s = ''
   for i in range(len(a)):
     s = s + '#' * a[i]
     if i < len(a)-1:
       s += '.'
+
+  print(s)
   plen = len(s)
   extra = n - plen
   l = []
