@@ -1,15 +1,97 @@
 import time
 import sys
+import re
+from itertools import product
 from copy import copy, deepcopy
-import itertools as IT
+start_secs = time.time()
+print('')
+ 
+# SOLUTION
+def getgears(sz):
+  g = []
+  for n in sz:
+    g.append(n * '#')
+  return g
+
+def ismatch(p,s):
+  if len(p) != len(s):
+    return 0
+  for i in range(len(p)):
+    pc = p[i]
+    sc = s[i]
+    if pc == '.':
+      if sc != '.':
+        return 0
+    elif pc == '#':
+      if sc != '#':
+        return 0
+    else:
+      # ?
+      pass
+
+  return 1
+
+def countmatches(p,a):
+  #print((p,a))  # ('###', ['###'])
+  # p '?###????????'
+  # a ['###', '##', '#']
+  if len(a) == 0:
+    return 0
+  
+  #  '?', ['#'])
+
+  # base case - last chance to match
+  if len(a) == 1 and len(p) == len(a[0]):
+    return ismatch(p,a[0])
+
+  # still need to walk
+  n = 0 # count of matches
+  s = a[0]
+  if len(a) > 1:
+    s += '.'
+  slen = len(s)
+  while True:
+    #   ('???', '#', ['#'])
+    #print((p,s,a,ismatch(p[0:slen],s)))
+    if ismatch(p[0:slen],s) == 1:
+      # s matches beginning of pattern, see if there are other matches if we go down the line
+      
+      # navigate remaining gears if any
+      lena = len(a)
+      if lena > 1:
+        a1 = a.copy()
+        a1.pop(0)
+        if len(a1) > 0:
+          n += countmatches(p[slen:], a1) # now try remaining gears
+      elif lena == 1:
+        # last gear processed
+        n += 1
+        break
+
+      # move down the pattern to check for other landing spots for a
+      p = p[1:]
+    else:
+      # no match - we can shift pattern to right if first char is . or ?
+      # do not add to n
+      if len(p) > 0 and p[0] in '.?':
+        p = p[1:]  # shift
+      else:
+        break
+  
+    if slen > len(p):
+      # s has gone beyond p, no more matches
+      break
+
+  return n
 
 # read in input file
-my_file = open("inp2.txt", "r", encoding='utf-8')
+l=[]
+my_file = open("inp3.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
-l=[None for i in range(len(lines))]
-for i in range(len(lines)):
-  l[i] = lines[i].strip()
+for line in lines:
+  l.append(line.strip())
 
+possibles = []
 patterns = []
 sizes = []
 for s in l:
@@ -17,73 +99,16 @@ for s in l:
   patterns.append(arr[0])
   sizes.append([ int(c) for c in arr[1].split(',')])
 
-def isMatch(p,s):
-  # p is the pattern to match:
-  #                ?###????????
-  # s is a potential
-  #  match         .###.##..#..
-  #  no match:     ###.##.....#
-  # return True/False
-  # TODO: See https://stackoverflow.com/questions/4697882/how-can-i-find-all-matches-to-a-regular-expression-in-python
-  
-  #print((p,s))
-  
-  return False
-
-def arrangements(a,n):
-  # arrangements of groups must always have one '.' between them at minimum
-  # a is the array of int sizes: [3,2,1]
-  # n is length of string
-  # example for [3,2,1],12
-  #             .###.##...#.
-  # return array of all possible arrangements
-
-  # get minimal pattern using sizes
-  print(a,n)
-  s = ''
-  for i in range(len(a)):
-    s = s + '#' * a[i]
-    if i < len(a)-1:
-      s += '.'
-
-  print(s)
-  plen = len(s)
-  extra = n - plen
-  l = []
-  num_dots = s.count('.')
-  extra += num_dots
-  for s1 in s.split('.'):
-    l.append(s1)
-  
-  for i in range(extra):
-    l.append('.')
-
-  
-  perms = list(IT.permutations(l))
-  permsu = set()
-  for p in perms:
-    permsu.add(''.join(p))
-  return list(permsu)
-
-
-# SOLUTION START - start timing
-start_secs = time.time()
-# TODO
-
 tot_passed = 0
 for i in range(len(patterns)):
   p = patterns[i]
   sz = sizes[i]
-  arr = arrangements(sz,len(p))
-  num_passed = 0
-  for s in arr:
-    if isMatch(p,s):
-      num_passed = 0
-  #print(num_passed)
-  tot_passed += num_passed
-  #print(i)
-  
-#print(tot_passed)
+  tot_passed += countmatches(p,getgears(sz))
+ 
+print(tot_passed)
+ 
+print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
-# SOLUTION END - stop timing
+
+# 6102 TOO LOW
