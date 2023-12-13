@@ -65,14 +65,12 @@ def countmatches(p,a):
           n += countmatches(p[slen:], a1) # now try remaining gears
       elif lena == 1:
         # last gear processed
-        n += 1
         p = p[1:]
 
         #print((p,a))
 
-        break
-
         if len(p) < len(a[0]):
+          n += 1
           print('break1')
           break
         else:
@@ -113,8 +111,8 @@ for s in l:
   sizes.append([ int(c) for c in arr[1].split(',')])
 
 #print( countmatches('??????',getgears([2])) ) #
-#print( countmatches('?###????????',getgears([3,2,1])) ) #
-#sys.exit()
+print( countmatches('?###????????',getgears([3,2,1])) ) #
+sys.exit()
 
 
 tot_passed = 0
