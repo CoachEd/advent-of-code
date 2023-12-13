@@ -52,7 +52,7 @@ def countmatches(p,a):
   slen = len(s)
   while True:
     #   ('???', '#', ['#'])
-    #print((p,s,a,ismatch(p[0:slen],s)))
+    # print((p,s,a,ismatch(p[0:slen],s)))
     if ismatch(p[0:slen],s) == 1:
       # s matches beginning of pattern, see if there are other matches if we go down the line
       
@@ -66,7 +66,18 @@ def countmatches(p,a):
       elif lena == 1:
         # last gear processed
         n += 1
+        p = p[1:]
+
+        #print((p,a))
+
         break
+
+        if len(p) < len(a[0]):
+          print('break1')
+          break
+        else:
+          print((p,a))
+          continue
 
       # move down the pattern to check for other landing spots for a
       p = p[1:]
@@ -76,17 +87,19 @@ def countmatches(p,a):
       if len(p) > 0 and p[0] in '.?':
         p = p[1:]  # shift
       else:
+        print('break2')
         break
   
     if slen > len(p):
       # s has gone beyond p, no more matches
+      print('break3')
       break
 
   return n
 
 # read in input file
 l=[]
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp3.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -98,6 +111,11 @@ for s in l:
   arr = s.split()
   patterns.append(arr[0])
   sizes.append([ int(c) for c in arr[1].split(',')])
+
+#print( countmatches('??????',getgears([2])) ) #
+#print( countmatches('?###????????',getgears([3,2,1])) ) #
+#sys.exit()
+
 
 tot_passed = 0
 for i in range(len(patterns)):
