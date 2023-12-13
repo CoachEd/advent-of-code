@@ -71,10 +71,10 @@ def countmatches(p,a):
 
         if len(p) < len(a[0]):
           n += 1
-          print('break1')
+          #print('break1')
           break
         else:
-          print((p,a))
+          #print((p,a))
           continue
 
       # move down the pattern to check for other landing spots for a
@@ -85,12 +85,12 @@ def countmatches(p,a):
       if len(p) > 0 and p[0] in '.?':
         p = p[1:]  # shift
       else:
-        print('break2')
+        #print('break2')
         break
   
     if slen > len(p):
       # s has gone beyond p, no more matches
-      print('break3')
+      #print('break3')
       break
 
   return n
