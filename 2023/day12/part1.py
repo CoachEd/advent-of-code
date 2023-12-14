@@ -53,7 +53,7 @@ def countMatches(p,a):
   g = a[0]  # get gear
   glen = len(g)
   for i in range(len(p)):
-    print(('FOR ',i,p,a,'  :  ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
+    #print(('FOR ',i,p,' : ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
 
 
     # NEED ADDITIONAL CHECK BELOW; AFTER MATCHING, MAKE SURE p (from start to end of match) has exactly the right number of gears (#).  THIS CAN'T HAPPEN: ('FOR ', 8, '?###????????', ['###.', '##.', '#'], '  :  ', '????', '###.', True)
@@ -66,27 +66,11 @@ def countMatches(p,a):
         # spin off thread with remaining gears and shortened p
         a1 = a.copy()
         a1.pop(0)
-        n += countMatches(p[glen:],a1)
+        #n += countMatches(p[glen:],a1)
+        n += countMatches(p[i+glen:],a1)
     else:
       # gear cannot start at this position p
       pass
-
-    
-      """
-      startp = p[0:i]
-      print(('startp',a,p,i,startp, g))
-      gcount = g.count('#')
-      i2 = i
-      p2 = p[0:]
-      gcount2 = 0
-      for i in range(len(g)):
-        if p2[i2] == '#' or g[i] == '#':
-          gcount2 += 1
-      if gcount2 > gcount:
-        break
-      else:
-        continue
-      """
 
     # can we go back to the top?
     gcount = g.count('#')
@@ -113,7 +97,7 @@ def countMatches(p,a):
  
 # read in input file
 l=[]
-my_file = open("inp3.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
@@ -142,8 +126,8 @@ for sz in sizes:
 tot_count = 0
 for i in range(len(patterns)):
  
-  print(patterns[i], gears[i])
-  print()
+  #print(patterns[i], gears[i])
+  #print()
   count = countMatches(patterns[i],gears[i])
   tot_count += count
   print(count)
