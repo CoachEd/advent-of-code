@@ -53,7 +53,7 @@ def countMatches(p,a):
   g = a[0]  # get gear
   glen = len(g)
   for i in range(len(p)):
-    #print(('FOR ',i,p,' : ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
+    print(('FOR ',i,p,' : ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
 
 
     # NEED ADDITIONAL CHECK BELOW; AFTER MATCHING, MAKE SURE p (from start to end of match) has exactly the right number of gears (#).  THIS CAN'T HAPPEN: ('FOR ', 8, '?###????????', ['###.', '##.', '#'], '  :  ', '????', '###.', True)
@@ -71,6 +71,7 @@ def countMatches(p,a):
     else:
       # gear cannot start at this position p
       pass
+      
 
     # can we go back to the top?
     gcount = g.count('#')
