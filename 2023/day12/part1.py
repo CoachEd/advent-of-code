@@ -8,6 +8,11 @@ print('')
  
 # SOLUTION
 
+"""inp3.txt
+?###???????? 3,2,1
+????? 1
+"""
+
 def isExactMatch(p,s):
   if len(p) != len(s):
     return False
