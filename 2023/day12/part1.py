@@ -6,119 +6,154 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
  
+"""inp3.txt
+?###???????? 3,2,1
+"""
+ 
 # SOLUTION
-def getgears(sz):
-  g = []
-  for n in sz:
-    g.append(n * '#')
-  return g
 
-def ismatch(p,s):
+def isExactMatch(p,s):
   if len(p) != len(s):
-    return 0
+    return False
   for i in range(len(p)):
-    pc = p[i]
-    sc = s[i]
-    if pc == '.':
-      if sc != '.':
-        return 0
-    elif pc == '#':
-      if sc != '#':
-        return 0
-    else:
-      # ?
-      pass
+    if p[i] == '?':
+      continue
+    if p[i] != s[i]:
+      return False
+  return True
 
-  return 1
+def countMatches(p,a):
+  # p pattern    '?###????????' length 12  OR ????? 1
+  # a list of gears  ['###.', '##.', '#']
+  # TODO
+  # in above example... 
+  # Loop through each c in pattern
+  #   can I place ###. in the first 8 spots (length minus sum over ##. and # lengths) or 12 - (4) = 8
+  #   every time I can place ###. make recursive call summing counts from that spot with the remaining gears  in []
+  #   if on last gear and can place, return 1
 
-def countmatches(p,a):
-  #print((p,a))  # ('###', ['###'])
-  # p '?###????????'
-  # a ['###', '##', '#']
+  #print((p,a))
+
+  # base cases
   if len(a) == 0:
     return 0
-  
-  #  '?', ['#'])
-
-  # base case - last chance to match
   if len(a) == 1 and len(p) == len(a[0]):
-    return ismatch(p,a[0])
+    if isExactMatch(p,a[0]):
+      return 1
+    else:
+      return 0
+    
+  # loop through positions in p in order, continually looking for a starting point for the first gear,
+  # then spinning off threads
 
-  # still need to walk
-  n = 0 # count of matches
-  s = a[0]
-  if len(a) > 1:
-    s += '.'
-  slen = len(s)
-  while True:
-    #   ('???', '#', ['#'])
-    #print((p,s,a,ismatch(p[0:slen],s)))
-    if ismatch(p[0:slen],s) == 1:
-      # s matches beginning of pattern, see if there are other matches if we go down the line
-      
-      # navigate remaining gears if any
-      lena = len(a)
-      if lena > 1:
+  # TODO: THIS CASE CAN'T HAPPEN
+  # ('FOR ', 8, '?###????????', ['###.', '##.', '#'], '  :  ', '????', '###.', True)
+
+  n = 0
+  g = a[0]  # get gear
+  glen = len(g)
+  for i in range(len(p)):
+    print(('FOR ',i,p,a,'  :  ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
+
+
+    # NEED ADDITIONAL CHECK BELOW; AFTER MATCHING, MAKE SURE p (from start to end of match) has exactly the right number of gears (#).  THIS CAN'T HAPPEN: ('FOR ', 8, '?###????????', ['###.', '##.', '#'], '  :  ', '????', '###.', True)
+    if isExactMatch(p[i:i+glen],g):
+      # found a starting spot for the gear spin off thread
+      if len(a) == 1:
+        # no more gears to spin off too
+        n += 1
+      else:
+        # spin off thread with remaining gears and shortened p
         a1 = a.copy()
         a1.pop(0)
-        n += countmatches(p[slen:], a1) # now try remaining gears
-      elif lena == 1:
-        # last gear processed
-        n += 1
-        #print((p,s))  # ('?????', '#') vs. ('??', '#')
-
-        #if len(p) < 4:
-        break   # THIS BREAK ???
-
-      # move down the pattern to check for other landing spots for a
-      p = p[1:]
+        n += countMatches(p[glen:],a1)
     else:
-      # no match - we can shift pattern to right if first char is . or ?
-      # do not add to n
-      if len(p) > 0 and p[0] in '.?':
-        p = p[1:]  # shift
-      else:
+      # gear cannot start at this position p
+      pass
+
+    
+      """
+      startp = p[0:i]
+      print(('startp',a,p,i,startp, g))
+      gcount = g.count('#')
+      i2 = i
+      p2 = p[0:]
+      gcount2 = 0
+      for i in range(len(g)):
+        if p2[i2] == '#' or g[i] == '#':
+          gcount2 += 1
+      if gcount2 > gcount:
         break
-  
-    if slen > len(p):
-      # s has gone beyond p, no more matches
-      break
+      else:
+        continue
+      """
+
+    # can we go back to the top?
+    gcount = g.count('#')
+    i2 = i
+    p2 = p[0:]
+    gcount2 = 0
+    for i3 in range(len(g)):
+      if p2[i2] == '#' or g[i3] == '#':
+        gcount2 += 1
+    if gcount2 > gcount:
+      break        
+    
+
+  """
+        # if previous position is . or ?, when can continue down p
+        if p != 0 and p[i-1] in '.?':
+          continue
+        else:
+          print('\nBREAK\n')
+          break
+  """
 
   return n
-
+ 
 # read in input file
 l=[]
 my_file = open("inp3.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
-
-possibles = []
+ 
 patterns = []
 sizes = []
 for s in l:
   arr = s.split()
   patterns.append(arr[0])
   sizes.append([ int(c) for c in arr[1].split(',')])
-
-
-print( countmatches('?????',['#']) )
-print( countmatches('?###????????',['###','##','#']) )
-
-
-sys.exit()
-
-
-tot_passed = 0
-for i in range(len(patterns)):
-  p = patterns[i]
-  sz = sizes[i]
-  tot_passed += countmatches(p,getgears(sz))
  
-print(tot_passed)
+gears = []
+for sz in sizes:
+  tempa = []
+  for i in range(len(sz)):
+    sep = '.'
+    if i == len(sz)-1:
+      sep = ''
+    tempa.append(sz[i]*'#'+sep)
+  gears.append(tempa)
+ 
+#print(patterns)  # ['?###????????']
+#print(sizes)     # [[3, 2, 1]]
+#print(gears)     # [['###.', '##.', '#']]
+ 
+tot_count = 0
+for i in range(len(patterns)):
+ 
+  print(patterns[i], gears[i])
+  print()
+  count = countMatches(patterns[i],gears[i])
+  tot_count += count
+  print(count)
+ 
+print()
+print(tot_count)
  
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
-
+ 
 # 6102 TOO LOW
+ 
