@@ -6,10 +6,6 @@ from copy import copy, deepcopy
 start_secs = time.time()
 print('')
  
-"""inp3.txt
-?###???????? 3,2,1
-"""
- 
 # SOLUTION
 
 def isExactMatch(p,s):
@@ -53,7 +49,7 @@ def countMatches(p,a):
   g = a[0]  # get gear
   glen = len(g)
   for i in range(len(p)):
-    print(('FOR ',i,p,' : ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
+    #print(('FOR ',i,p,' : ',p[i:i+glen],g,isExactMatch(p[i:i+glen],g)))
 
 
     # NEED ADDITIONAL CHECK BELOW; AFTER MATCHING, MAKE SURE p (from start to end of match) has exactly the right number of gears (#).  THIS CAN'T HAPPEN: ('FOR ', 8, '?###????????', ['###.', '##.', '#'], '  :  ', '????', '###.', True)
@@ -61,12 +57,14 @@ def countMatches(p,a):
       # found a starting spot for the gear spin off thread
       if len(a) == 1:
         # no more gears to spin off too
-        n += 1
+        # not a match if gears remain in rest of p
+        gcount3 = p[i+glen:].count('#')
+        if gcount3 == 0:
+          n += 1
       else:
         # spin off thread with remaining gears and shortened p
         a1 = a.copy()
         a1.pop(0)
-        #n += countMatches(p[glen:],a1)
         n += countMatches(p[i+glen:],a1)
     else:
       # gear cannot start at this position p
@@ -82,17 +80,7 @@ def countMatches(p,a):
       if p2[i2] == '#' or g[i3] == '#':
         gcount2 += 1
     if gcount2 > gcount:
-      break        
-    
-
-  """
-        # if previous position is . or ?, when can continue down p
-        if p != 0 and p[i-1] in '.?':
-          continue
-        else:
-          print('\nBREAK\n')
-          break
-  """
+      break
 
   return n
  
@@ -141,4 +129,7 @@ end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
  
 # 6102 TOO LOW
- 
+# 8263 TOO HIGH 
+# 9345 TOO HIGH
+#
+#
