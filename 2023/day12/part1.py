@@ -5,24 +5,86 @@ from itertools import product
 from copy import copy, deepcopy
 start_secs = time.time()
 print('')
-
-"""inp3.txt
-?###???????? 3,2,1
-"""
-
-
+ 
 # SOLUTION
-def countMatches(p,a):
-  n = 0
-  print((p,a))
-  # p pattern    '?###????????'
-  # a list of gears  ['###.', '##.', '#']
-  # TODO
-  """
-  ALGORITHM??
-  """  
-  return n
+def getgears(sz):
+  g = []
+  for n in sz:
+    g.append(n * '#')
+  return g
 
+def ismatch(p,s):
+  if len(p) != len(s):
+    return 0
+  for i in range(len(p)):
+    pc = p[i]
+    sc = s[i]
+    if pc == '.':
+      if sc != '.':
+        return 0
+    elif pc == '#':
+      if sc != '#':
+        return 0
+    else:
+      # ?
+      pass
+
+  return 1
+
+def countmatches(p,a):
+  #print((p,a))  # ('###', ['###'])
+  # p '?###????????'
+  # a ['###', '##', '#']
+  if len(a) == 0:
+    return 0
+  
+  #  '?', ['#'])
+
+  # base case - last chance to match
+  if len(a) == 1 and len(p) == len(a[0]):
+    return ismatch(p,a[0])
+
+  # still need to walk
+  n = 0 # count of matches
+  s = a[0]
+  if len(a) > 1:
+    s += '.'
+  slen = len(s)
+  while True:
+    #   ('???', '#', ['#'])
+    #print((p,s,a,ismatch(p[0:slen],s)))
+    if ismatch(p[0:slen],s) == 1:
+      # s matches beginning of pattern, see if there are other matches if we go down the line
+      
+      # navigate remaining gears if any
+      lena = len(a)
+      if lena > 1:
+        a1 = a.copy()
+        a1.pop(0)
+        n += countmatches(p[slen:], a1) # now try remaining gears
+      elif lena == 1:
+        # last gear processed
+        n += 1
+        #print((p,s))  # ('?????', '#') vs. ('??', '#')
+
+        #if len(p) < 4:
+        break   # THIS BREAK ???
+
+      # move down the pattern to check for other landing spots for a
+      p = p[1:]
+    else:
+      # no match - we can shift pattern to right if first char is . or ?
+      # do not add to n
+      if len(p) > 0 and p[0] in '.?':
+        p = p[1:]  # shift
+      else:
+        break
+  
+    if slen > len(p):
+      # s has gone beyond p, no more matches
+      break
+
+  return n
 
 # read in input file
 l=[]
@@ -31,6 +93,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+possibles = []
 patterns = []
 sizes = []
 for s in l:
@@ -38,31 +101,21 @@ for s in l:
   patterns.append(arr[0])
   sizes.append([ int(c) for c in arr[1].split(',')])
 
-gears = []
-for sz in sizes:
-  tempa = []
-  for i in range(len(sz)):
-    sep = '.'
-    if i == len(sz)-1:
-      sep = ''
-    tempa.append(sz[i]*'#'+sep)
-  gears.append(tempa)
 
-#print(patterns)  # ['?###????????']
-#print(sizes)     # [[3, 2, 1]]
-#print(gears)     # [['###.', '##.', '#']]
+print( countmatches('?????',['#']) )
+print( countmatches('?###????????',['###','##','#']) )
 
-tot_count = 0
+
+sys.exit()
+
+
+tot_passed = 0
 for i in range(len(patterns)):
-
-  count = countMatches(patterns[i],gears[i])
-  tot_count += count
-  print(count)
-
-print()
-print(tot_count)
-
-
+  p = patterns[i]
+  sz = sizes[i]
+  tot_passed += countmatches(p,getgears(sz))
+ 
+print(tot_passed)
  
 print('')
 end_secs = time.time()
