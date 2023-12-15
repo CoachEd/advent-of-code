@@ -1,4 +1,4 @@
-#d12 p2 - does not scale
+# d12 p2
 import time
 import sys
 import re
@@ -24,6 +24,11 @@ def isExactMatch(p,s):
   return True
  
 def countMatches(p,a):
+  global d
+  k1 = p+'|'.join(a)
+  if k1 in d:
+    return d[k1]
+
   # p pattern    '?###????????' length 12  OR ????? 1
   # a list of gears  ['###.', '##.', '#']
   # TODO
@@ -34,7 +39,7 @@ def countMatches(p,a):
   #   if on last gear and can place, return 1
  
   #print((p,a))
- 
+
   # base cases
   if len(a) == 0:
     return 0
@@ -63,7 +68,7 @@ def countMatches(p,a):
       
       # we cannot have # before i
       if p[0:i].count('#') > 0:
-      	break
+        break
       
       if len(a) == 1:
         # no more gears to spin off too
@@ -75,7 +80,12 @@ def countMatches(p,a):
         # spin off thread with remaining gears and shortened p
         a1 = a.copy()
         a1.pop(0)
-        n += countMatches(p[i+glen:],a1)
+        
+        k2 = p[i+glen:]+'|'.join(a1)
+        if k2 in d:
+          n += d[k2]
+        else:
+          n += countMatches(p[i+glen:],a1)
     else:
       # gear cannot start at this position p
       pass
@@ -92,7 +102,11 @@ def countMatches(p,a):
     if gcount2 > gcount:
       break
  
+  if not k1 in d:
+    d[k1] = n
   return n
+  
+  
 # read in input file
 l=[]
 my_file = open("inp.txt", "r", encoding='utf-8')
@@ -100,6 +114,7 @@ lines = my_file.readlines()
 for line in lines:
   l.append(line.strip())
 
+d = {}
 patterns = []
 sizes = []
 for s in l:
@@ -122,14 +137,14 @@ for sz in sizes:
       sep = ''
     tempa.append(sz[i]*'#'+sep)
   gears.append(tempa)
-	
+
 for i in range(len(patterns)):
-	s = ''
-	for j in range(5):
-		s += patterns[i]
-		if j < 4:
-			s += '?'
-	patterns[i] = s
+  s = ''
+  for j in range(5):
+    s += patterns[i]
+    if j < 4:
+      s += '?'
+  patterns[i] = s
 
 #print(patterns)  # ['?###????????']
 #print(sizes)     # [[3, 2, 1]]
@@ -139,16 +154,15 @@ tot_count = 0
 for i in range(len(patterns)):
   #print(patterns[i], gears[i])
   #print()
+  d.clear()
   count = countMatches(patterns[i],gears[i])
   tot_count += count
-  print(count)
+  #print(count)
 print()
 print(tot_count)
 print('')
 end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
-# 6102 TOO LOW
-# 8263 TOO HIGH
-# 9345 TOO HIGH
 #
+# 11636815807874 too high
 #

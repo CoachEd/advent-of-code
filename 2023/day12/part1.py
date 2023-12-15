@@ -124,7 +124,7 @@ for i in range(len(patterns)):
   #print()
   count = countMatches(patterns[i],gears[i])
   tot_count += count
-  print(count)
+  #print(count)
 print()
 print(tot_count)
 print('')
