@@ -3,8 +3,10 @@ import sys
 from copy import copy, deepcopy
 
 # read in input file
-my_file = open("inp.txt", "r", encoding='utf-8')
-lines = my_file.readlines()
+fname = 'inp.txt'
+with open(fname, 'r') as file:
+  data = file.read()
+lines = data.split('\n')
 l=[None for i in range(len(lines))]
 for i in range(len(lines)):
   l[i] = lines[i].strip()
