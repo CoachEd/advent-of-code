@@ -119,3 +119,5 @@ end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
 
 # SOLUTION END - stop timing
+
+# 18180 TOO LOW
