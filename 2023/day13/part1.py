@@ -3,7 +3,7 @@ import sys
 from copy import copy, deepcopy
 
 # read in input file
-my_file = open("inp.txt", "r", encoding='utf-8')
+my_file = open("inp2.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 l=[None for i in range(len(lines))]
 for i in range(len(lines)):
