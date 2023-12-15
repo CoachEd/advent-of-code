@@ -108,9 +108,9 @@ for s in l:
 
   s1 = ''
   for i in range(5):
-  	s1 += arr[1][0:]
-  	if i < 4:
-  		s1 += ','
+    s1 += arr[1][0:]
+    if i < 4:
+      s1 += ','
   sizes.append([ int(c) for c in s1.split(',')])
   
 gears = []
