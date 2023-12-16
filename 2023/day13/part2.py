@@ -178,6 +178,7 @@ for m9 in v:
   else:
     orientations.append(('h',pos2,len2))
 
+print(orientations)
 # GO
 tot = 0
 processed = 0
