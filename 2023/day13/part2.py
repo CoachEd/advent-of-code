@@ -1,7 +1,6 @@
-# template.py
 import time
 import sys
-from copy import copy, deepcopy 
+from copy import copy, deepcopy
 
 
 ### PUT BLANK LINE AT END OF INPUT FILE !!''
@@ -9,9 +8,52 @@ from copy import copy, deepcopy
 def rotate_matrix( m ):
   return [[m[j][i] for j in range(len(m))] for i in range(len(m[0])-1,-1,-1)]
 
-def findBiggestFold(m):
-  #print('findBiggestFold...')
+def checkVert(om,opos,oor):
+  m = deepcopy(om)
+  for y in range(len(m)):
+    for x in range(len(m[y])):
+      orig = m[y][x]
+      if m[y][x] == '.':
+        m[y][x] = '#'
+      else:
+        m[y][x] = '.'
+      (pos0,len0)=findBiggestFold( m )
+      m[y][x] = orig
+      
+      #if pos0 != -1:
+      #  print('checkvert',pos0,opos,oor)
+      if pos0 != -1 and (oor == 'h' or pos0 != opos):
+        #print( ('checkvert',pos0,len0) )
+        return (pos0,len0)
+  #print()
+  #print()
+  return (-1,-1)
 
+def checkHoriz(om,opos,oor):
+  m = deepcopy(om)
+  m = rotate_matrix(m)
+  for y in range(len(m)):
+    for x in range(len(m[y])):
+      #print((y,x))
+
+
+      orig = m[y][x]
+      if m[y][x] == '.':
+        m[y][x] = '#'
+      else:
+        m[y][x] = '.'
+      (pos0,len0)=findBiggestFold( m )
+      m[y][x] = orig
+      if pos0 != -1 and (oor == 'v' or pos0 != opos):
+        #print( (pos0,len0) )
+        #print(('return',pos0,opos,len0))
+        return (pos0,len0)
+  #print()
+  return (-1,-1)
+
+def findBiggestFold(om):
+  #print('findBiggestFold...')
+  m = deepcopy(om)
   # TODO..
   folds =[]
   for y in range(len(m)):
@@ -68,7 +110,7 @@ def getFolds(s):
       d[i] = (n,s1,s2)
 
   return d
-    
+
 def printOneMatrix(v,i):
   #print('printOneMatrix')
   m = v[i]
@@ -80,7 +122,7 @@ def printOneMatrix(v,i):
   print(s)
 
 # read in input file
-fname = 'inp.txt'
+fname = 'inp3.txt'
 with open(fname, 'r') as file:
   data = file.read()
 lines = data.split('\n')
@@ -108,19 +150,66 @@ for y in range(len(l)):
 #print(  getFolds('#####..########')  )
 #sys.exit()
 
-tot = 0
-for m in v:
-
+"""
+capture part 1 vert or horiz and pos in array
+try findNewVert or findNreHoriz
+if orig was horiz and found vert, we are done
+if orig was horiz and we found horiz, we are done if pos moved
+if orig was vert and we found vert, we are done if pos moved
+"""
+# GET previous orientations
+orientations = []
+for m9 in v:
+  
   # check vertical
+  m = deepcopy(m9)
   (pos1,len1) = findBiggestFold(m)
-  (pos2,len2) = findBiggestFold( rotate_matrix(m) )
-  #print((pos1,len1,'  ', pos2,len2))
+  
+  # check horizontal
+  mr = deepcopy(m9)
+  (pos2,len2) = findBiggestFold( rotate_matrix(mr) )
 
-  if len1 > len2:
-    tot += len1
+  #print((pos1,len1))
+  #print((pos2,len2))
+  #sys.exit()
+
+  if pos1 != -1:
+    orientations.append(('v',pos1,len1))
   else:
-    tot += 100 * len2
+    orientations.append(('h',pos2,len2))
 
+# GO
+tot = 0
+processed = 0
+for i in range(len(v)):
+
+  m = v[i]
+  if len(m) == 0:
+    continue
+
+  om = deepcopy(m)
+
+  (oor,opos,_) = orientations[i]
+
+  (pos3,len3) = checkVert(om,opos,oor)
+  (pos4,len4) = checkHoriz(om,opos,oor)
+  
+  #print((pos3,len3))
+  #print((pos4,len4))
+  #sys.exit()
+  
+  if oor == 'v' and  pos4 != -1:
+    tot += len4 * 100
+  elif oor == 'h' and pos3 != -1:
+    tot += len3
+  else:
+    if pos3 != -1:
+      tot += len3
+    else:
+      tot += len4 * 100
+  processed += 1
+  
+#print(('processed: ', processed))
 print()
 
 print(tot)
@@ -133,3 +222,5 @@ print('--- ' + str(end_secs-start_secs) + ' secs ---')
 # 18180 TOO LOW
 # 30085 TOO LOW
 # 55983 TOO HIGH
+# 48765
+# 50600
