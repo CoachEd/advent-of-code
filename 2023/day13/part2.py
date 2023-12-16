@@ -122,7 +122,7 @@ def printOneMatrix(v,i):
   print(s)
 
 # read in input file
-fname = 'inp3.txt'
+fname = 'inp.txt'
 with open(fname, 'r') as file:
   data = file.read()
 lines = data.split('\n')
