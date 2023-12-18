@@ -36,7 +36,7 @@ def move_beams(mb, beams, m):
   # m - map of mirrors and pipes
   # beams - list of beams (y,x,'E',True)
 
-   allow_iterations = 2 # TODO: need to tweak higher?
+   allow_iterations = 10 # TODO: need to tweak higher?
    niterations = 0
    while True:
     orig_map_str = get_map_str(mb)
@@ -141,7 +141,7 @@ def move_beam(beams, bi, new_beams, m, mb):
       sys.exit()
 
 # read in input file
-my_file = open("inp2.txt", "r", encoding='utf-8')
+my_file = open("inp.txt", "r", encoding='utf-8')
 lines = my_file.readlines()
 l=[None for i in range(len(lines))]
 for i in range(len(lines)):
@@ -155,12 +155,19 @@ mb = [ [ '.' for c in line ] for line in l]
 rows = len(m)
 cols = len(m[0])
 
-# starting point
-beams = [ (0,0,'E',True)] # (y,x,dir,active)
+# set starting point - test data
+#beams = [ (0,0,'E',True)] # (y,x,dir,active)
+#mb[0][0] = '#'
+
+# starting point - real data
+beams = [ (0,0,'S',True)] # (y,x,dir,active)
 mb[0][0] = '#'
+
 
 # move beams until we cant
 move_beams(mb, beams, m) 
+
+print_map(mb)
 
 print( count_energized(mb) )
 
@@ -171,3 +178,4 @@ end_secs = time.time()
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
 
 # SOLUTION END - stop timing
+# 49 WRONG
