@@ -226,7 +226,6 @@ cols = len(m[0])
 
 starting_beams = []
 addStartingBeams(starting_beams)
-orig_m = deepcopy(m)
 orig_mb = deepcopy(mb)
 max_energized = -1
 print('beam count: ' + str(len(starting_beams)))
@@ -235,7 +234,6 @@ for i in range(len(starting_beams)):
   beams = []
   beam = starting_beams[i]
   beams.append(beam)
-  m = deepcopy(orig_m)
   mb = deepcopy(orig_mb)
   new_beams = []
   set_starting_point(beams, 0, new_beams, 0, 0, 'E', m, mb)
@@ -245,7 +243,8 @@ for i in range(len(starting_beams)):
   energized = count_energized(mb)
   if energized > max_energized:
     max_energized = energized
-  
+
+print()
 print(max_energized)
 end_secs = time.time()
 
