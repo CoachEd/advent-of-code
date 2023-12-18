@@ -1,7 +1,7 @@
-# template.py
+# d13 p1
 import time
 import sys
-from copy import copy, deepcopy 
+from copy import copy, deepcopy
 
 
 ### PUT BLANK LINE AT END OF INPUT FILE !!''
@@ -9,75 +9,71 @@ from copy import copy, deepcopy
 def rotate_matrix( m ):
   return [[m[j][i] for j in range(len(m))] for i in range(len(m[0])-1,-1,-1)]
 
-def findBiggestFold(m):
-  #print('findBiggestFold...')
-
-  # TODO..
-  folds =[]
-  for y in range(len(m)):
-    # for every row, get its fold points (i,l), pos and l chars left (including position) and l chars right of position
-    folds.append(getFolds(''.join(m[y])))
-
-  # for each possible fold point
-  maxi = -1
-  maxl = -1
-  for x in range(len(m[0])):
-    allIn = True
-    for y in range(len(folds)):
-      if not x in folds[y]:
-        # can't consider it unless all rows have x
-        allIn = False
-        break
-    if allIn:
-      for y in range(len(folds)):
-        (n,s1,s2) = folds[y][x]
-        if n > maxl:
-          maxl = n
-          maxi = x
-  return ((maxi,maxl)) # maxi pos, maxl chars to left (including maxi) and right (excluding maxi)
-
-def getFolds(s):
-  d = {} # index , (length on either side of line, s)
-  for i in range(1,len(s)):
-    s1 = s[0:i]
-    s2 = s[i:]
-    s1len = len(s1)
-    s2len = len(s2)
-
-    #print((i,s1,s2))
-    shaved_from_left = 0
-    if s1len < s2len:
-      s2 = s2[0:s1len]
-      s1 = s1[::-1]
-    elif s2len < s1len:
-      shaved_from_left = s1len-s2len
-      s1 = s1[::-1]
-      s1 = s1[0:s2len]
-
-    s1len = len(s1)
-    s2len = len(s2)
-
-    #print((i,s1,s2))
-    #print()
-    n = 0
-    for k in range(len(s1)):
-      if s1[k] == s2[k]:
-        n += 1
-    if n == len(s1):
-      n += shaved_from_left
-      d[i] = (n,s1,s2)
-
-  return d
-    
-def printOneMatrix(v,i):
-  #print('printOneMatrix')
-  m = v[i]
+def printm(m):
   s = ''
   for y in range(len(m)):
     for x in range(len(m[y])):
       s += m[y][x]
     s += '\n'
   print(s)
+
+def checkVert(m):
+
+  cols = len(m[0])
+
+  # right edge mirror?
+  xstart = 0
+  xend = cols - 1
+  if (cols % 2) != 0:
+    xstart += 1
+  match = False
+  pos = None
+  len1 = -1
+  for x in range(xstart,xend + 1, 2):
+    mid = int((x+xend)/2)
+    match = True
+    for y in range(0,len(m)):
+      s1 = m[y][x:mid+1]
+      s2 = m[y][mid+1:xend+1][::-1]
+      #print((s1,s2))
+      if s1 != s2:
+        match = False
+        break
+    if match:
+      #print((y,x,len(s1)))
+      len1 = x+len(s1)
+      pos = x
+      break
+  if match:
+    #print('right edge')
+    return (len1,len1)
+
+  # left edge mirror?
+  xstart = 0
+  xend = cols - 1
+  if (cols % 2) != 0:
+    xend -= 1
+  match = False
+  pos = None
+  len1 = -1
+  for x in range(xend,0,-2):
+    mid = int((x+1)/2) # 4
+    match = True
+    for y in range(0,len(m)):
+      s1 = m[y][0:mid]
+      s2 = m[y][mid:x+1][::-1]
+      if s1 != s2:
+        match = False
+        break
+    if match:
+      len1 = mid
+      pos = x - mid + 1
+      break
+  if match:
+    #print('return left edge')
+    return (pos,pos)
+    
+  return(-1,-1)
 
 # read in input file
 fname = 'inp.txt'
@@ -102,28 +98,35 @@ for y in range(len(l)):
     row.append(l[y][x])
   m.append(row)
 
-# MAIN
-#printOneMatrix(v,0)
-
-#print(  getFolds('#####..########')  )
-#sys.exit()
-
 tot = 0
 for m in v:
-
-  # check vertical
-  (pos1,len1) = findBiggestFold(m)
-  (pos2,len2) = findBiggestFold( rotate_matrix(m) )
-  #print((pos1,len1,'  ', pos2,len2))
-
-  if len1 > len2:
-    tot += len1
+  if len(m) == 0:
+    continue
+  
+  (pv,lv) = checkVert(m)
+  
+  mrot = deepcopy(m)
+  mrot = rotate_matrix(mrot)
+  (ph,lh) = checkVert(mrot)
+  
+  #printm(m)
+  #print(('v',pv,lv,'  h',ph,lh))
+  
+  if pv != -1:
+    tot += pv
+  elif ph != -1:
+    tot += 100 * ph
   else:
-    tot += 100 * len2
+    print('should not happen')
+    
+print(tot)
+  
+
+
+
+
 
 print()
-
-print(tot)
 end_secs = time.time()
 
 print('--- ' + str(end_secs-start_secs) + ' secs ---')
@@ -133,3 +136,6 @@ print('--- ' + str(end_secs-start_secs) + ' secs ---')
 # 18180 TOO LOW
 # 30085 TOO LOW
 # 55983 TOO HIGH
+# 48765
+# 50600
+
