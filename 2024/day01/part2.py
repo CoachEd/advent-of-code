@@ -22,7 +22,18 @@ start_secs = time.time()
 
 
 # TODO
+tot = 0
+arr1 = []
+arr2 = []
+for i, row in enumerate(l):
+    arr = row.split()
+    arr1.append(int(arr[0]))
+    arr2.append(int(arr[1]))
 
+for i in range(len(arr1)):
+    tot += arr2.count(arr1[i]) * arr1[i]
+
+print(tot)
 
 
 

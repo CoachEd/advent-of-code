@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# pylint: disable=W0611,C0103,W0511
+# pylint: disable=W0611,C0103,W0511,C0200
 """
-This module contains functions for part 2
+FOO
 """
 
 import time
@@ -16,7 +16,6 @@ lines = data.split('\n')
 l=[None for i in range(len(lines))]
 for i, line in enumerate(lines):
     l[i] = line.strip()
-print(l)
 
 # SOLUTION START - start timing
 start_secs = time.time()
