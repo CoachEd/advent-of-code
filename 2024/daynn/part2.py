@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# pylint: disable=W0611,C0103,W0511,C0200,C0116
+# pylint: disable=W0611,C0103,W0511,C0200,C0116,,C0301,W0621
 """
 FOO
 """
